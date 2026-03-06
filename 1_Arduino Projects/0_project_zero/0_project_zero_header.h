@@ -7,6 +7,7 @@ char watch_dog_reset;
 #define T0_delay_10ms   5,178
 
 #define setup_HW \
+Clear_digit;\
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
 Set_Led_outputs;\
