@@ -39,6 +39,7 @@ DDRD = (1 << DDD5) | (1 << DDD6) | (1 << DDD7);
 
 #define c_off   PORTB |= (1 << PB5);
 #define c_on  PORTB &= (~(1 << PB5));
+#define   switch_Seg_c  PORTB ^= (1 << PB5);
 
 #define d_off   PORTB |= (1 << PB3);
 #define d_on  PORTB &= (~(1 << PB3));
@@ -51,7 +52,7 @@ DDRD = (1 << DDD5) | (1 << DDD6) | (1 << DDD7);
 
 #define g_off   PORTB |= (1 << PB4);
 #define g_on  PORTB &= (~(1 << PB4));
-
+#define g_is_on   (!(PORTB & (1 << PB4)))
 
 #define set_up_switched_inputs \
 MCUCR &= (~(1 << PUD));\
@@ -61,6 +62,7 @@ PORTD |= (1 << PD2);
 
 
 #define switch_3_down ((PIND & 0x04)^0x04)
+#define switch_3_up   (PIND & 0x04)
 
 #define Clear_digit    PORTD |= ((1 << PD5) | (1 << PD6)| (1 << PD7));\
 PORTB |= ((1 << PB2) | (1 << PB3)| (1 << PB4) | (1 << PB5));
@@ -69,3 +71,4 @@ PORTB |= ((1 << PB2) | (1 << PB3)| (1 << PB4) | (1 << PB5));
 /*****************************************************************************/
 #include "Resources_nano_projects/Subroutines/HW_timers.c"
 #include "Resources_nano_projects/PC_comms/Basic_Rx_Tx_Basic.c"
+#include "Resources_nano_projects/Subroutines/Random_and_prime_nos.c"
