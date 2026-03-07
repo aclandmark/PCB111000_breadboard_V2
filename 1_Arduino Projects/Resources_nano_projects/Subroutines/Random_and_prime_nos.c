@@ -41,7 +41,7 @@ if(*PRN_counter == 255)
 
 {eeprom_write_byte((uint8_t*)0x1FC,(lfsr>>8));							//Save every 16th PRN number to EEPROM
 eeprom_write_byte((uint8_t*)0x1FB, lfsr);									//This prevents the display from endlessly repeating
-Toggle_LED_1;															//Note: Saving every one burns out the EEPROM location too quickly
+//Toggle_LED_1;															//Note: Saving every one burns out the EEPROM location too quickly
 *PRN_counter = 0;}
 
 return lfsr;}
