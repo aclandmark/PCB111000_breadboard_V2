@@ -60,36 +60,35 @@ MCUCR = (1<<IVCE);  										//Select the interrupt vector table starting at st
 MCUCR = (1<<IVSEL);
 
 setup_HW;
-	
-//	Prog_mem_address_H = 0;
-//	Prog_mem_address_L = 0;
 
-hex_programmer();	
-asm("jmp 0x2800");												//Jump to HEX verification!!!!!
+
+//hex_programmer();	
+//asm("jmp 0x3100");	//asm("jmp 0x2800");//											//Jump to HEX verification!!!!!
 	
-return 1;}
+//return 1;}
 
 
 
 
 		
 		/*********************************************************************************************************/
-		void hex_programmer(void){
+		//void hex_programmer(void){
 
 	
 		PageSZ = 0x40; PAmask = 0x1FC0;										//Define flash memory parameters for Atmega 168
 
-		prog_led_control = 0;  record_length_old=0;							//Initialise variables
-		Flash_flag = 0;  HW_address = 0;  section_break = 0; orphan = 0;
+		//prog_led_control = 0;
+		  record_length_old=0;							//Initialise variables
+		Flash_flag = 0;  HW_address = 0;  //section_break = 0; orphan = 0;
 		w_pointer = 0; r_pointer = 0; short_record=0;  //cmd_counter = 0;
 
-		//sendString("\r\nHex_F?");
-		sendChar ('p');sendChar('?');
+		sendString("\r\nHex_F?");
+		//sendChar ('p');sendChar('?');
 
 		UCSR0B |= (1<<RXCIE0); sei();										//Receive interrupts now active
 
 		new_record();  														//Start reading first record which is being downloaded to array "store"
-		start_new_code_block(); 											//Initialise new programming block (usually starts at address zero but not exclusively so)
+		start_new_code_block(); 											//Initialize new programming block (usually starts at address zero but not exclusively so)
 		Program_record();													//Copy commands from array "store" to the page_buffer
 			
 			while(1){
@@ -111,8 +110,10 @@ return 1;}
 		if(Flash_flag){write_page_SUB(page_address);}						//Burn final contents of page_buffer to flash
 		cli();
 
-		clear_read_block();}												//Subroutine provided in assembly file
+		clear_read_block();//}												//Subroutine provided in assembly file
 
+
+asm("jmp 0x3100");}
 
 
 
