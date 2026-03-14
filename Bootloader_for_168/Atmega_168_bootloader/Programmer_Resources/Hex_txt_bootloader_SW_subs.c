@@ -133,7 +133,8 @@ Flash_flag = 0;															//Buffer now contains no data to burn to flash
 write_address = 0;														//"while loop" continues if there is a line offset
 space_on_page = PageSZ;
 page_offset = line_offset;
-if (line_offset) orphan = 1;}}}											//One or more commands in current record will be on next page
+//if (line_offset) orphan = 1;
+}}}											//One or more commands in current record will be on next page
 
 
 
