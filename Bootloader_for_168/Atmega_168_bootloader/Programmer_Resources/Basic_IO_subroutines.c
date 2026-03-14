@@ -19,9 +19,11 @@ UCSR0C =  (1 << UCSZ00)| (1 << UCSZ01);}
 /*********************************************************************************************/
 void sendString(char s[]){
 int i = 0;
-while(i < 200){
-if(s[i] == '\0') break;
-sendChar(s[i++]);} }
+while(1){
+if(s[i] == '\0') return;
+sendChar(s[i++]);
+} 
+}
 
 
 
