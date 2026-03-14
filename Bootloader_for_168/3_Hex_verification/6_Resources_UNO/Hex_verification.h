@@ -40,7 +40,7 @@ int  cmd_counter;											//Counts commands as they are downloaded from the PC
 int prog_counter;											//Counts commands burned to flash
 signed int  read_ops=0;										//Total number of commands read from flash
 unsigned int Hex_cmd;										//Command read from flash during verification
-signed int FlashSZ;											//Amount of flash memory supplied on target device
+signed int FlashSZ = 0x1880;								//Start of verification routine
 
 
 char print_mode;											//Print out hex file if required
@@ -76,11 +76,11 @@ extern void set_lock_byte (void);
 
 
 /**********************************************************************************/
-#define LED_2_off	PORTB &= (~(1 << PB0));
+/*#define LED_2_off	PORTB &= (~(1 << PB0));
 #define LED_2_on	PORTB |= (1 << PB0);
 
 #define LED_1_off		PORTB &= (~(1 << PB1));
 #define LED_1_on		PORTB |= (1 << PB1);
 #define toggle_led_1	PORTB ^= (1 << PB1);
-
+*/
 
