@@ -58,14 +58,11 @@ volatile char Flash_readout;								//Used by assembly routines to return data
 
 /***************************Variales used to program hex file**************************************/
 
-//int  cmd_counter;											//Counts commands as they are downloaded from the PC
-//int prog_counter;											//Counts commands burned to flash
-
 volatile int counter;										//Counts characters in a record as they are downloaded from the PC 
 volatile int char_count;									//The number of askii character in a single record
 volatile char Count_down;									//Counts commands as record is programmed
 volatile int   tempInt1, tempInt2;							//Used to assemble commands and addresses as the are downloaded
-int store[32];		//32												//Used to store commands and address ready for the programmer 	(Also Used by text programmer)
+int store[32];														//Used to store commands and address ready for the programmer 	(Also Used by text programmer)
 volatile int w_pointer,r_pointer;							//Read/write pointers to "store" to which hex file is saved 	(Also Used by text programmer)
 unsigned int Hex_cmd;										//command in array store copied here prior to being written to page buffer
 
@@ -83,9 +80,6 @@ char Flash_flag;											//Indicates that the page buffer contains commands
 
 signed char record_length;									//Num commands on one line of hex file (i.e. on one record)
 signed char record_length_old;								//If record length changes, length of the previous one is important
-//signed char orphan;											//Indicates that the contents of a record span two flash pages
-//signed char section_break;									//Set to 1 if at least one page of flash memory will be unused.
-//signed char page_break;										//Page only partially filled before programming next one starts
 volatile signed char line_offset;							//LSB of address of first command in record (usually zero)
 unsigned int prog_led_control;								//Used to control Leds as hex file is downloaded
 
@@ -109,19 +103,11 @@ volatile char Rx_askii_char_old;							//Required to check for a \r\n string
 #define wdr()  __asm__ __volatile__("wdr")
 
 /**********************************************************************************/
-/*#define setup_HW \
-config_WDT;\
-Initialise_I_O;\
-activity_leds;\
-ADMUX |= (1 << REFS0);\
-USART_init(0,16);*/
 
 #define setup_HW \
 OSCCAL = eeprom_read_byte((uint8_t*)0x1FE); \
 USART_init(0,16);
 
-
-//_delay_ms(1000);
 
 /**********************************************************************************/
 #define config_WDT \
@@ -172,7 +158,7 @@ PORTC = 0xFF;\
 PORTD = 0xFF;
 
 
-/**********************************************************************************/
+/***********************Not Used***********************************************************/
 #define cal_device \
 eeprom_write_byte((uint8_t*)0x1FD, OSCCAL);\
 if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
