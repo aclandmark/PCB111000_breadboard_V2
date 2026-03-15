@@ -49,8 +49,6 @@ int main (void){
 
 MCUSR = 0;
 eeprom_write_byte((uint8_t*)(0x1FC),0);
-//Write to EEPROM so that bootloader WDTimeouts can be distinguished from project WDTimeouts
-
 
 	wdt_enable(WDTO_15MS);
 	while(1);
