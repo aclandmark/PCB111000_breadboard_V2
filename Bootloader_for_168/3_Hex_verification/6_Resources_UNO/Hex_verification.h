@@ -76,11 +76,5 @@ extern void set_lock_byte (void);
 
 
 /**********************************************************************************/
-/*#define LED_2_off	PORTB &= (~(1 << PB0));
-#define LED_2_on	PORTB |= (1 << PB0);
 
-#define LED_1_off		PORTB &= (~(1 << PB1));
-#define LED_1_on		PORTB |= (1 << PB1);
-#define toggle_led_1	PORTB ^= (1 << PB1);
-*/
 
