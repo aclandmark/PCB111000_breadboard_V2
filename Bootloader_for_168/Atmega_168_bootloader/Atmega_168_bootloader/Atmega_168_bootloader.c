@@ -61,30 +61,14 @@ MCUCR = (1<<IVSEL);
 
 setup_HW;
 
-
-//hex_programmer();	
-//asm("jmp 0x3100");	//asm("jmp 0x2800");//											//Jump to HEX verification!!!!!
-	
-//return 1;}
-
-
-
-
-		
-		/*********************************************************************************************************/
-		//void hex_programmer(void){
-
-	
 		PageSZ = 0x40; PAmask = 0x1FC0;										//Define flash memory parameters for Atmega 168
 
-		//prog_led_control = 0;
-		  record_length_old=0;							//Initialise variables
-		Flash_flag = 0;  HW_address = 0;  //section_break = 0; orphan = 0;
-		w_pointer = 0; r_pointer = 0; short_record=0;  //cmd_counter = 0;
+		record_length_old=0;				
+		Flash_flag = 0;  HW_address = 0;  
+		w_pointer = 0; r_pointer = 0; short_record=0; 
 
 		sendString("\r\nHex_F?");
-		//sendChar ('p');sendChar('?');
-
+		
 		UCSR0B |= (1<<RXCIE0); sei();										//Receive interrupts now active
 
 		new_record();  														//Start reading first record which is being downloaded to array "store"
@@ -110,10 +94,8 @@ setup_HW;
 		if(Flash_flag){write_page_SUB(page_address);}						//Burn final contents of page_buffer to flash
 		cli();
 
-		clear_read_block();//}												//Subroutine provided in assembly file
-
-
-asm("jmp 0x3100");}
+		clear_read_block();											//Subroutine provided in assembly file
+		asm("jmp 0x3100");}
 
 
 
@@ -161,7 +143,7 @@ asm("jmp 0x3100");}
 	store[local_pointer] = tempInt1; }}
 
 	counter++;
-	w_pointer = w_pointer & 0x1F;	}  		//1F									//Overwrites array after 32 entries
+	w_pointer = w_pointer & 0x1F;	}  											//Overwrites array after 32 entries
 
 
 
