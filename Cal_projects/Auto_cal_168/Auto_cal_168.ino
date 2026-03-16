@@ -57,19 +57,19 @@ Timer_T0_sub(T0_delay_5ms);                 //Allows printing to finish before O
     TIMSK1 &= (~(1 << TOIE1));
     Timer_T0_10mS_delay_x_m(10);
     newline();
-    sendLongNum(16,OSCCAL_approx); sendChar('\t');
+    sendLongNum(10,OSCCAL_approx); sendChar('\t');
     sendLongNum(10,error_initial); sendString("\tInitial result\r\n");
     
-    sendLongNum(16,OSCCAL_WV); sendChar('\t');
+    sendLongNum(10,OSCCAL_WV); sendChar('\t');
     sendLongNum(10,error); sendString("\tFinal result\r\n");
     
     eeprom_write_byte((uint8_t*)0x1FF, OSCCAL_WV); 
   eeprom_write_byte((uint8_t*)0x1FE, OSCCAL_WV);
   
   sendString("\r\nValues saved to EEPROM\t");       //Echo values back from the EEPROM
-  sendLongNum(16,eeprom_read_byte((uint8_t*)0x1FF));
+  sendLongNum(10,eeprom_read_byte((uint8_t*)0x1FF));
   sendString ("    ");
-  sendLongNum(16,eeprom_read_byte((uint8_t*)0x1FE));
+  sendLongNum(10,eeprom_read_byte((uint8_t*)0x1FE));
   sendString("\r\nAK to repeat\r\n");
   waitforkeypress();SW_reset;}    //keypress to repeat cal process
     //keypress to repeat cal process
