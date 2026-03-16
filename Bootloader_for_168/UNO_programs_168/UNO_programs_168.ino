@@ -18,7 +18,7 @@ but not flash with text
 
 
 #include "UNO_AVR_programmer.h"
-#define Version "UNO_programmer_V2.5\r\n" 
+#define Version "UNO_programmes_168_prototype\r\n" 
 
 int main (void){ 
 
@@ -37,7 +37,7 @@ Atmel_powerup_and_target_detect;                                      //Leave ta
 
 sendString(" detected.\r\n\r\nTo program flash:  press -P- for bootloader or \
 -p-  for other routines,\r\n\
-Press -t- to run 168 calibration routine,\r\n\
+//Press -t- to run 168 calibration routine,\r\n\
 Press -r- for other routines,\r\n");
 sendString("Press -V- to read flash or -x- to escape.\r\n\r\n");
 
@@ -48,7 +48,7 @@ switch (op_code){
 
 case 'r': Exit_programming_mode; break;                               //Wait for UNO reset
 case 'e': Prog_EEPROM(); SW_reset; break;
-case 't': set_cal_clock();break;
+//case 't': set_cal_clock();break;
 
 case 'd':                                                             //Delete contents of the EEPROM
 sendString("\r\nReset EEPROM! D or AOK to escape");                   //but leave cal data.
@@ -76,7 +76,7 @@ Verify_Flash_Hex();
 
 sendString("\r\nProgrammming completed\r\n");
 cli();
-while(1);
+//while(1);
 sendString (Version);
 newline();
 
@@ -85,12 +85,16 @@ Read_write_mem('I', EE_size - 4, \
 Read_write_mem('I', EE_size - 5, \
 (Atmel_config(signature_bit_3_h, signature_bit_3_l)));       
 
-Read_write_mem('I', 0x3ED, 0);                                          //Initialise EEP locations for PRN use
+Read_write_mem('I', 0x1ED, 0);                                          //Initialise EEP locations for PRN use
 
-sendString("Press -t- if running 328 cal routine or AOK for other routines.");
+//sendString("Press -t- if running 328 cal routine or AOK for other routines.");
 
-if(waitforkeypress()== 't')set_cal_clock();
-else
+//if(waitforkeypress()== 't')set_cal_clock();
+//else
+
+sendString("Set BR to 57600 then press AK\r\n");
+USART_init(0,16);
+waitforkeypress();
 {Exit_programming_mode; }                                               //Wait for UNO reset
 
 return 1;}
@@ -108,17 +112,17 @@ case 'P': upload_hex(); break;}}
 
 
 /***************************************************************************************************************************************************/
-ISR(TIMER2_OVF_vect) { //NOT USED in this version               Timer2 times out and halts at the end of the text file 
+/*ISR(TIMER2_OVF_vect) { //NOT USED in this version               Timer2 times out and halts at the end of the text file 
 if(text_started == 3)                                           //Ignore timeouts occurring before start of file download
   {endoftext -= 1; TCCR2B = 0; TIMSK2 &= (~(1 << TOIE2));       //Shut timer down
   inc_w_pointer; store[w_pointer] = 0;                          //Append two '\0' chars to the end of the text
-  inc_w_pointer; store[w_pointer] = 0; }}
+  inc_w_pointer; store[w_pointer] = 0; }}*/
 
 
 
 
 /****************************************************************************************************************************************************/
-void set_cal_clock(void){
+/*void set_cal_clock(void){
 
 sendString("Square wave generates PCI on PB5 every 8.192mS\r\n\
 Results are sent to a separate terminal screen.\r\n");
@@ -137,4 +141,4 @@ Reset_H;
 while(1){
 while(!(TIFR0 & (1<<TOV0)));
 TIFR0 |= (1<<TOV0);
-PORTB ^= (1 << PORTB5);}}
+PORTB ^= (1 << PORTB5);}}*/
