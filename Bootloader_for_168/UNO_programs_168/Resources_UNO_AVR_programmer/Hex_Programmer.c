@@ -124,7 +124,7 @@ if(orphan) {write_page_SUB(page_address + PageSZ);}
 
 
 if (op_code == 'P'){Prog_bootloader_config_bytes;}
-if (op_code == 'p'){Prog_bootloader_config_bytes;}
+if (op_code == 'p'){Prog_default_168_config_bytes;}
 }
   
 
