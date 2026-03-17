@@ -85,7 +85,7 @@ Read_write_mem('I', EE_size - 4, \
 Read_write_mem('I', EE_size - 5, \
 (Atmel_config(signature_bit_3_h, signature_bit_3_l)));       
 
-Read_write_mem('I', 0x1ED, 0);                                          //Initialise EEP locations for PRN use
+Read_write_mem('I', 0x1FC, 0xF3);                                          //Initialise EEP locations for PRN use
 
 //sendString("Press -t- if running 328 cal routine or AOK for other routines.");
 
