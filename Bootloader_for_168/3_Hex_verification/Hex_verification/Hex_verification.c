@@ -49,7 +49,7 @@ int main (void){
 
 MCUSR = 0;
 eeprom_write_byte((uint8_t*)(0x1FC),0);
-
+MCUSR &= (~(1 << PORF));
 	wdt_enable(WDTO_15MS);
 	while(1);
 return 1;}
