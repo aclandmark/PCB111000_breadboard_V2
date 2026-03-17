@@ -28,6 +28,7 @@ ADMUX |= (1 << REFS0);\
 set_up_switched_inputs;\
 Serial.begin(115200);\
 while (!Serial);\
+OSC_CAL;\
 Timer_T0_10mS_delay_x_m(5);
 
 
