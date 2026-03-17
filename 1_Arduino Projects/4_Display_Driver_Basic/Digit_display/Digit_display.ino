@@ -36,8 +36,10 @@ const char* string_ptr = 0;     //pointer: will be loaded with the address of a 
 setup_HW;               
 
 
-if(watch_dog_reset != 1)			//Use EERPOM to distinguish between project and bootloader WDTimeouts
+if(MCUSR & (1 << PORF)){User_prompt_Basic;eeprom_write_byte((uint8_t*)0x1FA, 0);MCUSR = 0;Clear_digit;}
+if(!(eeprom_read_byte((uint8_t*)0x1FA)))
 {
+  eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
 print_memory_contents;
 String_to_PC_Basic("\r\nSend digits?");}
 
