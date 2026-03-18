@@ -112,33 +112,3 @@ case 'P': upload_hex(); break;}}
 
 
 /***************************************************************************************************************************************************/
-/*ISR(TIMER2_OVF_vect) { //NOT USED in this version               Timer2 times out and halts at the end of the text file 
-if(text_started == 3)                                           //Ignore timeouts occurring before start of file download
-  {endoftext -= 1; TCCR2B = 0; TIMSK2 &= (~(1 << TOIE2));       //Shut timer down
-  inc_w_pointer; store[w_pointer] = 0;                          //Append two '\0' chars to the end of the text
-  inc_w_pointer; store[w_pointer] = 0; }}*/
-
-
-
-
-/****************************************************************************************************************************************************/
-/*void set_cal_clock(void){
-
-sendString("Square wave generates PCI on PB5 every 8.192mS\r\n\
-Results are sent to a separate terminal screen.\r\n");
-UCSR0B &= (~((1 << RXEN0) | (1<< TXEN0)));
-initialise_IO;
-Set_LED_ports;
-LEDs_off;
-DDRB |= 1 << DDB5;
-PORTB &= (~(1 << PORTB5));                                       //Output low
-TCNT0 = 0;
-//TCCR0B = (1 << CS02) | (1 << CS00);                             //7.8125 KHz clock counts to 256 in 32.768mS                    
-TCCR0B = (1 << CS02);                                             //31.25KHz clock counts to 256 in 8.192KHz
-
-Reset_H;
-
-while(1){
-while(!(TIFR0 & (1<<TOV0)));
-TIFR0 |= (1<<TOV0);
-PORTB ^= (1 << PORTB5);}}*/
