@@ -1,19 +1,4 @@
 
-/*
-Version of the UNO_AVR programmer adapted for the PCB111000_CP2102 project
-Designed to be uploaded to a UNO
-Programmming pins are:
-  data out    PORTB3 (MOSI)   connect to target device MOSI
-  data in     PORTB4 (MISO)   connect to target device MISO
-  clock       PORTB5 (SCK)    connect to target device SCK
-  reset       PORTC3          connect to target device pin 1 reset
-
-Calibration pin:   This also uses PORTB5
-
-Can also be used to program target EEPROM
-but not flash with text
- */
-
 
 
 
@@ -37,18 +22,20 @@ Atmel_powerup_and_target_detect;                                      //Leave ta
 
 sendString(" detected.\r\n\r\nTo program flash:  press -P- for bootloader or \
 -p-  for other routines,\r\n\
-//Press -t- to run 168 calibration routine,\r\n\
-Press -r- for other routines,\r\n");
-sendString("Press -V- to read flash or -x- to escape.\r\n\r\n");
-
+Press -r- to run target program,\r\n");
 
 while(1){
 op_code = waitforkeypress();
 switch (op_code){
 
-case 'r': Exit_programming_mode; break;                               //Wait for UNO reset
+case 'r':                                //Wait for UNO reset
+sendString("Set BR to 57600 then press AK\r\n");
+USART_init(0,16);
+waitforkeypress();
+Exit_programming_mode; break;
+
+
 case 'e': Prog_EEPROM(); SW_reset; break;
-//case 't': set_cal_clock();break;
 
 case 'd':                                                             //Delete contents of the EEPROM
 sendString("\r\nReset EEPROM! D or AOK to escape");                   //but leave cal data.
@@ -63,8 +50,6 @@ if(waitforkeypress() == 'D')
 }
 SW_reset;break;
 
-case 'V': prog_counter = 0x2000; Verify_Flash_Hex();SW_reset; break;
-
 case 'x': SW_reset; break;
 default: break;} 
 
@@ -76,7 +61,6 @@ Verify_Flash_Hex();
 
 sendString("\r\nProgrammming completed\r\n");
 cli();
-//while(1);
 sendString (Version);
 newline();
 
@@ -87,19 +71,12 @@ Read_write_mem('I', EE_size - 5, \
 
 Read_write_mem('I', 0x1FC, 0xF3);                                          //Initialise EEP locations for PRN use
 
-//sendString("Press -t- if running 328 cal routine or AOK for other routines.");
-
-//if(waitforkeypress()== 't')set_cal_clock();
-//else
-
 sendString("Set BR to 57600 then press AK\r\n");
 USART_init(0,16);
 waitforkeypress();
 {Exit_programming_mode; }                                               //Wait for UNO reset
 
 return 1;}
-
-
 
 
 
