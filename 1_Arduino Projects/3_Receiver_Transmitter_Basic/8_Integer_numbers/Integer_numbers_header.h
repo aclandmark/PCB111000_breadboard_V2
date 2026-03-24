@@ -13,6 +13,7 @@ ADMUX |= (1 << REFS0);\
 Set_Led_outputs;\
 set_up_switched_inputs;\
 setup_PC_comms_Basic(0,16);\
+OSC_CAL;\
 Timer_T0_10mS_delay_x_m(5);
 
 
@@ -66,6 +67,13 @@ PORTD |= (1 << PD2);
 
 #define Clear_digit    PORTD |= ((1 << PD5) | (1 << PD6)| (1 << PD7));\
 PORTB |= ((1 << PB2) | (1 << PB3)| (1 << PB4) | (1 << PB5));
+
+
+#define OSC_CAL \
+if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
+&&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
+== eeprom_read_byte((uint8_t*)0x1FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x1FE);}
+
 
 
 /*****************************************************************************/
