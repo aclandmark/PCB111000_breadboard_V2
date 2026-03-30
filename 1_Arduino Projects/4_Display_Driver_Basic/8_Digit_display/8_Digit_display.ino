@@ -3,57 +3,58 @@
 //so that numbers can simply be entered at the keyboard
 
 
-#include "8_Digit_display_header.h"
-//#include "Local_subroutines.c"
+#include "8_Digit_header.h"
+#include "display_header.h"
 
-
-#define zero "abcdef"                   //chars a,b,c,d,e and f are stored in an array named "zero"
-#define one "bc"                        //chars b and c are stored in an array named "one"
-#define two "abdeg"                     //Note: the compiler terminates each string in zero
-#define three "abcdg"
-#define four "bcfg"
-#define five "acdfg"
-#define six "gcdef"
-#define seven "bca"
-#define eight "abcdefg"
-#define nine "gabcf"
-
-const char *message_1 = "String memory dump\t";
-  const char *message_2 = "\r\nDigit\tAddress    String\r\n";
-
-
-//Enter main routine here
 
 int main (void){
 
 char   digit='0';
-int digit_num=0;                 //defines number of next digit on display           
+int digit_num=0;            
 int string_counter=0;
 int letter_counter=0;
-const char* string_ptr = 0;     //pointer: will be loaded with the address of a segment string 
-                //(i.e. the address of string "zero", "one", "two" etc....) 
+const char* string_ptr = 0;
+char num_string[9] = "86421357";
+
 
 setup_HW;               
+//digit_1_LH_on;
 
+if(MCUSR & (1 << PORF))
+{User_prompt_Basic;
+eeprom_write_byte((uint8_t*)0x1FA, 0);
+MCUSR = 0;Clear_segments;}   
 
-if(MCUSR & (1 << PORF)){User_prompt_Basic;eeprom_write_byte((uint8_t*)0x1FA, 0);MCUSR = 0;Clear_digit;}
 if(!(eeprom_read_byte((uint8_t*)0x1FA)))
-{
-  eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
-//print_memory_contents;
+{eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
 String_to_PC_Basic("\r\nSend digits?");}
 
 else 
-String_to_PC_Basic("\r\nAgain");
-Clear_digit;
 
+String_to_PC_Basic("\r\nAgain");
+Clear_segments;
+
+while(1){
+String_to_PC_Basic("1 to 8?");
+switch (waitforkeypress_Basic()){
+case '1':  digit_4_RH_on; break;
+case '2':  digit_3_RH_on; break;
+case '3':  digit_2_RH_on; break;
+case '4':  digit_1_RH_on; break;
+case '5':  digit_4_LH_on; break;
+case '6':  digit_3_LH_on; break;
+case '7':  digit_2_LH_on; break;
+case '8':  digit_1_LH_on; break;
+}
+
+  
 digit_num = 0;                                  //First digit on display
 
 do{                                             //start of "do{}while();" loop
-while(!(isCharavailable_Basic(1)))wdr(); 
-Clear_digit;
-digit = Char_from_PC_Basic();                   //user enters digit (0 to 9) at the PC keyboard
-
+//while(!(isCharavailable_Basic(1)))wdr(); 
+Clear_segments;//digit_4_RH_on;
+//digit = Char_from_PC_Basic();                   //user enters digit (0 to 9) at the PC keyboard
+digit = num_string[digit_num];
 switch(digit){                                  //The appropriate address is loaded into location 
                                                 //"string_pointer"
 case '0': string_ptr = zero; break;             //The address of array zero is loaded into 
@@ -67,20 +68,17 @@ case '6': string_ptr = six; break;
 case '7': string_ptr = seven; break;
 case '8': string_ptr = eight; break;
 case '9': string_ptr = nine; break;
-default: continue; break;}                        //Illegal key press: Go immediately to the start of the 
-                                                  //do loop. 
-
-                                                  //Send the address of the required string to 
-                                                  //subroutine "display_num_string();"
+default: continue; break;}                        
 display_num_string(string_ptr, digit_num);
 digit_num++;
-} while (digit_num < 8);
+_delay_ms(250);
+}while (digit_num < 8);
                                                   //return to the top of the "do" loop until all digits 
                                                   //have been illuminated
 
 while(!(isCharavailable_Basic(1)))wdr(); 
 Char_from_PC_Basic();
-Clear_digit;                                          //clear display and repeat
+Clear_segments;Clear_digits; }                                       //clear display and repeat
 SW_reset;}
 
 
@@ -104,6 +102,7 @@ break;                                                              //update dis
 case 0:  return; break;                                             //zero indicates the end of the string
 default: break;}char_ptr++;}}                                       //incrementing "char_ptr" steps through the string
                                                                     //Selecting segment letters in turn
+/********************************************************/
 
 void Any_segment(char letter){
 switch (letter){
@@ -113,8 +112,7 @@ case 'c': c_on;    break;
 case 'd': d_on;    break;
 case 'e': e_on;    break;
 case 'f': f_on;    break;
-case 'g': g_on;    break;}
-}
+case 'g': g_on;    break;}}
 
 
 
