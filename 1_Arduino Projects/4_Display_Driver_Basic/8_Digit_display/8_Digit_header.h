@@ -67,5 +67,5 @@ if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
 
 
 /*****************************************************************************/
-#include "Resources_nano_projects/Subroutines/HW_timers.c"
-#include "Resources_nano_projects/PC_comms/Basic_Rx_Tx_Basic.c"
+#include "Resources/Subroutines/HW_timers.c"
+#include "Resources/PC_comms/Basic_Rx_Tx_Basic.c"
