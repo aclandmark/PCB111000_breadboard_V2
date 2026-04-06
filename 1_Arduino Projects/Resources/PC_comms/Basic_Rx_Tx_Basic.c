@@ -1,4 +1,5 @@
 
+
 void String_to_PC_Basic(const char*);
 char wait_for_return_key_Basic(void);
 void I2C_Tx_8_byte_array(char*);
@@ -178,27 +179,13 @@ return keypress;}
 
 
 /**********************************************************************************************************************************************************************************/
-/*void Real_num_from_PC_Basic(char digits[]){
-char keypress;
-for(int n = 0; n<=7; n++) digits[n] = 0; 
+void invert_num_string(char * s){
+int c, i, j;
 
-do
-{keypress =  waitforkeypress_Basic();} 
-while (!(decimal_digit_Basic(keypress)));                                      //(non_decimal_char(keypress));  //Not -,0,1,2,3,4,5,6,7,8 or 9
-digits[0] = keypress;
-display_real_num(digits);
-
-while(1){
-if ((keypress = wait_for_return_key_Basic())  =='\r')break;
-if (decimal_digit_Basic (keypress))                                           //012345678or9  :Builds up the number one keypress at a time
-{for(int n = 7; n>=1; n--)
-digits[n] = digits[n-1];                                                //Shifts display left for each keypress
-digits[0] = keypress;
-display_real_num(digits);
+for(i = 0, j = strlen(s) - 1; i < j; i++, j--){
+c = s[i];
+s[i] = s[j]; s[j] = c;
 }}
-            
-//return I2C_displayToNum();
-}*/
 
 
 
@@ -209,7 +196,7 @@ char keypress;
 char cr_keypress;
 
 cr_keypress = 0;                                                //Set to one when carriage return keypress terminates the string
-for(int n = 0; n<=7; n++) display_buffer[n] = 0;              	//Clear the buffer used to the string
+for(int n = 0; n<=11; n++) display_buffer[n] = 0;              	//Clear the buffer used to the string
 
 while(1){														//Remain in loop until a valid character is received
 keypress = waitforkeypress_Basic();
