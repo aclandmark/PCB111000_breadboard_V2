@@ -1,13 +1,14 @@
 
 
-#include "Real_num_header.h"
+#include "Int__sq_root_header.h"
 #include "display_header.h"
 
 
 int main (void){
 
 char real_num_string[12];// = "86421357";
-
+long num;
+char exit_Key_press;
 
 setup_HW;               
 
@@ -18,16 +19,45 @@ MCUSR = 0;Clear_segments;}
 
 if(!(eeprom_read_byte((uint8_t*)0x1FA)))
 {eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
-String_to_PC_Basic("\r\nSend integer?");}
+String_to_PC_Basic("\r\nEnter integer?");
+String_to_PC_Basic ("\r\nAK to display root\r\n");}
 
 else 
 
-String_to_PC_Basic("\r\nAgain");
+String_to_PC_Basic("\r\nAgain\t");
+
 
 Real_num_from_PC_Basic(real_num_string);
+display_real_num(real_num_string);    //needs AK to exit
+exit_Key_press = Char_from_PC_Basic();
 
+
+invert_num_string(real_num_string);
+num = atol (real_num_string);
+Int_to_PC_Basic(num/2);
+
+String_to_PC_Basic ("\r\n\r\nAK to repeat");
+invert_num_string(real_num_string);
 display_real_num(real_num_string);
+
+exit_Key_press = Char_from_PC_Basic();
+
+
+//waitforkeypress_Basic();
 SW_reset;}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -39,6 +69,7 @@ int string_counter=0;
 int letter_counter=0;
 const char* string_ptr = 0;
 char dp;
+
   
 while(1){digit_num=0;
 do{
@@ -78,7 +109,8 @@ display_num_string(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(1200);
 }  while (digit_num < 8); 
-if (UCSR0A & (1 << RXC0))return;}}
+if (UCSR0A & (1 << RXC0))return;}
+}
 
 
 
