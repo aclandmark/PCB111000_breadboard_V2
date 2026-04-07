@@ -2,13 +2,15 @@
 
 #include "Int__sq_root_header.h"
 #include "display_header.h"
-
+#include "square_root_subroutines.c"
 
 int main (void){
 
-char real_num_string[12];// = "86421357";
+char real_num_string[15];
 long num;
 char exit_Key_press;
+char digits[15];
+char digits_pre_dp;
 
 setup_HW;               
 
@@ -34,33 +36,31 @@ exit_Key_press = Char_from_PC_Basic();
 
 invert_num_string(real_num_string);
 num = atol (real_num_string);
-Int_to_PC_Basic(num/2);
+
+root_computation(num, digits);
+Num_string_to_PC_Basic(digits);
+ 
+String_to_PC_Basic("\r\n"); 
+String_to_PC_Basic(digits);
+for(int m = 0; m <=14; m++)
+{if (digits[m] == '.'){digits_pre_dp = m-1; break;}}
+digits[digits_pre_dp] |= 0x80;
+
+
+for(int m = digits_pre_dp + 1; m < 14; m++)digits[m] = digits[m+1];
 
 String_to_PC_Basic ("\r\n\r\nAK to repeat");
-invert_num_string(real_num_string);
-display_real_num(real_num_string);
+digits[8] = 0;
+invert_num_string(digits);
+display_real_num(digits);
 
 exit_Key_press = Char_from_PC_Basic();
 
-
-//waitforkeypress_Basic();
 SW_reset;}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/***************************************************************************************/
 void display_real_num(char*num_string){
 
 char   digit;
@@ -102,15 +102,13 @@ case '8': string_ptr = eight; break;
 case '9': string_ptr = nine; break;
 case 0: break;} 
 
-//if(dp){dp_on;} else {dp_off;}
-
 if(!(digit))break;                       
 display_num_string(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(1200);
 }  while (digit_num < 8); 
-if (UCSR0A & (1 << RXC0))return;}
-}
+if (UCSR0A & (1 << RXC0))return;}}
+
 
 
 
@@ -136,8 +134,8 @@ default: break;}
 if(!(letter))break;
 char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
   
- if(dp){dp_on;} 
- }                                                                   
+ if(dp){dp_on;}} 
+                                                                    
                                                                     //Selecting segment letters in turn
 /********************************************************/
 
