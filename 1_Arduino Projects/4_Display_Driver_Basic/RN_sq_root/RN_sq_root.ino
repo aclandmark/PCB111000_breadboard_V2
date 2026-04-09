@@ -3,7 +3,7 @@
 #include "Int__sq_root_header.h"
 #include "display_header.h"
 #include "square_root_subroutines.c"
-
+#include "dp_processor.h"
 int main (void){
 
 char real_num_string[15];
@@ -34,41 +34,28 @@ Real_num_from_PC_Basic(real_num_string);
 display_real_num(real_num_string);    //needs AK to exit
 exit_Key_press = Char_from_PC_Basic();
 
-
 invert_num_string(real_num_string);
-
 
 digits_post_dp = 0;
 digits_pre_dp = 0;
-for(int m = 0; m <= 7; m++){if (!(real_num_string[m] & 0x80));
-else {real_num_string[m] &= ~0x80; digits_pre_dp = m+1; break;}}
-if (digits_pre_dp)
-{for(int m = digits_pre_dp; m <= 7; m++){if (real_num_string[m])digits_post_dp+=1; else break;}}
 
-if(!(digits_post_dp%2)); else{
-real_num_string[digits_post_dp + digits_pre_dp] = '0';
-real_num_string[digits_post_dp + digits_pre_dp +1] = 0;
-digits_post_dp += 1;}
+remove_dp_and_count_post_dp_digits;
+add_trailing_zero_for_even_number_of_post_dp_digits;
 
-String_to_PC_Basic("\r\n");Char_to_PC_Basic(digits_pre_dp + '0'); Char_to_PC_Basic('\t'); 
-Char_to_PC_Basic(digits_post_dp + '0');String_to_PC_Basic("\r\n");
-String_to_PC_Basic("\tA"); String_to_PC_Basic(real_num_string);String_to_PC_Basic("\r\n");
-
-waitforkeypress_Basic(); 
+diagnostic_print_out;
 
 num = atol (real_num_string);
 
 root_computation(num, digits);
 Num_string_to_PC_Basic(digits);
- 
-String_to_PC_Basic("\r\n"); 
-String_to_PC_Basic(digits);
-for(int m = 0; m <=14; m++)
-{if (digits[m] == '.'){digits_pre_dp = m-1; break;}}
-digits[digits_pre_dp] |= 0x80;
 
+integrate_dp_for_integer_root;
 
-for(int m = digits_pre_dp + 1; m < 14; m++)digits[m] = digits[m+1];
+if(digits_post_dp){
+digits_post_dp /= 2;
+
+real_num_greater_than_1;
+real_num_less_than_1;}
 
 String_to_PC_Basic ("\r\n\r\nAK to repeat");
 digits[8] = 0;
