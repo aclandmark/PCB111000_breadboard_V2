@@ -29,12 +29,13 @@ else
 
 String_to_PC_Basic("\r\nAgain\t");
 
-
 Real_num_from_PC_Basic(real_num_string);
+
 display_real_num(real_num_string);    //needs AK to exit
 exit_Key_press = Char_from_PC_Basic();
 
 invert_num_string(real_num_string);
+Real_num_string_to_PC_Basic(real_num_string);
 
 digits_post_dp = 0;
 digits_pre_dp = 0;
@@ -42,12 +43,11 @@ digits_pre_dp = 0;
 remove_dp_and_count_post_dp_digits;
 add_trailing_zero_for_even_number_of_post_dp_digits;
 
-diagnostic_print_out;
+//diagnostic_print_out;
 
 num = atol (real_num_string);
 
 root_computation(num, digits);
-Num_string_to_PC_Basic(digits);
 
 integrate_dp_for_integer_root;
 
@@ -57,7 +57,8 @@ digits_post_dp /= 2;
 real_num_greater_than_1;
 real_num_less_than_1;}
 
-String_to_PC_Basic ("\r\n\r\nAK to repeat");
+Char_to_PC_Basic ('\t');
+Real_num_string_to_PC_Basic(digits);
 digits[8] = 0;
 invert_num_string(digits);
 display_real_num(digits);
@@ -69,6 +70,16 @@ SW_reset;}
 
 
 /***************************************************************************************/
+void Real_num_string_to_PC_Basic(char * digits){
+ for (int m = 0; m <= 8; m++){if(!(digits[m]))return;  if(!(digits[m] & 0x80))
+ Char_to_PC_Basic(digits[m]);
+ else {Char_to_PC_Basic(digits[m] & ~0x80);Char_to_PC_Basic('.');}}
+}
+
+
+
+
+
 void display_real_num(char*num_string){
 
 char   digit;
