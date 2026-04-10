@@ -14,8 +14,8 @@ real_num_string[digits_post_dp + digits_pre_dp +1] = 0;\
 digits_post_dp += 1;}
 
 #define integrate_dp_for_integer_root \
-String_to_PC_Basic("\r\n");\
-String_to_PC_Basic(digits);\
+/*String_to_PC_Basic("\r\n");*/\
+/*String_to_PC_Basic(digits);*/\
 for(int m = 0; m <=14; m++)\
 {if (digits[m] == '.'){digits_pre_dp = m-1; break;}}\
 digits[digits_pre_dp] |= 0x80;\
