@@ -8,9 +8,8 @@
 
 
 #include "First_project_header.h"
-
-
 #include "Local_subroutines.c"
+#include "display_header.h"
 
 unsigned int PRN;
 unsigned char PRN_counter;
