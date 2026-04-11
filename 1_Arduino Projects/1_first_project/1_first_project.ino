@@ -21,7 +21,10 @@ unsigned char PRN_counter;
   char seg_counter;
   setup_HW;
   
-  I2C_Tx_any_segment_clear_all();
+  Clear_segments;
+  Clear_digits;
+
+  
   PRN_counter = 0;
   PRN = PRN_16bit_GEN (0, &PRN_counter);
    direction=1;
