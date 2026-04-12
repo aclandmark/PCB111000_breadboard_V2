@@ -32,7 +32,6 @@ unsigned char PRN_counter;
    seg_counter=0;
  PRN = update_display
  (T1_period, direction, seg_counter, PRN);
- if(switch_1_down); 
- else T1_period = Adjust_T1_period(T1_period);}}
+  }}
  
  
