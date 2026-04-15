@@ -12,6 +12,8 @@ char receive_byte_with_Nack(void);
 void I2C_Tx_initiate_mode(char);
 
 void display_real_num(char*);
+void invert_num_string(char *);
+
 
 /*********************************************************************/
 void setup_PC_comms_Basic (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
@@ -101,24 +103,21 @@ void Int_to_PC_Basic (long number)
 /**********************************************************************************************************************************************************************************/
 long Int_from_PC_Basic(char digits[]){
 char keypress;
-for(int n = 0; n<=7; n++) digits[n] = 0; 
+for(int n = 0; n<=11; n++) digits[n] = 0; 
 
 do
 {keypress =  waitforkeypress_Basic();} 
 while (!(decimal_digit_Basic(keypress)));                                      //(non_decimal_char(keypress));  //Not -,0,1,2,3,4,5,6,7,8 or 9
 digits[0] = keypress;
-//I2C_Tx_8_byte_array(digits);
 
 while(1){
 if ((keypress = wait_for_return_key_Basic())  =='\r')break;
 if (decimal_digit_Basic (keypress))                                           //012345678or9  :Builds up the number one keypress at a time
 {for(int n = 7; n>=1; n--)
 digits[n] = digits[n-1];                                                //Shifts display left for each keypress
-digits[0] = keypress;
-//I2C_Tx_8_byte_array(digits);
-}}
-            
-//return I2C_displayToNum();
+digits[0] = keypress;}}
+invert_num_string(digits);           
+return atol(digits);
 }
 
 
