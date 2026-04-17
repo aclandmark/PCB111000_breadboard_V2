@@ -2,18 +2,20 @@
 
 void String_to_PC_Basic(const char*);
 char wait_for_return_key_Basic(void);
-void I2C_Tx_8_byte_array(char*);
-long I2C_displayToNum(void);
+//void I2C_Tx_8_byte_array(char*);
+//long I2C_displayToNum(void);
 
-void send_byte_with_Ack(char);
+/*void send_byte_with_Ack(char);
 void send_byte_with_Nack(char);
 char receive_byte_with_Ack(void);
 char receive_byte_with_Nack(void);
-void I2C_Tx_initiate_mode(char);
+void I2C_Tx_initiate_mode(char);*/
 
 void display_real_num(char*);
 void invert_num_string(char *);
 
+
+#define char_present 	UCSR0A & (1 << RXC0)
 
 /*********************************************************************/
 void setup_PC_comms_Basic (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
