@@ -1,46 +1,114 @@
 
-#include "display_header.h"
+
+#include <avr/wdt.h>
 #include <util/delay.h>
 
-void display_pattern(void);
+#include "display_header.h"
 
-char display_bkp[7];
-char seg_store[8];
-char digit_num;
-extern  unsigned char PRN_counter;
-
-
+void display_pattern(char *, int);
+void backup_the_display(char, char);
 unsigned int PRN_16bit_GEN(unsigned int, unsigned char*);
 void save_segment(char);
-//void I2C_Tx_any_segment(char, char);
+
+extern  unsigned char PRN_counter;
+
+char display_bkp[7];
+
+char digit_num;
+
+#define wdr()  __asm__ __volatile__("wdr")
+
 void Timer_T0_10mS_delay_x_m(int m);
 
 
-#include <avr/wdt.h>
-#define wdr()  __asm__ __volatile__("wdr")
+/**************************************************************************************************/
+void display_binary (unsigned long Port_1, unsigned long Port_2, int duration)
+{for (int q = 0; q <= duration; q++){wdr();
+for(int m = 0; m <= 15; m++)
+{switch(m){
+case 0: if(Port_1 & (1 << m)){digit_4_RH_on; b_on;}
+        if(Port_2 & (1 << m)){digit_4_RH_on; c_on;}break;
+case 1: if(Port_1 & (1 << m)){digit_4_RH_on; f_on;}
+        if(Port_2 & (1 << m)){digit_4_RH_on; e_on;}break;
 
-#define switch_1_down  ((PIND & 0x04)^0x04)
+case 2: if(Port_1 & (1 << m)){digit_3_RH_on; b_on;}
+        if(Port_2 & (1 << m)){digit_3_RH_on; c_on;}break;
+case 3: if(Port_1 & (1 << m)){digit_3_RH_on; f_on;}
+        if(Port_2 & (1 << m)){digit_3_RH_on; e_on;}break;
+
+case 4: if(Port_1 & (1 << m)){digit_2_RH_on; b_on;}
+        if(Port_2 & (1 << m)){digit_2_RH_on; c_on;}break;
+case 5: if(Port_1 & (1 << m)){digit_2_RH_on; f_on;}
+        if(Port_2 & (1 << m)){digit_2_RH_on; e_on;}break;
+
+case 6: if(Port_1 & (1 << m)){digit_1_RH_on; b_on;}
+        if(Port_2 & (1 << m)){digit_1_RH_on; c_on;}break;
+case 7: if(Port_1 & (1 << m)){digit_1_RH_on; f_on;}
+        if(Port_2 & (1 << m)){digit_1_RH_on; e_on;}break;
+
+case 8: if(Port_1 & (1 << m)){digit_4_LH_on; b_on;}
+        if(Port_2 & (1 << m)){digit_4_LH_on; c_on;}break;
+case 9: if(Port_1 & (1 << m)){digit_4_LH_on; f_on;}
+        if(Port_2 & (1 << m)){digit_4_LH_on; e_on;}break;
+
+case 10: if(Port_1 & (1 << m)){digit_3_LH_on; b_on;}
+        if(Port_2 & (1 << m)){digit_3_LH_on; c_on;}break;
+case 11: if(Port_1 & (1 << m)){digit_3_LH_on; f_on;}
+        if(Port_2 & (1 << m)){digit_3_LH_on; e_on;}break;
+
+case 12: if(Port_1 & (1 << m)){digit_2_LH_on; b_on;}
+        if(Port_2 & (1 << m)){digit_2_LH_on; c_on;}break;
+case 13: if(Port_1 & (1 << m)){digit_2_LH_on; f_on;}
+        if(Port_2 & (1 << m)){digit_2_LH_on; e_on;}break;
+
+case 14: if(Port_1 & (1 << m)){digit_1_LH_on; b_on;}
+        if(Port_2 & (1 << m)){digit_1_LH_on; c_on;}break;
+case 15: if(Port_1 & (1 << m)){digit_1_LH_on; f_on;}
+        if(Port_2 & (1 << m)){digit_1_LH_on; e_on;}break;
+}_delay_us(750);
+Clear_segments;
+Clear_digits;}}}
 
 
-int Adjust_T1_period(int T1_period){
-  if (T1_period <= 1)T1_period = 15;
-  else
-  T1_period = T1_period *12/15;
-  return T1_period;}
+
+/**************************************************************************************************/      
+void display_pattern(char * seg_store, int duration){     
+
+for (int q = 0; q <= duration; q++){
+for(int p = 0; p <= 7; p++){
+
+Clear_segments;
+Clear_digits;
+  
+switch (p){
+case 0: digit_4_RH_on; break;
+case 1: digit_3_RH_on; break;
+case 2: digit_2_RH_on; break;
+case 3: digit_1_RH_on; break;
+case 4: digit_4_LH_on; break;
+case 5: digit_3_LH_on; break;
+case 6: digit_2_LH_on; break;
+case 7: digit_1_LH_on; break;}
+
+for(int m = 0; m <=7; m++){
+  if (seg_store[p] & (1 << m)){switch(m){
+  case 0: a_on; break;
+  case 1: b_on; break;
+  case 2: c_on; break;
+  case 3: d_on; break;
+  case 4: e_on; break;
+  case 5: f_on; break;
+  case 6: g_on; break;}}
+}_delay_us(120);}}  
+Clear_segments;
+Clear_digits;}
 
 
 
-  void backup_the_display(char segment, char digit_num)
-  { display_bkp[segment - 'a'] =
-    display_bkp[segment - 'a'] ^ (1 << digit_num);}
-
-
-
-unsigned long update_display (int T1_period, char direction, char seg_counter, unsigned long PRN)
+/**************************************************************************************************/
+unsigned long random_display (char direction, char seg_counter, unsigned long PRN, char duration, char * segs)
 {char letter;
 char prompt;
-
-//for(int m = 0; m <= 7; m++)seg_store[m] = 0;
 
   while (seg_counter < 56) {
       letter = (PRN % 7) + 'a';
@@ -54,46 +122,20 @@ char prompt;
        PRN_counter -= 1;
        continue;}
        
-      if(!(direction)) seg_store[digit_num] |= (1 << (letter - 'a'));
-      else seg_store[digit_num] &= (~(1 << (letter - 'a')));
+      if(!(direction)) segs[digit_num] |= (1 << (letter - 'a'));
+      else segs[digit_num] &= (~(1 << (letter - 'a')));
       
-      
-      display_pattern();
+      display_pattern(segs, duration);
       backup_the_display(letter, digit_num);
-      seg_counter += 1;
-            }
+      seg_counter += 1;}
       return PRN;}
 
 
-void display_pattern(void){     //repeat every 1.5ms but return to update display
 
-for (int q = 0; q <= 100; q++){
-for(int p = 0; p <= 7; p++){
+/**************************************************************************************************/
+  void backup_the_display(char segment, char digit_num)
+  { display_bkp[segment - 'a'] =
+    display_bkp[segment - 'a'] ^ (1 << digit_num);}
 
-Clear_segments;
-Clear_digits;
-  
-switch (p){
-case 0: digit_1_RH_on; break;
-case 1: digit_2_RH_on; break;
-case 2: digit_3_RH_on; break;
-case 3: digit_4_RH_on; break;
-case 4: digit_1_LH_on; break;
-case 5: digit_2_LH_on; break;
-case 6: digit_3_LH_on; break;
-case 7: digit_4_LH_on; break;}
 
-for(int m = 0; m <=7; m++){
-  if (seg_store[p] & (1 << m)){switch(m){
-  case 0: a_on; break;
-  case 1: b_on; break;
-  case 2: c_on; break;
-  case 3: d_on; break;
-  case 4: e_on; break;
-  case 5: f_on; break;
-  case 6: g_on; break;}}
-}_delay_us(120);
-}}  
-Clear_segments;
-Clear_digits;}
     /*************************************************************************************************/
