@@ -11,31 +11,6 @@
 #include "Local_subroutines.c"
 #include "display_header.h"
 
-  int main (void){                //Example 15  numerical sequences
-unsigned int Port_1, Port_2;
-  char digits[12];
-   char Inc = 0; 
-   int duration;
-   
-  setup_HW;
-  Port_1 = 1;
-  Port_2 = 0;
- String_to_PC_Basic("Enter speed 1 - 9");
-duration = waitforkeypress_Basic() - '0';
-
-Port_1 = 1;
-while(1){
-Port_2 = 0x8000 - Port_1;
-display_binary(Port_1, Port_2, duration);
-if(char_present){if (!(Inc))Inc = 1;
-else Inc = 0;
-if (Char_from_PC_Basic() == 'x')SW_reset;}
-
-if (!(Inc)) Port_1 += 1;}}
-
- 
- 
- 
   
  
 /*********************************************************  
