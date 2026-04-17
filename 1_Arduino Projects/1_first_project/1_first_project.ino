@@ -11,8 +11,9 @@
 #include "Local_subroutines.c"
 #include "display_header.h"
 
+
+
   
- 
 /*********************************************************  
 int main (void)               //Example_1
 {unsigned int Port_1, Port_2;
@@ -80,7 +81,7 @@ int main (void)             //Example 8
     char segments[8];
     
     setup_HW;
-  
+  for(int m = 0; m <=7; m++)segments[m] = 0;
   while(1){
 if (counter < 8)letter = 'a';
 if (counter == 8) letter = 'f';
