@@ -81,14 +81,14 @@ Clear_segments;
 Clear_digits;
   
 switch (p){
-case 0: digit_1_RH_on; break;
-case 1: digit_2_RH_on; break;
-case 2: digit_3_RH_on; break;
-case 3: digit_4_RH_on; break;
-case 4: digit_1_LH_on; break;
-case 5: digit_2_LH_on; break;
-case 6: digit_3_LH_on; break;
-case 7: digit_4_LH_on; break;}
+case 0: digit_4_RH_on; break;
+case 1: digit_3_RH_on; break;
+case 2: digit_2_RH_on; break;
+case 3: digit_1_RH_on; break;
+case 4: digit_4_LH_on; break;
+case 5: digit_3_LH_on; break;
+case 6: digit_2_LH_on; break;
+case 7: digit_1_LH_on; break;}
 
 for(int m = 0; m <=7; m++){
   if (seg_store[p] & (1 << m)){switch(m){
