@@ -12,43 +12,45 @@
 #include "display_header.h"
 
  
- 
- 
-  int main (void)             //Example 8
-  
-   { char counter=0;
+ int main (void)             //Example 8
+  { char digit[] =  "01234567777654321000";
+        char letter = 'a';
+    char counter=0;
+    int top = 1000;
+    char dig_no;
     setup_HW;
-while(1){
+  
+  while(1){//I2C_Tx_any_segment(letter,digit[counter]-'0');
 
-for(int p = 0; p <= 19; p++){
- //for(int m = 0; m <= 15; m++){
-switch (p){
-case 0: digit_4_RH_on;a_on; break;
-case 1: digit_3_RH_on;a_on; break;
-case 2: digit_2_RH_on;a_on; break;
-case 3: digit_1_RH_on;a_on; break;
-case 4: digit_4_LH_on;a_on; break;
-case 5: digit_3_LH_on;a_on; break;
-case 6: digit_2_LH_on;a_on; break;
-case 7: digit_1_LH_on;a_on; break;
-case 8: digit_1_LH_on;f_on; break;
-case 9: digit_1_LH_on;e_on; break;
-case 10: digit_1_LH_on;d_on; break;
-case 11: digit_2_LH_on;d_on; break;
-case 12: digit_3_LH_on;d_on; break;
-case 13: digit_4_LH_on;d_on; break;
-case 14: digit_1_RH_on;d_on; break;
-case 15: digit_2_RH_on;d_on; break;
-case 16: digit_3_RH_on;d_on; break;
-case 17: digit_4_RH_on;d_on; break;
-case 18: digit_4_RH_on;c_on; break;
-case 19: digit_4_RH_on;b_on; break;}
-_delay_us(500);
+//for(int m = 0; m <= 7; m++)seg_store[m] = 0;
 
-counter += 1;
-Clear_segments;
-Clear_digits;}//}
+  //dig_no = digit[counter]-'0'];
+  //for(int m = 0; m < top; m++)_delay_us(100);
+  
+if (counter < 7)letter = 'a';
+if (counter == 7) letter = 'f';
+if (counter == 8) letter = 'e';
+if ((counter >= 9) && (counter <= 16)) letter = 'd';
+if (counter == 17) letter = 'c';
+if (counter == 18) letter = 'b';
+if (counter == 19) letter = 'a';
+counter = (counter + 1)%20;
+
+  seg_store[digit[counter]-'0'] |= (1 << (letter - 'a'));  //letter - 'a';
+//Int_to_PC_Basic(counter);Char_to_PC_Basic(letter);
+  
+  display_pattern(50);
+
+if (counter == 19)for(int m = 0; m <= 7; m++)seg_store[m] = 0;
+
+//if (switch_2_down) I2C_Tx_any_segment_clear_all();
+
+//if(counter == 19){if((switch_1_down)|| (top <= 50))break;
+//if(switch_3_down)top = top*2/3;}
 }SW_reset;}
+ 
+ 
+  
  
 /*********************************************************  
 int main (void)               //Example_1
