@@ -5,16 +5,16 @@
 
 
 int main (void){
-
-char   digit;
-int digit_num=0;            
+          
 int string_counter=0;
 int letter_counter=0;
-const char* string_ptr = 0;
-char num_string[9];// = "86421357";
+long num;
+char num_string[11];
 
 
 setup_HW;               
+
+for(int n = 0; n<11; n++)num_string[n] = 0;
 
 if(MCUSR & (1 << PORF))
 {User_prompt_Basic;
@@ -23,14 +23,25 @@ MCUSR = 0;Clear_segments;}
 
 if(!(eeprom_read_byte((uint8_t*)0x1FA)))
 {eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
-String_to_PC_Basic("\r\nSend integer?");}
+String_to_PC_Basic("\r\nSend integer? AK to repeat.");}
 
 else 
 
 String_to_PC_Basic("\r\nAgain");
+num = Display_Int_from_PC_Basic(num_string);
+invert_num_string(num_string);
+ltoa(num/2, num_string, 10);
+invert_num_string(num_string);
+Display_Int(num_string);
+SW_reset;}
 
-Int_from_PC_Basic(num_string);
 
+
+void Display_Int(char * num_string){
+  int digit_num=0; 
+char   digit;
+const char* string_ptr = 0;
+  
 while(1){digit_num=0;
 
 do{
@@ -62,19 +73,16 @@ case '8': string_ptr = eight; break;
 case '9': string_ptr = nine; break;
 case 0: break;} 
 if(!(digit))break;                       
-display_num_string(string_ptr, digit_num);
+display_num_string(string_ptr);
 digit_num++;
 _delay_us(1200);
 }  while (digit_num < 8); 
-if (UCSR0A & (1 << RXC0))break;
-}
-
-SW_reset;}
+if (UCSR0A & (1 << RXC0))break;}}
 
 
 
 /************************************************************************************************************************/
-void display_num_string (const char* s, int digit_num){             //Subroutine requires a pointer to the string   
+void display_num_string (const char* s){                             //Subroutine requires a pointer to the string   
 int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
 
@@ -91,9 +99,10 @@ case 'g': Any_segment(letter);
 break;                                                              //update display one segment at a time
 case 0:  return; break;                                             //zero indicates the end of the string
 default: break;}char_ptr++;}}                                       //incrementing "char_ptr" steps through the string
+
+                                                                    
                                                                     //Selecting segment letters in turn
 /********************************************************/
-
 void Any_segment(char letter){
 switch (letter){
 case 'a': a_on;    break;
@@ -103,6 +112,26 @@ case 'd': d_on;    break;
 case 'e': e_on;    break;
 case 'f': f_on;    break;
 case 'g': g_on;    break;}}
+
+
+
+/**********************************************************************************************************************************************************************************/
+long Display_Int_from_PC_Basic(char digits[]){
+char keypress;
+
+do
+{keypress =  waitforkeypress_Basic();} 
+while (!(decimal_digit_Basic(keypress)));                                      //(non_decimal_char(keypress));  //Not -,0,1,2,3,4,5,6,7,8 or 9
+digits[0] = keypress;
+Display_Int(digits);
+while(1){
+if ((keypress = wait_for_return_key_Basic())  =='\r')break;
+if (decimal_digit_Basic (keypress))                                           //012345678or9  :Builds up the number one keypress at a time
+{for(int n = 7; n>=1; n--)
+digits[n] = digits[n-1];                                                //Shifts display left for each keypress
+digits[0] = keypress;}Display_Int(digits);}
+invert_num_string(digits);           
+return atol(digits);}
 
 
 
