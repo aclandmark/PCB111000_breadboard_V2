@@ -2,11 +2,14 @@
 
 #include "Real_num_header.h"
 #include "display_header.h"
-
+#include "local_subroutines.c"
 
 int main (void){
 
-char real_num_string[12];// = "86421357";
+char real_num_string[12];
+float Fnum;
+long FPN_digits;
+char num_string[10];
 
 
 setup_HW;               
@@ -18,15 +21,31 @@ MCUSR = 0;Clear_segments;}
 
 if(!(eeprom_read_byte((uint8_t*)0x1FA)))
 {eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
-String_to_PC_Basic("\r\nSend integer?");}
+String_to_PC_Basic("\r\nSend real number?");}
 
 else 
 
 String_to_PC_Basic("\r\nAgain");
 
 Real_num_from_PC_Basic(real_num_string);
+invert_num_string(real_num_string);
+Display_string_to_askii(real_num_string);
 
-display_real_num(real_num_string);
+String_to_PC_Basic("\r\n");
+String_to_PC_Basic(real_num_string);
+String_to_PC_Basic(" divided by 2.675 equals ");
+
+Fnum = atof(real_num_string);
+Fnum = Fnum/2.675;
+FPN_digits = (*(long*)&Fnum);
+
+Fnum_to_string(Fnum, num_string);
+Num_string_to_PC_Basic(num_string);
+
+//Binary_to_PC((*(long*)&Fnum), 0);String_to_PC_Basic("\r\n");
+//Binary_to_PC((*(long*)&Fnum), 1);
+askii_to_display_string(num_string);
+display_real_num(num_string);
 SW_reset;}
 
 
@@ -70,8 +89,6 @@ case '7': string_ptr = seven; break;
 case '8': string_ptr = eight; break;
 case '9': string_ptr = nine; break;
 case 0: break;} 
-
-//if(dp){dp_on;} else {dp_off;}
 
 if(!(digit))break;                       
 display_num_string(string_ptr, digit_num, dp);
@@ -119,6 +136,7 @@ case 'e': e_on;    break;
 case 'f': f_on;    break;
 case 'g': g_on;    break;}}
 
+/********************************************************/
 
 
 /************************************************************************************************************************/ 
