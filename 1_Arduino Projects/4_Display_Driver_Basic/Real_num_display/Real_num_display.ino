@@ -4,6 +4,7 @@
 #include "display_header.h"
 #include "local_subroutines.c"
 
+
 int main (void){
 
 char real_num_string[12];
@@ -28,6 +29,8 @@ else
 String_to_PC_Basic("\r\nAgain");
 
 Real_num_from_PC_Basic(real_num_string);
+//display_real_num(real_num_string);
+//waitforkeypress_Basic();
 invert_num_string(real_num_string);
 Display_string_to_askii(real_num_string);
 
@@ -95,9 +98,8 @@ display_num_string(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(1200);
 }  while (digit_num < 8); 
-if (UCSR0A & (1 << RXC0))return;}}
-
-
+if (UCSR0A & (1 << RXC0))return;
+}}
 
 
 /************************************************************************************************************************/
@@ -115,8 +117,8 @@ case 'd':
 case 'e': 
 case 'f': 
 case 'g': Any_segment(letter);break;
-                                                                            //update display one segment at a time
-case 0:  break;//return; break;                                             //zero indicates the end of the string
+                                                                    //update display one segment at a time
+case 0:  break;                                                     //zero indicates the end of the string
 default: break;}
 if(!(letter))break;
 char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
@@ -137,6 +139,7 @@ case 'f': f_on;    break;
 case 'g': g_on;    break;}}
 
 /********************************************************/
+
 
 
 /************************************************************************************************************************/ 
