@@ -3,7 +3,7 @@
 #include "Real_num_header.h"
 #include "display_header.h"
 #include "local_subroutines.c"
-
+#include "display_subroutines.c"
 
 int main (void){
 
