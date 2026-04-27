@@ -87,6 +87,9 @@ if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_Basic("
 
 
 /*****************************************************************************/
-#include "Resources_nano_projects/Subroutines/HW_timers.c"
-#include "Resources_nano_projects/PC_comms/Basic_Rx_Tx_Basic.c"
-#include "Resources_nano_projects/Subroutines/Random_and_prime_nos.c"
+#include "Resources/Subroutines/HW_timers.c"
+#include "Resources/PC_comms/Basic_Rx_Tx_Basic.c"
+#include "Resources/Subroutines/Random_and_prime_nos.c"
+
+
+/******************************************************************************/
