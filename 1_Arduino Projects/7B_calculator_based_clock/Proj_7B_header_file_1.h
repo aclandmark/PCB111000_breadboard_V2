@@ -13,7 +13,7 @@ char str_counter;
 
 char digits[8], charH, charL ;
 char Hours, Minutes, Seconds, deci_Secs;
-long deci_sec_counter;
+volatile long deci_sec_counter;
 
 
 #define T0_delay_10ms   5,178
