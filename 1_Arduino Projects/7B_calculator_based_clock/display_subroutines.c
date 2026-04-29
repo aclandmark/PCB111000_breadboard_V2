@@ -134,8 +134,9 @@ display_num_string(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(1200);
 }  while (digit_num < 8); 
-if ((UCSR0A & (1 << RXC0))||
-(display_control)) return;
+if (UCSR0A & (1 << RXC0))
+//(display_control)
+return;
 }}
 
 
