@@ -13,8 +13,8 @@ void sendString(char*);
 /*********************************************************************/
 
 #define T0_delay_10ms 	5,178
-#define T1_delay_100ms 	3, 0x9E62
-#define T1_delay_200ms 	3, 0x3CC4
+#define T1_delay_200ms 	3, 0x9E62
+#define T1_delay_400ms 	3, 0x3CC4
 
 
 #define T1_delay_50ms 	5,0xFE78
