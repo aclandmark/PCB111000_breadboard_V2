@@ -39,14 +39,10 @@ String_to_PC_Basic("AK to start\r\n");
 waitforkeypress_Basic();
 UCSR0B &= (~(1 << RXEN0));
 sei();
-Timer_T1_sub_with_interrupt(T1_delay_200ms);
-//start_clock_Local();
+initialise_T2_Local();
+start_clock_Local();
 display_8_bytes(digits);}
 
-ISR(TIMER1_OVF_vect){TCNT1 = 0x9E62;
-deci_sec_counter += 2;
-if(deci_sec_counter == 864000)deci_sec_counter = 0;
-Format_time_for_display();}
 
 
 /**********************************************************************************************************************/
@@ -85,8 +81,7 @@ display_8_bytes(digits);}}
 deci_sec_counter = 10*(long)((((long)((HoursH - '0') * 10) + HoursL - '0') * 3600) +
 ((((MinsH - '0') * 10) + MinsL - '0') * 60) +(SecsH - '0') * 10 + SecsL - '0');
 
-clear_display;
-_delay_ms(50);}
+clear_display;}
 
 
 
@@ -103,7 +98,7 @@ else
 
 
 /**********************************************************************************/
-/*void initialise_T2_Local(void){
+void initialise_T2_Local(void){
 ASSR = (1 << AS2); 
 TCNT2 = 0;
 TCCR2A = 0;
@@ -111,22 +106,27 @@ TCCR2B |= (1 << CS20) | (1 << CS21);
 OCR2B = 0;}
 
 
+
+/**********************************************************************************/
 void start_clock_Local(void){
 tick_counter = 0;
+clock_tick = 0;
 TCNT2 = 0;
 OCR2A = 102; 
 TIMSK2 |= (1 << OCIE2A);}
 
 
+
+/**********************************************************************************/
 ISR (TIMER2_COMPA_vect){ char string[5];
   OCR2A += 102;
   clock_tick += 1;
   tick_counter += 1;
-  if(tick_counter == 9){tick_counter = -1; OCR2A += 4;}}
-
-
-
-ISR(TIMER1_OVF_vect){TCNT1 = 0x9E62;
-deci_sec_counter += 2;
+  if(tick_counter == 9){tick_counter = -1; OCR2A += 4;}
+   if(clock_tick == 2){clock_tick = 0;deci_sec_counter += 2;
 if(deci_sec_counter == 864000)deci_sec_counter = 0;
-Format_time_for_display();}*/
+Format_time_for_display();}}
+
+
+
+/**********************************************************************************/
