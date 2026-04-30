@@ -15,6 +15,8 @@ char digits[8], charH, charL ;
 char Hours, Minutes, Seconds, deci_Secs;
 volatile long deci_sec_counter;
 
+volatile char tick_counter; 
+volatile char clock_tick;
 
 #define T0_delay_10ms   5,178
 
