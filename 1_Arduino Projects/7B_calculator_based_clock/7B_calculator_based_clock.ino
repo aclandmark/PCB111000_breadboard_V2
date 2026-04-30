@@ -1,7 +1,11 @@
 
 //Proj_7B_Demo_Clock_B
-
-
+//EEPRFOM use 0x1FF to 0x1FD  Cal byte
+//            0x1FC & 0x1FB   PRN
+//            0x1FA           Reset control
+//0x1F9 to 0x1F4  Time
+//If 0x1F9 contains digit read time from EEPROM and rerset 0x1F9 to 0xFF
+//If 0x1F9 contains 0xFF request time
 
 //INTRODUCES
 
@@ -61,7 +65,7 @@ timer_utoa(deci_Secs * 10); deci_SecsH = charH; deci_SecsL = charL; }
 
 /***********************************************************************************************************************/
 void set_time(void){
-
+int EEP_Location = 0x1F9;
 for(int m = 0; m <= 7; m++)digits[m] = 0; 
 
 String_to_PC_Basic("Enter start time Hours, Minutes and Seconds\
@@ -70,12 +74,15 @@ for(int m = 0; m <= 7; m++)digits[m] = 0;clear_display;
 while(isCharavailable_Basic(50) == 0){String_to_PC_Basic("T?  ");}
 
 digits[7] = Char_from_PC_Basic();
+eeprom_write_byte((uint8_t*)EEP_Location--, digits[7]);
 display_8_bytes(digits); 
 
 for (int m = 0; m<=4; m++){while(isCharavailable_Basic(5) == 0);
 if(m == 4){digits[2] = Char_from_PC_Basic();
+eeprom_write_byte((uint8_t*)EEP_Location--, digits[2]);
 deci_SecsH = '0'; deci_SecsL = '0';}
 else {digits[6 - m] = Char_from_PC_Basic();
+eeprom_write_byte((uint8_t*)EEP_Location--, digits[6 - m]);
 display_8_bytes(digits);}}
 
 deci_sec_counter = 10*(long)((((long)((HoursH - '0') * 10) + HoursL - '0') * 3600) +
