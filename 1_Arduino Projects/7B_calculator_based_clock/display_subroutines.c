@@ -5,8 +5,6 @@
 void Any_segment(char);
 void display_num_string (const char*, int, char);
 
-extern volatile int  display_control;
-
 
 #define zero "abcdef"                   //chars a,b,c,d,e and f are stored in an array named "zero"
 #define one "bc"                        //chars b and c are stored in an array named "one"
@@ -129,14 +127,13 @@ case '8': string_ptr = eight; break;
 case '9': string_ptr = nine; break;
 case 0: break;} 
 
-if(!(digit))break;                       
-display_num_string(string_ptr, digit_num, dp);
 digit_num++;
+if(!(digit))continue;   //break;                       
+display_num_string(string_ptr, digit_num, dp);
+//digit_num++;
 _delay_us(1200);
 }  while (digit_num < 8); 
-if (UCSR0A & (1 << RXC0))
-//(display_control)
-return;
+if (UCSR0A & (1 << RXC0))return;
 }}
 
 
