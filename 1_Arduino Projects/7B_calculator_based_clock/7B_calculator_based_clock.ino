@@ -26,12 +26,24 @@
 #include "Proj_7B_header_file_1.h"
 #include "display_subroutines.c"
 
-
+int EEP_Location = 0x1F9;
 int main (void){
 char User_response;
 
 setup_HW;
 
+if((power_on_reset) && ((eeprom_read_byte((uint8_t*)0x1F9)) != 0xFF)){
+  EEP_Location = 0x1F9;
+digits[7] = eeprom_read_byte((uint8_t*)EEP_Location--);
+for (int m = 0; m<=4; m++){
+if(m == 4){digits[2] = eeprom_read_byte((uint8_t*)EEP_Location--);
+deci_SecsH = '0'; deci_SecsL = '0';}
+else {digits[6 - m] = 
+eeprom_read_byte((uint8_t*)EEP_Location--);}}
+deci_sec_counter = 10*(long)((((long)((HoursH - '0') * 10) + HoursL - '0') * 3600) +
+((((MinsH - '0') * 10) + MinsL - '0') * 60) +(SecsH - '0') * 10 + SecsL - '0');}
+
+else{
 String_to_PC_Basic("Press 'R' to enter time or 'r' to start at time zero  ");
 User_prompt_Basic;
 
@@ -40,7 +52,8 @@ else {reset_clock_1; deci_SecsH = '0'; deci_SecsL = '0'; deci_sec_counter = 0; }
 display_8_bytes(digits);
 
 String_to_PC_Basic("AK to start\r\n");
-waitforkeypress_Basic();
+waitforkeypress_Basic();}
+
 UCSR0B &= (~(1 << RXEN0));
 sei();
 initialise_T2_Local();
@@ -65,7 +78,7 @@ timer_utoa(deci_Secs * 10); deci_SecsH = charH; deci_SecsL = charL; }
 
 /***********************************************************************************************************************/
 void set_time(void){
-int EEP_Location = 0x1F9;
+
 for(int m = 0; m <= 7; m++)digits[m] = 0; 
 
 String_to_PC_Basic("Enter start time Hours, Minutes and Seconds\
