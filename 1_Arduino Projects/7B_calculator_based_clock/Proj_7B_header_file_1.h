@@ -7,6 +7,7 @@
 
 
 char watch_dog_reset = 0;
+char power_on_reset = 0;
 char User_response;
 char num_as_string[12];
 char str_counter;
@@ -31,6 +32,7 @@ Timer_T0_10mS_delay_x_m(5);
 
 
 #define setup_watchdog \
+if (MCUSR & (1 << PORF))power_on_reset = 1;\
 if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
 wdr();\
 MCUSR &= ~(1<<WDRF);\
