@@ -1,7 +1,6 @@
 
 
 #include "Real_num_header.h"
-
 #include "local_subroutines.c"
 #include "display_subroutines.c"
 
@@ -55,7 +54,6 @@ SW_reset;}
 
 
 /************************************************************************************************************************/
-
 void display_real_num(char*num_string){
 
 char   digit;
@@ -97,14 +95,12 @@ case '9': string_ptr = nine; break;
 case 0: break;} 
 
 if(!(digit))break;                       
-display_num_string(string_ptr, digit_num, dp);
+display_single_digit(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(1200);
 }  while (digit_num < 8); 
-if (UCSR0A & (1 << RXC0))return;
-}}
-/********************************************************/
+if (UCSR0A & (1 << RXC0))return;}}
 
 
 
-/************************************************************************************************************************/ 
+/*****************************************************************************************/
