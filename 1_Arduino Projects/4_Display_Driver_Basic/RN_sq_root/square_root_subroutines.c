@@ -13,7 +13,6 @@ for(int m = 1; m <=(14-i); m++)*(s + m-1) = *(s + m+i);
 
 
 
-
 /*******************************************************************************************************/
 void root_computation(long Num, char * result_as_string){
 long result = 1, result_old;
@@ -48,3 +47,7 @@ start_value += 1;
 product = 1.0;}
 *(result_as_string + str_ptr) = (start_value-result_old -1 + '0');str_ptr += 1;}
 *(result_as_string + str_ptr) = '\0';}
+
+
+
+/******************************************************************************************/
