@@ -12,9 +12,8 @@
 #define nine "gabcf"
 
 
+
 /********************************************************/
-
-
 #define a_off   PORTD |= (1 << PD6);
 #define a_on  PORTD &= (~(1 << PD6));
 
@@ -39,8 +38,9 @@
 #define dp_off   PORTB |= (1 << PB4);
 #define dp_on  PORTB &= (~(1 << PB4));
 
-/********************************************************/
 
+
+/********************************************************/
 #define digit_4_RH_on  PORTB |= (1 << PB1);
 #define digit_4_RH_off  PORTB &= (~(1 << PB1));
 
@@ -52,7 +52,6 @@
 
 #define digit_1_RH_on  PORTD |= (1 << PD3);
 #define digit_1_RH_off  PORTD &= (~(1 << PD3)); 
-
 
 #define digit_4_LH_on  PORTC |= (1 << PC1);
 #define digit_4_LH_off  PORTC &= (~(1 << PC1));
@@ -67,14 +66,15 @@
 #define digit_1_LH_off  PORTD &= (~(1 << PD2));
 
 
+
 /********************************************************/
-
-
 #define Clear_segments    a_off;b_off;c_off;d_off;e_off;f_off;g_off;dp_off;
 
 #define Clear_digits \
 digit_1_RH_off;digit_2_RH_off;digit_3_RH_off;digit_4_RH_off;\
 digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
+
+
 
 
 /*********************************************************/
