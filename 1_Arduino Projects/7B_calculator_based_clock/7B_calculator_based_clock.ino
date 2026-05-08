@@ -13,12 +13,13 @@
 //The counter is converted to Hours, Minutes, Seconds each of which is then converted to askii 
 //characters and sent to the display.
 
-//As for Project 7A accurracy is not good
+//Timing is controlled by a watch cryastal and so is quite good
 
 //USER INSTRUCTIONS
 
-//Respond to the user prompt by pressing "R" and entering the time when requested or by pressing "r" and letting 
-//the clock start at time zero.
+//Respond to the user prompt by pressing "R" and entering the time when requested 
+//or by pressing "r" and letting the clock start at time zero.
+//Disconnnect the clock from the PC and reconnect to a 5V source and the clock will start immediately
 
 
 
@@ -33,15 +34,18 @@ char User_response;
 setup_HW;
 
 if((power_on_reset) && ((eeprom_read_byte((uint8_t*)0x1F9)) != 0xFF)){
-  EEP_Location = 0x1F9;
+EEP_Location = 0x1F9;
 digits[7] = eeprom_read_byte((uint8_t*)EEP_Location--);
+
 for (int m = 0; m<=4; m++){
 if(m == 4){digits[2] = eeprom_read_byte((uint8_t*)EEP_Location--);
 deci_SecsH = '0'; deci_SecsL = '0';}
-else {digits[6 - m] = 
-eeprom_read_byte((uint8_t*)EEP_Location--);}}
-deci_sec_counter = 10*(long)((((long)((HoursH - '0') * 10) + HoursL - '0') * 3600) +
-((((MinsH - '0') * 10) + MinsL - '0') * 60) +(SecsH - '0') * 10 + SecsL - '0');}
+
+else {digits[6 - m] = eeprom_read_byte((uint8_t*)EEP_Location--);}}
+
+deci_sec_counter = 10*(long)((((long)((HoursH - '0') * 10) + 
+HoursL - '0') * 3600) + ((((MinsH - '0') * 10) + MinsL - '0') * 60) +
+(SecsH - '0') * 10 + SecsL - '0');}
 
 else{
 String_to_PC_Basic("Press 'R' to enter time or 'r' to start at time zero  ");
