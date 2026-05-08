@@ -48,3 +48,7 @@ start_value += 1;
 product = 1.0;}
 *(result_as_string + str_ptr) = (start_value-result_old -1 + '0');str_ptr += 1;}
 *(result_as_string + str_ptr) = '\0';}
+
+
+
+/****************************************************************/
