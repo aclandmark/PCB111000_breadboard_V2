@@ -122,7 +122,7 @@ case '9': string_ptr = nine; break;
 case 0: break;} 
 
 if(!(digit))break;                       
-display_num_string(string_ptr, digit_num, dp);
+display_single_digit(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(1200);
 }  while (digit_num < 8); 
@@ -133,7 +133,7 @@ if (UCSR0A & (1 << RXC0))return;}}
 
 
 /************************************************************************************************************************/
-void display_num_string (const char* s, int digit_num, char dp){             //Subroutine requires a pointer to the string   
+void display_single_digit (const char* s, int digit_num, char dp){             //Subroutine requires a pointer to the string   
 int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
 
