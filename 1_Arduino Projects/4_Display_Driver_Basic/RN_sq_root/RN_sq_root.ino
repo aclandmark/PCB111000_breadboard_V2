@@ -4,6 +4,9 @@
 #include "display_header.h"
 #include "square_root_subroutines.c"
 #include "dp_processor.h"
+
+
+
 int main (void){
 
 char real_num_string[15];
@@ -73,13 +76,11 @@ SW_reset;}
 void Real_num_string_to_PC_Basic(char * digits){
  for (int m = 0; m <= 8; m++){if(!(digits[m]))return;  if(!(digits[m] & 0x80))
  Char_to_PC_Basic(digits[m]);
- else {Char_to_PC_Basic(digits[m] & ~0x80);Char_to_PC_Basic('.');}}
-}
+ else {Char_to_PC_Basic(digits[m] & ~0x80);Char_to_PC_Basic('.');}}}
 
 
 
-
-
+/****************************************************************************************/
 void display_real_num(char*num_string){
 
 char   digit;
@@ -131,7 +132,6 @@ if (UCSR0A & (1 << RXC0))return;}}
 
 
 
-
 /************************************************************************************************************************/
 void display_single_digit (const char* s, int digit_num, char dp){             //Subroutine requires a pointer to the string   
 int char_ptr=0;                                                     //containing segments used to define a digit
@@ -140,34 +140,20 @@ char letter;
 while(1){
 letter = *(s + char_ptr);                                           //Note these two expressions are equivalent
 switch(letter){                                                     //Work through the segments contained in the 
-case 'a':                                                           //string until '\0' is encountered
-case 'b': 
-case 'c': 
-case 'd': 
-case 'e': 
-case 'f': 
-case 'g': Any_segment(letter);break;
-                                                                            //update display one segment at a time
-case 0:  break;//return; break;                                             //zero indicates the end of the string
+case 'a':  a_on;    break;                                                           //string until '\0' is encountered
+case 'b':  b_on;    break;
+case 'c':  c_on;    break;
+case 'd':  d_on;    break;
+case 'e':  e_on;    break;
+case 'f':  f_on;    break;
+case 'g':  g_on;    break;
+                                                                    //update display one segment at a time
+case 0:  break;                                                     //zero indicates the end of the string
 default: break;}
 if(!(letter))break;
 char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
   
  if(dp){dp_on;}} 
-                                                                    
-                                                                    //Selecting segment letters in turn
-/********************************************************/
-
-void Any_segment(char letter){
-switch (letter){
-case 'a': a_on;    break;
-case 'b': b_on;    break;
-case 'c': c_on;    break;
-case 'd': d_on;    break;
-case 'e': e_on;    break;
-case 'f': f_on;    break;
-case 'g': g_on;    break;}}
-
 
 
 /************************************************************************************************************************/ 
