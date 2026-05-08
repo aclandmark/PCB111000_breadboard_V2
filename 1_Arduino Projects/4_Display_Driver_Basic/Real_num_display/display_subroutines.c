@@ -6,8 +6,6 @@ void Any_segment(char);
 void display_num_string (const char*, int, char);
 
 
-
-
 #define zero "abcdef"                   //chars a,b,c,d,e and f are stored in an array named "zero"
 #define one "bc"                        //chars b and c are stored in an array named "one"
 #define two "abdeg"                     //Note: the compiler terminates each string in zero
@@ -20,9 +18,8 @@ void display_num_string (const char*, int, char);
 #define nine "gabcf"
 
 
+
 /********************************************************/
-
-
 #define a_off   PORTD |= (1 << PD6);
 #define a_on  PORTD &= (~(1 << PD6));
 
@@ -47,8 +44,9 @@ void display_num_string (const char*, int, char);
 #define dp_off   PORTB |= (1 << PB4);
 #define dp_on  PORTB &= (~(1 << PB4));
 
-/********************************************************/
 
+
+/********************************************************/
 #define digit_4_RH_on  PORTB |= (1 << PB1);
 #define digit_4_RH_off  PORTB &= (~(1 << PB1));
 
@@ -60,7 +58,6 @@ void display_num_string (const char*, int, char);
 
 #define digit_1_RH_on  PORTD |= (1 << PD3);
 #define digit_1_RH_off  PORTD &= (~(1 << PD3)); 
-
 
 #define digit_4_LH_on  PORTC |= (1 << PC1);
 #define digit_4_LH_off  PORTC &= (~(1 << PC1));
@@ -75,9 +72,8 @@ void display_num_string (const char*, int, char);
 #define digit_1_LH_off  PORTD &= (~(1 << PD2));
 
 
+
 /********************************************************/
-
-
 #define Clear_segments    a_off;b_off;c_off;d_off;e_off;f_off;g_off;dp_off;
 
 #define Clear_digits \
@@ -85,48 +81,32 @@ digit_1_RH_off;digit_2_RH_off;digit_3_RH_off;digit_4_RH_off;\
 digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 
 
+
 /*********************************************************/
-
-
-
-
-
-
-
-
-
-
-void display_num_string (const char* s, int digit_num, char dp){             //Subroutine requires a pointer to the string   
+void display_single_digit (const char* s, int digit_num, char dp){             //Subroutine requires a pointer to the string   
 int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
 
 while(1){
 letter = *(s + char_ptr);                                           //Note these two expressions are equivalent
 switch(letter){                                                     //Work through the segments contained in the 
-case 'a':                                                           //string until '\0' is encountered
-case 'b': 
-case 'c': 
-case 'd': 
-case 'e': 
-case 'f': 
-case 'g': Any_segment(letter);break;
+case 'a':  a_on;    break;                                                           //string until '\0' is encountered
+case 'b':  b_on;    break;
+case 'c':  c_on;    break;
+case 'd':  d_on;    break;
+case 'e':  e_on;    break;
+case 'f':  f_on;    break;
+case 'g':  g_on;    break;
                                                                     //update display one segment at a time
 case 0:  break;                                                     //zero indicates the end of the string
 default: break;}
 if(!(letter))break;
 char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
   
- if(dp){dp_on;} 
- }                                                                   
-                                                                    //Selecting segment letters in turn
-/********************************************************/
+ if(dp){dp_on;}} 
+                                                     
 
-void Any_segment(char letter){
-switch (letter){
-case 'a': a_on;    break;
-case 'b': b_on;    break;
-case 'c': c_on;    break;
-case 'd': d_on;    break;
-case 'e': e_on;    break;
-case 'f': f_on;    break;
-case 'g': g_on;    break;}}
+                                                                  
+                                                                  
+                                                                  //Selecting segment letters in turn
+/********************************************************/
