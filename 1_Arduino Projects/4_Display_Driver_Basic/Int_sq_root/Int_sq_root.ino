@@ -103,7 +103,7 @@ case '9': string_ptr = nine; break;
 case 0: break;} 
 
 if(!(digit))break;                       
-display_num_string(string_ptr, digit_num, dp);
+display_single_digit(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(1200);
 }  while (digit_num < 8); 
@@ -114,40 +114,27 @@ if (UCSR0A & (1 << RXC0))return;}}
 
 
 /************************************************************************************************************************/
-void display_num_string (const char* s, int digit_num, char dp){             //Subroutine requires a pointer to the string   
+void display_single_digit (const char* s, int digit_num, char dp){             //Subroutine requires a pointer to the string   
 int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
 
 while(1){
 letter = *(s + char_ptr);                                           //Note these two expressions are equivalent
 switch(letter){                                                     //Work through the segments contained in the 
-case 'a':                                                           //string until '\0' is encountered
-case 'b': 
-case 'c': 
-case 'd': 
-case 'e': 
-case 'f': 
-case 'g': Any_segment(letter);break;
-                                                                            //update display one segment at a time
-case 0:  break;//return; break;                                             //zero indicates the end of the string
+case 'a':  a_on;    break;                                                           //string until '\0' is encountered
+case 'b':  b_on;    break;
+case 'c':  c_on;    break;
+case 'd':  d_on;    break;
+case 'e':  e_on;    break;
+case 'f':  f_on;    break;
+case 'g':  g_on;    break;
+                                                                    //update display one segment at a time
+case 0:  break;                                                     //zero indicates the end of the string
 default: break;}
 if(!(letter))break;
 char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
   
  if(dp){dp_on;}} 
-                                                                    
-                                                                    //Selecting segment letters in turn
-/********************************************************/
-
-void Any_segment(char letter){
-switch (letter){
-case 'a': a_on;    break;
-case 'b': b_on;    break;
-case 'c': c_on;    break;
-case 'd': d_on;    break;
-case 'e': e_on;    break;
-case 'f': f_on;    break;
-case 'g': g_on;    break;}}
 
 
 
