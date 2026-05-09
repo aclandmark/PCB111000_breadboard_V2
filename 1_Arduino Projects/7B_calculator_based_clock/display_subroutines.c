@@ -153,7 +153,12 @@ default: break;}
 if(!(letter))break;
 char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
   
- if(dp){dp_on;}}
+ //if(dp){dp_on;}
+ switch (digit_num){
+  case 7:
+  case 5:
+  case 3: {dp_on;}break;}
+  }
 
 
 
