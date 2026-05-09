@@ -53,7 +53,7 @@ User_prompt_Basic;
 
 if(User_response == 'R')set_time();
 else {reset_clock_1; deci_SecsH = '0'; deci_SecsL = '0'; deci_sec_counter = 0; }
-display_8_bytes(digits);
+display_time(digits);
 
 String_to_PC_Basic("AK to start\r\n");
 waitforkeypress_Basic();}
@@ -62,7 +62,7 @@ UCSR0B &= (~(1 << RXEN0));
 sei();
 initialise_T2_Local();
 start_clock_Local();
-display_8_bytes(digits);}
+display_time(digits);}
 
 
 
@@ -92,7 +92,7 @@ while(isCharavailable_Basic(50) == 0){String_to_PC_Basic("T?  ");}
 
 digits[7] = Char_from_PC_Basic();
 eeprom_write_byte((uint8_t*)EEP_Location--, digits[7]);
-display_8_bytes(digits); 
+display_time(digits); 
 
 for (int m = 0; m<=4; m++){while(isCharavailable_Basic(5) == 0);
 if(m == 4){digits[2] = Char_from_PC_Basic();
@@ -100,7 +100,7 @@ eeprom_write_byte((uint8_t*)EEP_Location--, digits[2]);
 deci_SecsH = '0'; deci_SecsL = '0';}
 else {digits[6 - m] = Char_from_PC_Basic();
 eeprom_write_byte((uint8_t*)EEP_Location--, digits[6 - m]);
-display_8_bytes(digits);}}
+display_time(digits);}}
 
 deci_sec_counter = 10*(long)((((long)((HoursH - '0') * 10) + HoursL - '0') * 3600) +
 ((((MinsH - '0') * 10) + MinsL - '0') * 60) +(SecsH - '0') * 10 + SecsL - '0');
