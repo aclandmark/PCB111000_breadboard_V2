@@ -84,7 +84,7 @@ digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 
 
 /*********************************************************************************************/
-void display_8_bytes(char*num_string){
+void display_time(char*num_string){
 
 char   digit;
 int digit_num=0;            
