@@ -27,6 +27,16 @@
 #include "Proj_7B_header_file_1.h"
 #include "display_subroutines.c"
 
+#define min_intensity 1
+
+#ifdef min_intensity 
+int led_off_time = 900;
+int led_on_time = 300;
+#else
+int led_off_time = 50;
+int led_on_time = 1150;
+#endif
+
 int EEP_Location = 0x1F9;
 int main (void){
 char User_response;
