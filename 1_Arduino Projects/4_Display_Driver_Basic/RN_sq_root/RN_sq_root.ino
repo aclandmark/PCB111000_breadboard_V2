@@ -139,6 +139,10 @@ display_single_digit(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(led_on_time);
 }  while (digit_num < 8); 
+
+for (int m = digit_num; m < 8; m++)_delay_us(1200);
+
+
 if (UCSR0A & (1 << RXC0))return;}}
 
 
