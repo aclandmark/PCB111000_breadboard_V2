@@ -2,7 +2,12 @@
 #include <util/delay.h>
 
 
-void Any_segment(char);
+
+
+extern int led_off_time;
+extern int led_on_time;
+
+
 void display_single_digit (const char*, int, char);
 
 
@@ -92,11 +97,6 @@ int string_counter=0;
 int letter_counter=0;
 const char* string_ptr = 0;
 char dp;
-
-//Clear_digits;
-//  Clear_segments;
-//  dp_off;
-
   
 while(1){digit_num=0;
 do{
@@ -131,15 +131,10 @@ case 0: break;}
 
 digit_num++;
 if(!(digit))continue;                       
+_delay_us(led_off_time);
 display_single_digit(string_ptr, digit_num, dp);
-_delay_us(1200);
-
-//_delay_us(240);
-//Clear_digits;
-//  Clear_segments;
-//  dp_off;
-//_delay_us(960);
-
+//_delay_us(1200);
+_delay_us(led_on_time);
 }while (digit_num < 8); 
 if (UCSR0A & (1 << RXC0))return;}}
 
