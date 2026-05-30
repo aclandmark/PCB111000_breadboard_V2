@@ -4,6 +4,19 @@
 #include "display_header.h"
 #include "square_root_subroutines.c"
 
+//#define min_intensity 1
+
+
+#ifdef min_intensity 
+int led_off_time = 900;
+int led_on_time = 300;
+#else
+int led_off_time = 50;
+int led_on_time = 1150;
+#endif
+
+
+
 int main (void){
 
 char real_num_string[15];
@@ -102,10 +115,11 @@ case '8': string_ptr = eight; break;
 case '9': string_ptr = nine; break;
 case 0: break;} 
 
-if(!(digit))break;                       
+if(!(digit))break; 
+ _delay_us(led_off_time);                     
 display_single_digit(string_ptr, digit_num, dp);
 digit_num++;
-_delay_us(1200);
+_delay_us(led_on_time);
 }  while (digit_num < 8); 
 if (UCSR0A & (1 << RXC0))return;}}
 
