@@ -54,6 +54,7 @@ void Display_Int(char * num_string){
   int digit_num=0; 
 char   digit;
 const char* string_ptr = 0;
+char dp;
   
 while(1){digit_num=0;
 
@@ -87,7 +88,8 @@ case '9': string_ptr = nine; break;
 case 0: break;} 
 if(!(digit))break;                       
 _delay_us(led_off_time);
-display_num_string(string_ptr);
+//display_num_string(string_ptr);
+display_single_digit(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(led_on_time);
 }  while (digit_num < 8); 
@@ -98,8 +100,30 @@ if (UCSR0A & (1 << RXC0))break;}}
 
 
 
+void display_single_digit (const char* s, int digit_num, char dp){             //Subroutine requires a pointer to the string   
+int char_ptr=0;                                                     //containing segments used to define a digit
+char letter;
+
+while(1){
+letter = *(s + char_ptr);                                           //Note these two expressions are equivalent
+switch(letter){                                                     //Work through the segments contained in the 
+case 'a':  a_on;    break;                                                           //string until '\0' is encountered
+case 'b':  b_on;    break;
+case 'c':  c_on;    break;
+case 'd':  d_on;    break;
+case 'e':  e_on;    break;
+case 'f':  f_on;    break;
+case 'g':  g_on;    break;
+                                                                    //update display one segment at a time
+case 0:  break;                                                     //zero indicates the end of the string
+default: break;}
+if(!(letter))break;
+char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
+  
+ if(dp){dp_on;}}
+
 /************************************************************************************************************************/
-void display_num_string (const char* s){                             //Subroutine requires a pointer to the string   
+/*void display_num_string (const char* s){                             //Subroutine requires a pointer to the string   
 int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
 
@@ -115,12 +139,12 @@ case 'f':
 case 'g': Any_segment(letter);
 break;                                                              //update display one segment at a time
 case 0:  return; break;                                             //zero indicates the end of the string
-default: break;}char_ptr++;}}                                       //incrementing "char_ptr" steps through the string
+default: break;}char_ptr++;}}  */                                     //incrementing "char_ptr" steps through the string
 
                                                                     
                                                                     //Selecting segment letters in turn
 /********************************************************/
-void Any_segment(char letter){
+/*void Any_segment(char letter){
 switch (letter){
 case 'a': a_on;    break;
 case 'b': b_on;    break;
@@ -128,7 +152,7 @@ case 'c': c_on;    break;
 case 'd': d_on;    break;
 case 'e': e_on;    break;
 case 'f': f_on;    break;
-case 'g': g_on;    break;}}
+case 'g': g_on;    break;}}*/
 
 
 
