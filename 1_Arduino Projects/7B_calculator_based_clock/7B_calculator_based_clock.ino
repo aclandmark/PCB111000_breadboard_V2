@@ -27,15 +27,8 @@
 #include "Proj_7B_header_file_1.h"
 #include "display_subroutines.c"
 
-#define min_intensity 1
 
-#ifdef min_intensity 
-int led_off_time = 900;
-int led_on_time = 300;
-#else
-int led_off_time = 50;
-int led_on_time = 1150;
-#endif
+
 
 int EEP_Location = 0x1F9;
 int main (void){
@@ -58,11 +51,11 @@ HoursL - '0') * 3600) + ((((MinsH - '0') * 10) + MinsL - '0') * 60) +
 (SecsH - '0') * 10 + SecsL - '0');}
 
 else{
-String_to_PC_Basic("Press 'R' to enter time or 'r' to start at time zero  ");
+String_to_PC_Basic("Press 'R' to enter time or 'r' to start at time zero  "); 
 User_prompt_Basic;
 
 if(User_response == 'R')set_time();
-else {reset_clock_1; deci_SecsH = '0'; deci_SecsL = '0'; deci_sec_counter = 0; }
+else {reset_clock_1; deci_SecsH = '0'; deci_SecsL = '0'; deci_sec_counter = 0; clear_display;}
 display_time(digits);
 
 String_to_PC_Basic("AK to start\r\n");
