@@ -1,8 +1,13 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+void Timer_T0_sub(char, unsigned char);
 
+#define T0_delay_1200uS     3,106
+#define T0_delay_900uS      3, 144
+#define T0_delay_300uS      3,218
 
+#define min_intensity 1
 
 extern int led_off_time;
 extern int led_on_time;
@@ -131,10 +136,22 @@ case 0: break;}
 
 digit_num++;
 if(!(digit))continue;                       
-_delay_us(led_off_time);
+
+#ifdef min_intensity 
+Timer_T0_sub(T0_delay_900uS);
+#endif
+
 display_single_digit(string_ptr, digit_num, dp);
 //_delay_us(1200);
-_delay_us(led_on_time);
+//Timer_T0_sub(T0_delay_1200uS);
+
+#ifdef min_intensity 
+Timer_T0_sub(T0_delay_300uS);
+#else
+Timer_T0_sub(T0_delay_1200uS);
+#endif
+
+
 }while (digit_num < 8); 
 if (UCSR0A & (1 << RXC0))return;}}
 
