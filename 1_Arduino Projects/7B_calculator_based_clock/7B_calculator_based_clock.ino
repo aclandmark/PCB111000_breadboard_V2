@@ -54,7 +54,7 @@ else{
 String_to_PC_Basic("Press 'R' to enter time or 'r' to start at time zero  "); 
 User_prompt_Basic;
 
-if(User_response == 'R')set_time();
+if(User_response == 'R'){set_time();}
 else {reset_clock_1; deci_SecsH = '0'; deci_SecsL = '0'; deci_sec_counter = 0; clear_display;}
 display_time(digits);
 
@@ -107,7 +107,7 @@ display_time(digits);}}
 
 deci_sec_counter = 10*(long)((((long)((HoursH - '0') * 10) + HoursL - '0') * 3600) +
 ((((MinsH - '0') * 10) + MinsL - '0') * 60) +(SecsH - '0') * 10 + SecsL - '0');
-
+_delay_ms(1);
 clear_display;}
 
 
