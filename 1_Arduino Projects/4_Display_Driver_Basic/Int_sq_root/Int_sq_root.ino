@@ -4,7 +4,7 @@
 #include "display_header.h"
 #include "square_root_subroutines.c"
 
-#define min_intensity 1
+//#define min_intensity 1
 
 
 #ifdef min_intensity 
