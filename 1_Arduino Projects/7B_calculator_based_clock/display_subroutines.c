@@ -145,8 +145,6 @@ Timer_T0_sub(T0_delay_900uS);
 #endif
 
 display_single_digit(string_ptr, digit_num, dp);
-//_delay_us(1200);
-//Timer_T0_sub(T0_delay_1200uS);
 
 #ifdef min_intensity 
 Timer_T0_sub(T0_delay_300uS);
