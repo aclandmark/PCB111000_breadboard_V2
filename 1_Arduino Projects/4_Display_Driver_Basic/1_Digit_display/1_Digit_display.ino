@@ -36,7 +36,7 @@ const char* string_ptr = 0;     //pointer: will be loaded with the address of a 
 setup_HW;               
 
 
-if(MCUSR & (1 << PORF)){User_prompt_Basic;eeprom_write_byte((uint8_t*)0x1FA, 0);MCUSR = 0;Clear_digit;}
+if(MCUSR & (1 << PORF)){User_prompt_Basic;eeprom_write_byte((uint8_t*)0x1FA, 0);MCUSR = 0;Clear_digits;}
 if(!(eeprom_read_byte((uint8_t*)0x1FA)))
 {
   eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
@@ -45,13 +45,44 @@ String_to_PC_Basic("\r\nSend digits?");}
 
 else 
 String_to_PC_Basic("\r\nAgain");
-Clear_digit;
+Clear_digits;
 
 digit_num = 0;                                  //First digit on display
 
+Clear_segments;
+Clear_digits;
+waitforkeypress_Basic();
+digit_1_LH_on;
+a_on;
+waitforkeypress_Basic();
+b_on;
+
+waitforkeypress_Basic();
+c_on;
+
+waitforkeypress_Basic();
+d_on;
+
+waitforkeypress_Basic();
+e_on;
+
+waitforkeypress_Basic();
+f_on;
+
+waitforkeypress_Basic();
+g_on;
+
+waitforkeypress_Basic();
+dp_on;
+
+while(1);
+
+
+
+
 do{                                             //start of "do{}while();" loop
 while(!(isCharavailable_Basic(1)))wdr(); 
-Clear_digit;
+Clear_digits;
 digit = Char_from_PC_Basic();                   //user enters digit (0 to 9) at the PC keyboard
 
 switch(digit){                                  //The appropriate address is loaded into location 
@@ -80,7 +111,7 @@ digit_num++;
 
 while(!(isCharavailable_Basic(1)))wdr(); 
 Char_from_PC_Basic();
-Clear_digit;                                          //clear display and repeat
+Clear_digits;                                          //clear display and repeat
 SW_reset;}
 
 
