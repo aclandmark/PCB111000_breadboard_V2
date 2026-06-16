@@ -29,8 +29,8 @@ const char* string_ptr;        //pointer: will be loaded with the address of a s
 setup_HW;               
 _delay_ms(1);
 
-if(!(eeprom_read_byte((uint8_t*)0x1FA)))
-{eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
+if(first_run_after_programming)
+{clear_programmer;
 String_to_PC_Basic("\r\nEnter digit_num then digits");}
 
 else Char_to_PC_Basic('?');
