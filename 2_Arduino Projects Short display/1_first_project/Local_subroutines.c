@@ -107,10 +107,10 @@ unsigned long random_display (char direction, char seg_counter, unsigned long PR
 {char letter;
 char prompt;
 
-  while (seg_counter < 56) {
+  while (seg_counter < 28) {
       letter = (PRN % 7) + 'a';
       PRN = PRN_16bit_GEN (PRN, &PRN_counter);
-      digit_num = (PRN % 8);
+      digit_num = (PRN % 4);
       if ((!(direction)) && (display_bkp[letter - 'a'] & (1 << digit_num))) {
         PRN_counter -= 1;
         continue; }
