@@ -1,10 +1,8 @@
 
-//Defining digits in terms of their segments
-//so that numbers can simply be entered at the keyboard
-//For use with breadboard loaded with single digit
 
 #include "header.h"
 #include "Local_subroutines.c"
+
 
 
 #define zero "abcdef"                   //chars a,b,c,d,e and f are stored in an array named "zero"
@@ -19,26 +17,31 @@
 #define nine "gabcf"
 
 
+
 int main (void){
 
 char   digit;
  char dig_num;
+
 const char* string_ptr;        //pointer: will be loaded with the address of a segment string 
  char num_string[6];                               //(i.e. the address of string "zero", "one", "two" etc....) 
 int m;
 
-setup_HW;               
 
-for(m = 0; m < 4; m++)num_string[m] = '0' + ((m+1)*2); num_string[4] = 0;
-Num_string_to_PC_Basic(num_string);
+setup_HW; 
 
-waitforkeypress_Basic();
+if (first_run_after_programming)
+{clear_programmer;
+Initialise_eeprom_memory;
+print_memory_contents;}
+
+
 while(1){
 
 Clear_digits;
 Clear_segments;
   
-  for(m = 0; m < 4; m++){                                             //start of "do{}while();" loop
+  for(m = 0; m < 4; m++){num_string[m] = eeprom_read_byte((uint8_t*)m) ;                                          //start of "do{}while();" loop
   
 switch (m){
   case 3: digit_4_LH_on; break;
@@ -60,17 +63,19 @@ case '6': string_ptr = six; break;
 case '7': string_ptr = seven; break;
 case '8': string_ptr = eight; break;
 case '9': string_ptr = nine; break;}  
-                                                  //do loop. 
 
-  Clear_segments;                                                //subroutine "display_num_string();"
+  Clear_segments;    
 _delay_us(1500);
 display_single_digit(string_ptr);
 _delay_us(500);
-//waitforkeypress_Basic();
-Clear_digits;} 
-}}                                                  //return to the top of the "do" loop until all digits 
-                                                 //have been illuminated
 
+Clear_digits;}
+if(UCSR0A & (1 << RXC0))break;}
+Char_from_PC_Basic();
+Update_eeprom_memory;
+
+SW_reset;}
+  
 
 /************************************************************************************************************************/
 
@@ -97,6 +102,7 @@ char_ptr++;}}                                                       //incrementi
 
 
 
+char prn(void){return PRN_8bit_GEN()%10;}
 
 
 
