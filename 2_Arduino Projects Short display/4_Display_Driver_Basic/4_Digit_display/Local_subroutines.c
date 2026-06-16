@@ -27,6 +27,7 @@ if(string_counter == 10)break;\
 letter_counter += 1;}\
 \
 String_to_PC_Basic(message_2);\
+digit='0';\
 for(int m = 0; m < 10; m++)String_memory_dump(digit++);\
 \
 Int_to_PC_Basic((int)message_1);\
