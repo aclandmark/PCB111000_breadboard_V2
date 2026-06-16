@@ -24,12 +24,17 @@ int main (void){
 char   digit;
  char dig_num;
 const char* string_ptr;        //pointer: will be loaded with the address of a segment string 
-                                //(i.e. the address of string "zero", "one", "two" etc....) 
+                             //(i.e. the address of string "zero", "one", "two" etc....) 
 
 setup_HW;               
+_delay_ms(1);
 
-while(1){
-String_to_PC_Basic("\r\nEnter digit_num then digits");
+if(!(eeprom_read_byte((uint8_t*)0x1FA)))
+{eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
+String_to_PC_Basic("\r\nEnter digit_num then digits");}
+
+else Char_to_PC_Basic('?');
+
 Clear_digits;
 Clear_segments;
 
@@ -39,8 +44,9 @@ switch (dig_num){
   case '3': digit_3_LH_on; break;
   case '2': digit_2_LH_on; break;
   case '1': digit_1_LH_on; break;}
+  d_on;
   
-  do{                                             //start of "do{}while();" loop
+  while(1) {                                             //start of "do{}while();" loop
   while(!(isCharavailable_Basic(1)))wdr(); 
 
 digit = Char_from_PC_Basic();                 
@@ -57,16 +63,15 @@ case '6': string_ptr = six; break;
 case '7': string_ptr = seven; break;
 case '8': string_ptr = eight; break;
 case '9': string_ptr = nine; break;
-case 'r': break;
-
-default: continue; }                        //Illegal key press: Go immediately to the start of the 
-                                                  //do loop. 
- //if(digit == 'r')break;                                                //Send the address of the required string to 
+case 'r': SW_reset; break;
+default: continue; }                            //Illegal key press: Go immediately to the start of the 
+                                                //while loop. 
+ 
   Clear_segments;                                                //subroutine "display_num_string();"
 display_single_digit(string_ptr);
-} while (digit != 'r');
-}                                                  //return to the top of the "do" loop until all digits 
-}                                                 //have been illuminated
+}} 
+                                                 //return to the top of the "do" loop until all digits 
+                                                 //have been illuminated
 
 
 /************************************************************************************************************************/
