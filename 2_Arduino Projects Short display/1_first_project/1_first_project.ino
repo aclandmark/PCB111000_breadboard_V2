@@ -11,24 +11,7 @@
 #include "Local_subroutines.c"
 #include "display_header.h"
 
- int main (void)     //Example 13  Random display
-  {int T1_period = 15;
-  char direction;
-  char duration = 50;
-  char seg_counter;
-  char segments[8];
-  
-  setup_HW;
-  for(int m = 0; m <= 7; m++)segments[m] = 0;
-    
-  PRN_counter = 0;
-  PRN = PRN_16bit_GEN (0, &PRN_counter);
-   direction=1;
-  while(1){
-     direction ^= 1;
-   seg_counter=0;
- PRN = random_display
- (direction, seg_counter, PRN, duration, segments);}} 
+ 
 
 
   
@@ -147,7 +130,7 @@ if (counter == 12){direction ^= 1; counter = 0;}
 int main (void)     //Example 13  Random display
   {int T1_period = 15;
   char direction;
-  char duration = 50;
+  char duration = 75;
   char seg_counter;
   char segments[8];
   
@@ -161,7 +144,7 @@ int main (void)     //Example 13  Random display
      direction ^= 1;
    seg_counter=0;
  PRN = random_display
- (direction, seg_counter, PRN, duration, segments);}}
+ (direction, seg_counter, PRN, duration, segments);}} 
 
    
  
@@ -173,9 +156,9 @@ int main (void)     //Example 13  Random display
   setup_HW;
   wdt_enable(WDTO_30MS);
   PRN_counter = 0;
-  PRN = PRN_16bit_GEN (0, &PRN_counter);
+  PRN = (PRN_16bit_GEN (0, &PRN_counter));
   while (1)
-  { PRN = PRN_16bit_GEN (PRN, &PRN_counter);
+  { PRN = (PRN_16bit_GEN (PRN, &PRN_counter));
     display_binary (PRN, (PRN << ((PRN % 2) + 1)), 5);}}
 
 
@@ -195,7 +178,7 @@ duration = waitforkeypress_Basic() - '0';
 
 Port_1 = 1;
 while(1){
-Port_2 = 0x8000 - Port_1;
+Port_2 = 0x80 - Port_1;
 display_binary(Port_1, Port_2, duration);
 if(char_present){if (!(Inc))Inc = 1;
 else Inc = 0;
