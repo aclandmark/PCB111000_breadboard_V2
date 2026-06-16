@@ -16,6 +16,8 @@ setup_PC_comms_Basic(0,16);\
 Timer_T0_10mS_delay_x_m(5);
 
 
+
+/********************************************************/
 #define setup_watchdog \
 if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
 wdr();\
@@ -28,17 +30,16 @@ WDTCSR = 0;
 #define SW_reset {wdt_enable(WDTO_30MS);while(1);}
 
 
+
+/********************************************************/
 #define Set_display_drivers \
-DDRB = (1 << DDB0) | (1 << DDB1) | (1 << DDB2) | (1 << DDB3) | (1 << DDB4) | (1 << DDB5);\
+DDRB = (1 << DDB0) |  (1 << DDB2) | (1 << DDB3) | (1 << DDB4) | (1 << DDB5);\
 DDRC = (1 << DDC0) | (1 << DDC1) | (1 << DDC2) | (1 << DDC3);\
-DDRD = (1 << DDD2) |(1 << DDD3) |(1 << DDD4) | (1 << DDD5) | (1 << DDD6) | (1 << DDD7);
+DDRD = (1 << DDD2) | (1 << DDD6) | (1 << DDD7);
 
 
 
-
-
-
-
+/********************************************************/
 #define a_off   PORTD |= (1 << PD6);
 #define a_on  PORTD &= (~(1 << PD6));
 
@@ -63,9 +64,9 @@ DDRD = (1 << DDD2) |(1 << DDD3) |(1 << DDD4) | (1 << DDD5) | (1 << DDD6) | (1 <<
 #define dp_off   PORTB |= (1 << PB4);
 #define dp_on  PORTB &= (~(1 << PB4));
 
+
+
 /********************************************************/
-
-
 #define digit_4_LH_on  PORTC |= (1 << PC1);
 #define digit_4_LH_off  PORTC &= (~(1 << PC1));
 
@@ -79,22 +80,24 @@ DDRD = (1 << DDD2) |(1 << DDD3) |(1 << DDD4) | (1 << DDD5) | (1 << DDD6) | (1 <<
 #define digit_1_LH_off  PORTD &= (~(1 << PD2));
 
 
+
 /********************************************************/
-
-
 #define Clear_segments    a_off;b_off;c_off;d_off;e_off;f_off;g_off;dp_off;
-
 #define Clear_digits \
 digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 
 
 
+/********************************************************/
 #define User_prompt_Basic \
 while(1){\
 do{String_to_PC_Basic("R?    ");}  while((isCharavailable_Basic (50) == 0));\
 User_response = Char_from_PC_Basic();\
 if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_Basic("\r\n");
 
+
+
+/********************************************************/
 #define OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
 &&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
@@ -102,7 +105,17 @@ if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
 
 
 
+/********************************************************/
+#define first_run_after_programming   !(eeprom_read_byte((uint8_t*)0x1FA))
+#define clear_programmer              eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
+
+
 
 /*****************************************************************************/
 #include "Resources/Subroutines/HW_timers.c"
 #include "Resources/PC_comms/Basic_Rx_Tx_Basic.c"
+
+
+
+
+/********************************************************/
