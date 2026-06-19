@@ -2,46 +2,23 @@
 
 #include <avr/wdt.h>
 
-char watch_dog_reset = 0;
+char watch_dog_reset;
 
-#define switch_1_down ((PIND & 0x04)^0x04)
-#define switch_1_up   (PIND & 0x04)
-#define switch_2_down ((PINB & 0x40)^0x40)
-#define switch_2_up   (PINB & 0x40)
-#define switch_3_down  ((PIND & 0x80)^0x80)
-#define switch_3_up   (PIND & 0x80)
+#define T0_delay_10ms   5,178
 
-
-
-/*****************************************************************************/
 #define setup_HW \
 setup_watchdog;\
-set_up_I2C;\
 ADMUX |= (1 << REFS0);\
+Clear_digits;\
+Clear_segments;\
+Set_display_drivers;\
 set_up_switched_inputs;\
-Set_LED_ports;\
-Unused_I_O;\
-eeprom_write_byte((uint8_t*)(0x1FD),OSCCAL);\
-while (!(PIND & (1 << PD1)));\
-Timer_T0_10mS_delay_x_m(5);\
-OSC_CAL;\
 setup_PC_comms_Basic(0,16);\
-I2C_Tx_LED_dimmer();\
-\
-\
-/*OPTIONAL Setup_HW code gives default ap*/\
-Timer_T0_10mS_delay_x_m(1);\
-I2C_TX_328_check();\
-waiting_for_I2C_master;\
-if (receive_byte_with_Nack()==1)\
-{TWCR = (1 << TWINT);\
-wdt_enable(WDTO_30MS);\
-I2C_Tx_display();}\
-else TWCR = (1 << TWINT);
+Timer_T0_10mS_delay_x_m(10);
 
 
 
-/*****************************************************************************/
+/***************************************************************/
 #define setup_watchdog \
 if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
 wdr();\
@@ -54,84 +31,84 @@ WDTCSR = 0;
 #define SW_reset {wdt_enable(WDTO_30MS);while(1);}
 
 
+#define Set_display_drivers \
+DDRB = (1 << DDB0) |  (1 << DDB2) | (1 << DDB3) | (1 << DDB4) | (1 << DDB5);\
+DDRC = (1 << DDC0) | (1 << DDC1) | (1 << DDC2) | (1 << DDC3);\
+DDRD = (1 << DDD2) | (1 << DDD6) | (1 << DDD7);
 
-/*****************************************************************************/
-#define set_up_I2C \
-TWAR = 0x02;
+
+
+/********************************************************/
+#define a_off   PORTD |= (1 << PD6);
+#define a_on  PORTD &= (~(1 << PD6));
+
+#define b_off   PORTB |= (1 << PB0);
+#define b_on  PORTB &= (~(1 << PB0));
+
+#define c_off   PORTB |= (1 << PB3);
+#define c_on  PORTB &= (~(1 << PB3));
+
+#define d_off   PORTB |= (1 << PB5);
+#define d_on  PORTB &= (~(1 << PB5));
+
+#define e_off   PORTC |= (1 << PC0);
+#define e_on  PORTC &= (~(1 << PC0));
+
+#define f_off   PORTD |= (1 << PD7);
+#define f_on  PORTD &= (~(1 << PD7));
+
+#define g_off   PORTB |= (1 << PB2);
+#define g_on  PORTB &= (~(1 << PB2));
+
+#define dp_off   PORTB |= (1 << PB4);
+#define dp_on  PORTB &= (~(1 << PB4));
 
 
 
-/*****************************************************************************/
+/********************************************************/
+#define digit_4_LH_on  PORTC |= (1 << PC1);
+#define digit_4_LH_off  PORTC &= (~(1 << PC1));
+
+#define digit_3_LH_on  PORTC |= (1 << PC2);
+#define digit_3_LH_off  PORTC &= (~(1 << PC2));
+
+#define digit_2_LH_on  PORTC |= (1 << PC3);
+#define digit_2_LH_off  PORTC &= (~(1 << PC3));
+
+#define digit_1_LH_on  PORTD |= (1 << PD2);
+#define digit_1_LH_off  PORTD &= (~(1 << PD2));
+
+
+
+/********************************************************/
+#define Clear_segments    a_off;b_off;c_off;d_off;e_off;f_off;g_off;dp_off;
+#define Clear_digits \
+digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
+
+
+
+/***************************************************************/
 #define set_up_switched_inputs \
 MCUCR &= (~(1 << PUD));\
-DDRD &= (~((1 << PD2)|(1 << PD7)));\
-PORTD |= ((1 << PD2) | (1 << PD7));\
-DDRB &= (~(1 << PB6));\
-PORTB |= (1 << PB6);
+DDRC &= (~(1 << PC5));\
+PORTC |= (1 << PC5);
 
 
 
-/*****************************************************************************/
-#define Unused_I_O \
-MCUCR &= (~(1 << PUD));\
-DDRB &= (~((1 << PB2)|(1 << PB7)));\
-DDRC &= (~((1 << PC0)|(1 << PC1)|(1 << PC2)));\
-DDRD &= (~((1 << PD3)|(1 << PD4)|(1 << PD5)|(1 << PD6)));\
-PORTB |= ((1 << PB2)|(1 << PB7));\
-PORTC |= ((1 << PC0)|(1 << PC1)|(1 << PC2));\
-PORTD |= ((1 << PD3)|(1 << PD4)|(1 << PD5)|(1 << PD6));
+/***************************************************************/
+#define switch_3_down ((PINC & 0x20)^0x20)
+#define switch_3_up   (PINC & 0x20)
 
+
+#define first_run_after_programming   !(eeprom_read_byte((uint8_t*)0x1FA))
+#define clear_programmer              eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
 
 
 /*****************************************************************************/
-#define Set_LED_ports   DDRB = (1 << DDB0) | (1 << DDB1);
-#define LEDs_on       PORTB |= (1 << PB0)|(1 << PB1);
-#define LEDs_off      PORTB &= (~((1 << PB0)|(1 << PB1)));
-#define LED_1_on      PORTB |= (1 << PB1);
-#define LED_1_off     PORTB &= (~( 1<< PB1)); 
-#define LED_2_off     PORTB &= (~(1 << PB0));
-#define LED_2_on      PORTB |= (1 << PB0);
+#include "Resources/Subroutines/HW_timers.c"
+#include "Resources/PC_comms/Basic_Rx_Tx_Basic.c"
+#include "Resources/Subroutines/Random_and_prime_nos.c"
 
-#define Toggle_LED_1 \
-if (PORTB & (1 << PB1)){LED_1_off;}\
-else {PORTB |= (1 << PB1);}
-
-
-
-/*****************************************************************************/
-#define OSC_CAL \
-if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
-&&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
-== eeprom_read_byte((uint8_t*)0x1FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x1FE);}
-
-
-
-/*****************************************************************************/
-#define User_prompt_A \
-while(1){\
-do{Serial.write("R?    ");}  while((isCharavailable_A (50) == 0));\
-User_response = Serial.read();\
-if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");
-
-
-
-/*****************************************************************************/
-#define waiting_for_I2C_master \
-TWCR = (1 << TWEA) | (1 << TWEN);\
-while (!(TWCR & (1 << TWINT)));\
-TWDR;
-
-#define clear_I2C_interrupt \
-TWCR = (1 << TWINT);
-
-
-
-/*****************************************************************************/
-#include "Resources_nano_projects/Subroutines/HW_timers.c"
-#include "Resources_nano_projects/PC_comms/Basic_Rx_Tx_Basic.c"
-#include "Resources_nano_projects/Chip2chip_comms/I2C_subroutines_1.c"
-#include "Resources_nano_projects/Chip2chip_comms/I2C_slave_Rx_Tx.c"
-#include "Resources_nano_projects/Subroutines/Random_and_prime_nos.c"
 
 
 
