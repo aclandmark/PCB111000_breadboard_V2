@@ -60,10 +60,10 @@ for(int m = 0; m <=14; m++)
 digits[digits_pre_dp] |= 0x80;
 
 
-for(int m = digits_pre_dp + 1; m < 14; m++)digits[m] = digits[m+1];
+for(int m = digits_pre_dp + 1; m < 7; m++)digits[m] = digits[m+1];  
 
 String_to_PC_Basic ("\r\n\r\nAK to repeat");
-digits[8] = 0;
+digits[4] = 0;
 invert_num_string(digits);
 display_real_num(digits);
 
@@ -94,14 +94,10 @@ digit = num_string[digit_num];
 if(digit & 0x80) {dp = 1; digit &= (~(0x80));} else dp = 0;
 
 switch (digit_num + 1){
-case 1:  digit_4_RH_on; break;
-case 2:  digit_3_RH_on; break;
-case 3:  digit_2_RH_on; break;
-case 4:  digit_1_RH_on; break;
-case 5:  digit_4_LH_on; break;
-case 6:  digit_3_LH_on; break;
-case 7:  digit_2_LH_on; break;
-case 8:  digit_1_LH_on; break;}
+case 1:  digit_4_LH_on; break;
+case 2:  digit_3_LH_on; break;
+case 3:  digit_2_LH_on; break;
+case 4:  digit_1_LH_on; break;}
 switch(digit){ 
 case '0': string_ptr = zero; break;
 case '1': string_ptr = one; break;
@@ -122,7 +118,7 @@ digit_num++;
 _delay_us(led_on_time);
 }  while (digit_num < 8); 
 
-for (int m = digit_num; m < 8; m++)_delay_us(1200);
+for (int m = digit_num; m < 4; m++)_delay_us(1200);
 
 if (UCSR0A & (1 << RXC0))return;}}
 
