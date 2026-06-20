@@ -46,10 +46,10 @@ DDRD = (1 << DDD2) | (1 << DDD6) | (1 << DDD7);
 /******************************************************************************/
 #define set_up_switched_inputs \
 MCUCR &= (~(1 << PUD));\
-DDRD &= (~(1 << PD2));\
-PORTD |= (1 << PD2);
+DDRC &= (~(1 << PC5));\
+PORTC |= (1 << PC5);
 
-#define switch_3_down ((PIND & 0x04)^0x04)
+#define switch_3_down ((PINC & 0x20)^0x20)
 
 
 
