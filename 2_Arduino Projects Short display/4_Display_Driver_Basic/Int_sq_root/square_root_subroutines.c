@@ -34,7 +34,7 @@ product = 1.0;}}
 str_ptr = Int_to_String_Basic(result, result_as_string); 
 
 /*****Improve iteration starting with one decimal place then 2, 3......up to 6 in all****/
-for(int p = 1; p <= 7; p++)
+for(int p = 1; p <= 3; p++) 
 {Num *= 100;
   result *= 10;
   result_old = result;
