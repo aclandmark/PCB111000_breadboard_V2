@@ -37,9 +37,9 @@ WDTCSR = 0;
 
 /******************************************************************************/
 #define Set_display_drivers \
-DDRB = (1 << DDB0) | (1 << DDB1) | (1 << DDB2) | (1 << DDB3) | (1 << DDB4) | (1 << DDB5);\
+DDRB = (1 << DDB0) |  (1 << DDB2) | (1 << DDB3) | (1 << DDB4) | (1 << DDB5);\
 DDRC = (1 << DDC0) | (1 << DDC1) | (1 << DDC2) | (1 << DDC3);\
-DDRD = (1 << DDD2) |(1 << DDD3) |(1 << DDD4) | (1 << DDD5) | (1 << DDD6) | (1 << DDD7);
+DDRD = (1 << DDD2) | (1 << DDD6) | (1 << DDD7);
 
 
 
@@ -68,6 +68,11 @@ if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
 &&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
 == eeprom_read_byte((uint8_t*)0x1FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x1FE);}
 
+
+
+/********************************************************/
+#define first_run_after_programming   !(eeprom_read_byte((uint8_t*)0x1FA))
+#define clear_programmer              eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
 
 
 
