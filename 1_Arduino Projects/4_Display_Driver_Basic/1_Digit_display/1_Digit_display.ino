@@ -36,10 +36,13 @@ const char* string_ptr = 0;     //pointer: will be loaded with the address of a 
 setup_HW;               
 
 
-if(MCUSR & (1 << PORF)){User_prompt_Basic;eeprom_write_byte((uint8_t*)0x1FA, 0);MCUSR = 0;Clear_digits;}
+if(MCUSR & (1 << PORF))
+{User_prompt_Basic;
+eeprom_write_byte((uint8_t*)0x1FA, 0);
+MCUSR = 0;Clear_digits;}
+
 if(!(eeprom_read_byte((uint8_t*)0x1FA)))
-{
-  eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
+{eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
 print_memory_contents;
 String_to_PC_Basic("\r\nSend digits?");}
 
@@ -51,38 +54,12 @@ digit_num = 0;                                  //First digit on display
 
 Clear_segments;
 Clear_digits;
-waitforkeypress_Basic();
 digit_1_LH_on;
-a_on;
-waitforkeypress_Basic();
-b_on;
-
-waitforkeypress_Basic();
-c_on;
-
-waitforkeypress_Basic();
-d_on;
-
-waitforkeypress_Basic();
-e_on;
-
-waitforkeypress_Basic();
-f_on;
-
-waitforkeypress_Basic();
-g_on;
-
-waitforkeypress_Basic();
-dp_on;
-
-while(1);
-
-
 
 
 do{                                             //start of "do{}while();" loop
 while(!(isCharavailable_Basic(1)))wdr(); 
-Clear_digits;
+Clear_segments;
 digit = Char_from_PC_Basic();                   //user enters digit (0 to 9) at the PC keyboard
 
 switch(digit){                                  //The appropriate address is loaded into location 
@@ -103,7 +80,7 @@ default: continue; break;}                        //Illegal key press: Go immedi
 
                                                   //Send the address of the required string to 
                                                   //subroutine "display_num_string();"
-display_num_string(string_ptr, digit_num);
+display_single_digit_basic(string_ptr, digit_num);
 digit_num++;
 } while (digit_num < 8);
                                                   //return to the top of the "do" loop until all digits 
@@ -117,34 +94,26 @@ SW_reset;}
 
 
 /************************************************************************************************************************/
-void display_num_string (const char* s, int digit_num){             //Subroutine requires a pointer to the string   
+
+void display_single_digit_basic (const char* s, int digit_num){             //Subroutine requires a pointer to the string   
 int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
 
 while(1){
-letter = *(s + char_ptr);// (s[char_ptr]);                          //Note these two expressions are equivalent
+letter = *(s + char_ptr);                                           //Note these two expressions are equivalent
 switch(letter){                                                     //Work through the segments contained in the 
-case 'a':                                                           //string until '\0' is encountered
-case 'b': 
-case 'c': 
-case 'd': 
-case 'e': 
-case 'f': 
-case 'g': Any_segment(letter);
-break;                                                              //update display one segment at a time
-case 0:  return; break;                                             //zero indicates the end of the string
-default: break;}char_ptr++;}}                                       //incrementing "char_ptr" steps through the string
-                                                                    //Selecting segment letters in turn
-
-void Any_segment(char letter){
-switch (letter){
-case 'a': a_on;    break;
-case 'b': b_on;    break;
-case 'c': c_on;    break;
-case 'd': d_on;    break;
-case 'e': e_on;    break;
-case 'f': f_on;    break;
-case 'g': g_on;    break;}
+case 'a':  a_on;    break;                                                           //string until '\0' is encountered
+case 'b':  b_on;    break;
+case 'c':  c_on;    break;
+case 'd':  d_on;    break;
+case 'e':  e_on;    break;
+case 'f':  f_on;    break;
+case 'g':  g_on;    break;
+                                                                    //update display one segment at a time
+case 0:  break;                                                     //zero indicates the end of the string
+default: break;}
+if(!(letter))break;
+char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
 }
 
 
