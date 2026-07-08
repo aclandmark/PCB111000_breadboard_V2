@@ -32,26 +32,36 @@ Enter integer number\r\n?"
 
 volatile char num_present = 0;                    //Set to one when number has been entered and -cr- presses (See Local subroutines)
 volatile char ready_to_compute = 0;               //Set to one as the ISR exits (to provide a fixed known time for calculations)
+volatile int digit_num;
+volatile int clock_rate = 500;
+volatile char dig_start = 0;
+
+
 long Num;
 char Num_string[12];
 
 const char* string_ptr = 0; 
 
 volatile char dig = 0;
-volatile char counter = 0;
 
 int main (void)
 {  setup_HW;
+//_delay_ms(1);
+
+set_up_PCI_on_sw2_and_sw3                                             //Eamples 2 and 3 only
+enable_pci_on_sw2; 
+enable_pci_on_sw3; 
+
 
 if(MCUSR & (1 << PORF)){User_prompt_Basic;eeprom_write_byte((uint8_t*)0x1FA, 0);MCUSR = 0;}
 if(!(eeprom_read_byte((uint8_t*)0x1FA)))
 {String_to_PC_Basic(message_1);
 eeprom_write_byte((uint8_t*)0x1FA, 0xFF);}   
 
-  
+  digit_num = 0;
   sei();
-  T1_clock_tick(150); 
-  while (1) {
+ T1_clock_tick(clock_rate); 
+ while (1) {
     Num_string_from_KBD_Local(Num_string);
     Num_string_to_PC_Basic(Num_string);
     Char_to_PC_Basic('\t');
@@ -78,9 +88,19 @@ void T1_clock_tick(int T1_period_in_ms)                               //Start th
 ISR(TIMER1_COMPA_vect) 
 {
  TCNT1 = 0;
-counter += 1;
-if (!(counter%3))
-{Clear_digit; dig = (dig+1)%10;
+  Clear_digits;
+  
+switch (digit_num + 1){
+case 1:  digit_4_RH_on; break;
+case 2:  digit_3_RH_on; break;
+case 3:  digit_2_RH_on; break;
+case 4:  digit_1_RH_on; break;
+case 5:  digit_4_LH_on; break;
+case 6:  digit_3_LH_on; break;
+case 7:  digit_2_LH_on; break;
+case 8:  digit_1_LH_on; break;}
+
+  Clear_segments; 
   
 switch(dig){        
 case 0: string_ptr = zero; break;     
@@ -94,42 +114,41 @@ case 7: string_ptr = seven; break;
 case 8: string_ptr = eight; break;
 case 9: string_ptr = nine; break;} 
 
-display_num_string (string_ptr);}
-if (num_present) {ready_to_compute = 1;} }
+display_single_digit (string_ptr, 1);
+
+if (num_present) {ready_to_compute = 1;}
+
+dig = (dig+1)%10;
+
+  digit_num += 1;
+digit_num = digit_num%8;
+if(!(digit_num))dig = dig_start;}
 
 
 
-/********************************************************************************************************/
-void display_num_string (const char* s){ 
-int char_ptr=0; 
+void display_single_digit (const char* s, int digit_num){             //Subroutine requires a pointer to the string   
+int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
 
 while(1){
-letter = *(s + char_ptr);
-switch(letter){ 
-case 'a': 
-case 'b': 
-case 'c': 
-case 'd': 
-case 'e': 
-case 'f': 
-case 'g': Any_segment(letter);
-break;        
-case 0:  return; break; 
-default: break;}char_ptr++;}} 
-
-
-                          
+letter = *(s + char_ptr);                                           //Note these two expressions are equivalent
+switch(letter){                                                     //Work through the segments contained in the 
+case 'a':  a_on;    break;                                                           //string until '\0' is encountered
+case 'b':  b_on;    break;
+case 'c':  c_on;    break;
+case 'd':  d_on;    break;
+case 'e':  e_on;    break;
+case 'f':  f_on;    break;
+case 'g':  g_on;    break;
+                                                                    //update display one segment at a time
+case 0:  break;                                                     //zero indicates the end of the string
+default: break;}
+if(!(letter))break;
+char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
+  
+}
 /********************************************************************************************************/
-void Any_segment(char letter){
-switch (letter){
-case 'a': a_on;    break;
-case 'b': b_on;    break;
-case 'c': c_on;    break;
-case 'd': d_on;    break;
-case 'e': e_on;    break;
-case 'f': f_on;    break;
-case 'g': g_on;    break;}}
+
 
 
 
@@ -143,6 +162,20 @@ long Askii_to_binary_Local(char * array_ptr) {
   return num;}
 
 
+ISR(PCINT1_vect) {  if ((switch_2_up)&& (switch_3_up))return;                                                    //Use with examples 2 & 3 only
+  
+  if (switch_3_down){clock_rate = clock_rate/2;
+ TCNT1 = 0;
+  OCR1A = clock_rate * 125;
+  
+  _delay_ms(100);
+  if(clock_rate == 1)clock_rate = 500;}
+  
+  
+  if (switch_2_down){dig_start = (PRN_8bit_GEN())%8;
+  dig_start = dig_start%8;_delay_ms(50);}
+  
+  }
 
 
 
