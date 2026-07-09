@@ -5,31 +5,32 @@
 
 #include "Interrupt_basic_header.h"
 
-volatile long PORT_1 = 1, PORT_2 = 0x8000;                            //For example 1, 2 and 3
-volatile int m = 0, n = 0, n_max;                                     //Extras for example 3
+//volatile long PORT_1 = 1, PORT_2 = 0x8000;                            //For example 1, 2 and 3
+//volatile int m = 0, n = 0, n_max;                                     //Extras for example 3
 volatile unsigned int clock_rate = 500;                               //Extra for examples 2 and 3
-volatile unsigned int PRN;                                            //For example 4
-unsigned char PRN_counter = 0;                                        //For example 4
-volatile unsigned char counter = 0;                                   //For example 4
+//volatile unsigned int PRN;                                            //For example 4
+//unsigned char PRN_counter = 0;                                        //For example 4
+//volatile unsigned char counter = 0;                                   //For example 4
+volatile char dig_num = 0;
+volatile int seg_num = 0;
+//volatile int switch_down = 0;
 
 
-volatile int switch_down = 0;
  int main (void)   
   {
   setup_HW;
-set_up_PCI_on_sw3;                                             //Eamples 2 and 3 only
+ 
+set_up_PCI_on_sw2_and_sw3                                             //Eamples 2 and 3 only
 enable_pci_on_sw3;                                              //Eamples 2 and 3 only
-    Clear_digit;
-
-   String_to_PC_Basic("\r\n Momentarily switch pin4 to gnd to increase flash rate");
+    Clear_digits;
+    Clear_segments;
+digit_1_LH_on;
+   String_to_PC_Basic("\r\nMomentarily switch pin 28 to gnd to increase flash rate");
     
     sei();
    T1_clock_tick(clock_rate);
-   //initialise_display();                                              //Examples 5 and 6 ONLY
-while(1){if(switch_down){cli();_delay_ms(50); switch_down = 0;sei();}};
-   SW_reset;
-    }
-
+ while(1);
+   SW_reset;}
 
 
 
@@ -43,40 +44,43 @@ OCR1A = T1_period_in_ms * 125;                                //Set register OCR
 
 
 //*****************************************************************************************************
-ISR(PCINT2_vect) {  switch_down = 1;                                                    //Use with examples 2 & 3 only
-  //if ((switch_2_down)|| (clock_rate <= 10))clock_rate = 150;
-  //else
-  
-    //if (switch_1_down)clock_rate += 20;
-  if (switch_3_down)clock_rate -= clock_rate/7;
+ISR(PCINT1_vect) {  
+  dissable_pci_on_sw3;
+  if (switch_3_up)return;
+  Char_to_PC_Basic('.');
+ 
+   if (switch_3_down)clock_rate = clock_rate *3/4;
   if(clock_rate <= 25)clock_rate = 500;
-  }
-
-
-
-
-
-//*****************************************************************************************************
-/*void initialise_display()
-{ n = 1;
-  PORT_1 = 1;
-  PORT_2 = 0x8000;
-   n_max = 16;
+if (seg_num == 16) seg_num = 0;
+  Clear_digits;
   
- I2C_Tx_2_integers(PORT_1, PORT_2);}*/
+  switch (dig_num){
+case 0:  digit_4_RH_on; break;
+case 1:  digit_3_RH_on; break;
+case 2:  digit_2_RH_on; break;
+case 3:  digit_1_RH_on; break;
+case 4:  digit_4_LH_on; break;
+case 5:  digit_3_LH_on; break;
+case 6:  digit_2_LH_on; break;
+case 7:  digit_1_LH_on; break;}
+
+  seg_num += 1;
+  if ( !(seg_num%2))dig_num += 1;   //(seg_num) &&
+  dig_num = dig_num%8;
+  sei();
+  Timer_T0_10mS_delay_x_m(20);
+  enable_pci_on_sw3;}
 
 
-//*****************************************************************************************************
 
-
-//Type Timer1 ISR here
+//Type Timer1 ISR here******************************************************************************
 
 ISR(TIMER1_COMPA_vect)     
   { OCR1A = clock_rate * 125;
   TCNT1 = 0; 
-   switch_Seg_c; }
-
-/***************************************************************************************************************/
+  
+   if(!(seg_num%2)){b_off; c_off;switch_Seg_e;switch_Seg_f} 
+   else {f_off; e_off; switch_Seg_c;switch_Seg_b}}
 
 
 
