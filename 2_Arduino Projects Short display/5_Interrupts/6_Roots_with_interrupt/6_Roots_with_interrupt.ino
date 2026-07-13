@@ -88,14 +88,14 @@ ISR(TIMER1_COMPA_vect)
   Clear_digits;
   
 switch (digit_num + 1){
-case 1:  digit_4_RH_on; break;
+/*case 1:  digit_4_RH_on; break;
 case 2:  digit_3_RH_on; break;
 case 3:  digit_2_RH_on; break;
-case 4:  digit_1_RH_on; break;
-case 5:  digit_4_LH_on; break;
-case 6:  digit_3_LH_on; break;
-case 7:  digit_2_LH_on; break;
-case 8:  digit_1_LH_on; break;}
+case 4:  digit_1_RH_on; break;*/
+case 1:  digit_4_LH_on; break;
+case 2:  digit_3_LH_on; break;
+case 3:  digit_2_LH_on; break;
+case 4:  digit_1_LH_on; break;}
 
   Clear_segments; 
   
@@ -118,7 +118,7 @@ if (num_present) {ready_to_compute = 1;}
 dig = (dig+1)%10;
 
   digit_num += 1;
-digit_num = digit_num%8;
+digit_num = digit_num%4;///////////////was 8
 if(!(digit_num))dig = dig_start;}
 
 
