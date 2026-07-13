@@ -39,30 +39,26 @@ OCR1A = T1_period_in_ms * 125;                                //Set register OCR
 
 //*****************************************************************************************************
 ISR(PCINT1_vect) {  
-  dissable_pci_on_sw3;
-  if (switch_3_up)return;
+  if (switch_3_down)dissable_pci_on_sw3;
+  //if (switch_3_up){enable_pci_on_sw3;Char_to_PC_Basic(':');return;}
   Char_to_PC_Basic('.');
  
    if (switch_3_down)clock_rate = clock_rate *3/4;
   if(clock_rate <= 25)clock_rate = 500;
-if (seg_num == 16) seg_num = 0;
+if (seg_num == 8) seg_num = 0;      //was 16
   Clear_digits;
   
   switch (dig_num){
-case 0:  digit_4_RH_on; break;
-case 1:  digit_3_RH_on; break;
-case 2:  digit_2_RH_on; break;
-case 3:  digit_1_RH_on; break;
-case 4:  digit_4_LH_on; break;
-case 5:  digit_3_LH_on; break;
-case 6:  digit_2_LH_on; break;
-case 7:  digit_1_LH_on; break;}
+case 0:  digit_4_LH_on; break;
+case 1:  digit_3_LH_on; break;
+case 2:  digit_2_LH_on; break;
+case 3:  digit_1_LH_on; break;}
 
   seg_num += 1;
-  if ( !(seg_num%2))dig_num += 1;   //(seg_num) &&
-  dig_num = dig_num%8;
+  if ( !(seg_num%2))dig_num += 1;  
+  dig_num = dig_num%4;
   sei();
-  Timer_T0_10mS_delay_x_m(20);
+  Timer_T0_10mS_delay_x_m(50);
   enable_pci_on_sw3;}
 
 
