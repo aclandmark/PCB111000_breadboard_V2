@@ -18,6 +18,8 @@ setup_PC_comms_Basic(0,16);\
 Timer_T0_10mS_delay_x_m(5);
 
 
+
+/******************************************************************************************/
 #define setup_watchdog \
 if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
 wdr();\
@@ -29,6 +31,9 @@ WDTCSR = 0;
 
 #define SW_reset {wdt_enable(WDTO_30MS);while(1);}
 
+
+
+/***********************************************************************************************/
 #define Set_display_drivers \
 DDRB = (1 << DDB0) | (1 << DDB1) | (1 << DDB2) | (1 << DDB3) | (1 << DDB4) | (1 << DDB5);\
 DDRC = (1 << DDC0) | (1 << DDC1) | (1 << DDC2) | (1 << DDC3);\
@@ -42,6 +47,8 @@ digit_1_RH_off;digit_2_RH_off;digit_3_RH_off;digit_4_RH_off;\
 digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 
 
+
+/*******************************************************************************************/
 #define digit_4_RH_on  PORTB |= (1 << PB1);
 #define digit_4_RH_off  PORTB &= (~(1 << PB1));
 
@@ -68,6 +75,8 @@ digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 #define digit_1_LH_off  PORTD &= (~(1 << PD2));
 
 
+
+/**********************************************************************************/
 #define a_off   PORTD |= (1 << PD6);
 #define a_on  PORTD &= (~(1 << PD6));
 
@@ -94,7 +103,6 @@ digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 
 
 
-
 /***************************************************************/
 #define set_up_switched_inputs \
 MCUCR &= (~(1 << PUD));\
@@ -115,12 +123,16 @@ PORTC |= ((1 << PC5) | (1 << PC4));
 
 
 
+/************************************************************************************/
 #define User_prompt_Basic \
 while(1){\
 do{String_to_PC_Basic("R?    ");}  while((isCharavailable_Basic (50) == 0));\
 User_response = Char_from_PC_Basic();\
 if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_Basic("\r\n");
 
+
+
+/**************************************************************************************/
 #define OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
 &&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
@@ -133,3 +145,8 @@ if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
 #include "Resources/Subroutines/HW_timers.c"
 #include "Resources/PC_comms/Basic_Rx_Tx_Basic.c"
 #include "Resources/Subroutines/Random_and_prime_nos.c"
+
+
+
+
+/**********************************************************************************/
