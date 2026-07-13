@@ -16,6 +16,8 @@ setup_PC_comms_Basic(0,16);\
 Timer_T0_10mS_delay_x_m(5);
 
 
+
+/*************************************************************************/
 #define setup_watchdog \
 if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
 wdr();\
@@ -33,6 +35,8 @@ DDRC = (1 << DDC0) | (1 << DDC1) | (1 << DDC2) | (1 << DDC3);\
 DDRD = (1 << DDD2) |(1 << DDD3) |(1 << DDD4) | (1 << DDD5) | (1 << DDD6) | (1 << DDD7);
 
 
+
+/********************************************************************************/
 #define Clear_segments    a_off;b_off;c_off;d_off;e_off;f_off;g_off;dp_off;
 
 #define Clear_digits \
@@ -66,6 +70,8 @@ digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 #define digit_1_LH_off  PORTD &= (~(1 << PD2));
 
 
+
+/********************************************************************************/
 #define a_off   PORTD |= (1 << PD6);
 #define a_on  PORTD &= (~(1 << PD6));
 
@@ -97,6 +103,7 @@ digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 
 
 
+/**********************************************************************************/
 #define set_up_switched_inputs \
 MCUCR &= (~(1 << PUD));\
 DDRC &= (~((1 << PC5) | (1 << PC4)));\
@@ -111,6 +118,7 @@ PORTC |= ((1 << PC5) | (1 << PC4));
 #define enable_pci_on_sw3                PCMSK1 |= (1 << PCINT13);
 #define enable_pci_on_sw2                PCMSK1 |= (1 << PCINT12);
 #define dissable_pci_on_sw3              PCMSK1 &= (~(1 << PCINT13));
+
 
 
 /*****************************************************************************/
