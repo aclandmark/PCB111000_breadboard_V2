@@ -1,19 +1,13 @@
 
 
-      //Six examples using a timer interrupt to drive the display
-      //Take special care with examples 5 and 6: main routine has one extra line
+     
 
 #include "Interrupt_basic_header.h"
 
-//volatile long PORT_1 = 1, PORT_2 = 0x8000;                            //For example 1, 2 and 3
-//volatile int m = 0, n = 0, n_max;                                     //Extras for example 3
 volatile unsigned int clock_rate = 500;                               //Extra for examples 2 and 3
-//volatile unsigned int PRN;                                            //For example 4
-//unsigned char PRN_counter = 0;                                        //For example 4
-//volatile unsigned char counter = 0;                                   //For example 4
 volatile char dig_num = 0;
 volatile int seg_num = 0;
-//volatile int switch_down = 0;
+
 
 
  int main (void)   
