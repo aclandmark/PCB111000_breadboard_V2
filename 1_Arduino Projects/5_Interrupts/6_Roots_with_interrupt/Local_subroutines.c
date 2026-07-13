@@ -5,6 +5,7 @@ char waitforkeypress_Basic(void);
 extern volatile char num_present;
 
 
+
 /*******************************************************************************************************/
 char Int_to_String_Basic (long number, char * s)
 { int i = 11;                                               //Save characters starting from the end of the array rather than the begining
@@ -17,6 +18,7 @@ if (i >= 0){                                                //Shift the characte
 for(int m = 1; m <=(11-i); m++)*(s + m-1) = *(s + m+i); 
 *(s + 11-i) = '.';}
  return (12-i);}
+
 
 
 /*******************************************************************************************************/
