@@ -15,8 +15,6 @@ void Num_string_from_KBD_Local(char *);
 Enter integer number\r\n?"
 
 
-
-
 #define zero "abcdef"                   //chars a,b,c,d,e and f are stored in an array named "zero"
 #define one "bc"                        //chars b and c are stored in an array named "one"
 #define two "abdeg"                     //Note: the compiler terminates each string in zero
@@ -32,23 +30,21 @@ Enter integer number\r\n?"
 
 volatile char num_present = 0;                    //Set to one when number has been entered and -cr- presses (See Local subroutines)
 volatile char ready_to_compute = 0;               //Set to one as the ISR exits (to provide a fixed known time for calculations)
+volatile char dig_start = 0;
+volatile char dig = 0;
 volatile int digit_num;
 volatile int clock_rate = 500;
-volatile char dig_start = 0;
-
-
-long Num;
 char Num_string[12];
-
+long Num;
 const char* string_ptr = 0; 
 
-volatile char dig = 0;
+
 
 int main (void)
 {  setup_HW;
 //_delay_ms(1);
 
-set_up_PCI_on_sw2_and_sw3                                             //Eamples 2 and 3 only
+set_up_PCI_on_sw2_and_sw3    
 enable_pci_on_sw2; 
 enable_pci_on_sw3; 
 
@@ -73,6 +69,7 @@ eeprom_write_byte((uint8_t*)0x1FA, 0xFF);}
     Num_string_to_PC_Basic(Num_string);           //Send result to the PC
     newline_Basic();
     Char_to_PC_Basic('?'); }}
+
 
 
 /********************************************************************************************************/
@@ -126,6 +123,7 @@ if(!(digit_num))dig = dig_start;}
 
 
 
+/***********************************************************************************************************************/
 void display_single_digit (const char* s, int digit_num){             //Subroutine requires a pointer to the string   
 int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
@@ -144,14 +142,8 @@ case 'g':  g_on;    break;
 case 0:  break;                                                     //zero indicates the end of the string
 default: break;}
 if(!(letter))break;
-char_ptr++;}                                                         //incrementing "char_ptr" steps through the string
+char_ptr++;}}                                                         //incrementing "char_ptr" steps through the string
   
-}
-/********************************************************************************************************/
-
-
-
-
 
 
 /********************************************************************************************************/
@@ -162,6 +154,8 @@ long Askii_to_binary_Local(char * array_ptr) {
   return num;}
 
 
+
+/***********************************************************************************************/
 ISR(PCINT1_vect) {  if ((switch_2_up)&& (switch_3_up))return;                                                    //Use with examples 2 & 3 only
   
   if (switch_3_down){clock_rate = clock_rate/2;
@@ -170,12 +164,9 @@ ISR(PCINT1_vect) {  if ((switch_2_up)&& (switch_3_up))return;                   
   
   _delay_ms(100);
   if(clock_rate == 1)clock_rate = 500;}
-  
-  
+    
   if (switch_2_down){dig_start = (PRN_8bit_GEN())%8;
-  dig_start = dig_start%8;_delay_ms(50);}
-  
-  }
+  dig_start = dig_start%8;_delay_ms(50);}}
 
 
 
