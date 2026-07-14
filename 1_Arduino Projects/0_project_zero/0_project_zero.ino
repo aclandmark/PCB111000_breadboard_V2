@@ -4,6 +4,11 @@
 
 
 
+int main (void)    //Example 1  Red LED flashes
+{  setup_HW;
+  c_on;
+  SW_reset;}
+
 
  
 
