@@ -18,7 +18,7 @@ int main (void){
 char letter = 0, digit_num;            
 char seg_counter = 0;
 setup_HW;
-//_delay_ms(1);
+//_delay_ms(1);     //Not important
 
 
 if(first_run_after_programming)
