@@ -27,7 +27,7 @@ const char* string_ptr;        //pointer: will be loaded with the address of a s
                              //(i.e. the address of string "zero", "one", "two" etc....) 
 
 setup_HW;               
-_delay_ms(1);
+//_delay_ms(1);             //Delay not important
 
 if(first_run_after_programming)
 {clear_programmer;
