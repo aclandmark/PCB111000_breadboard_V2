@@ -36,7 +36,7 @@ char User_response;
 
 setup_HW;
 
-_delay_ms(1);
+//_delay_ms(1);     //Not critical
 
 if((power_on_reset) && ((eeprom_read_byte((uint8_t*)0x1F9)) != 0xFF)){
 EEP_Location = 0x1F9;
