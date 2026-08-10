@@ -16,7 +16,7 @@ Set_display_drivers;\
 Clear_segments;\
 Clear_digits;\
 set_up_switched_inputs;\
-setup_PC_comms_Basic(0,16);\
+setup_PC_comms_Local(0,16);\
 Timer_T0_10mS_delay_x_m(10);
 
 
@@ -132,7 +132,7 @@ PORTC |= (1 << PC5);
 
 
 /***************************************************************/
-#define User_prompt_Basic \
+#define User_prompt_B \
 while(1){\
 do{String_to_PC_B("R?    ");}  while((isCharavailable_B (50) == 0));\
 User_response = Char_from_PC_B();\
