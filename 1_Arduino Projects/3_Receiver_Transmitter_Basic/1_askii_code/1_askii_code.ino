@@ -82,11 +82,9 @@ int main (void)                //Example 6
   char *mem_add;
  wdt_enable(WDTO_120MS);
 
-   //_delay_ms(1);
-  
   String_to_PC_Local("\0Null string\r\n");
   String_to_PC_Local("Defining and using text strings\r\n\r\n");
-  
+   _delay_ms(50);
   const char *message_1 = "Hello world\r\n";
   const char *message_2 = "Sending text to a PC\r\n";
   const char message_3[] = "Writing C programs and\r\n";
