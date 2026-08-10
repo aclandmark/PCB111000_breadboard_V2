@@ -27,10 +27,10 @@
 /***********************************************************************************
 int main (void)               //Example 1
   { setup_HW;
-  User_prompt_Basic;
+  User_prompt_B;
   String_to_PC_Local("\r\nExploring the operation of the USART\r\n");
   Char_to_PC_Local('?');
-  newline_Basic();
+  newline_B();
   while (1)
   { Char_to_PC_Local
     (waitforkeypress_Local());
@@ -63,7 +63,7 @@ else String_to_PC_Local("\r\n\t");
 int main (void)               //Example 3
   { char symbol;        //Prints all askii symbols
   setup_HW;
-  newline_Basic();
+  newline_B();
   symbol = '!';
   while (symbol <= '~')
   { Char_to_PC_Local(symbol);
@@ -102,10 +102,10 @@ int main (void)                //Example 6
 mem_add = (char*)256;
 
 for(int m = 0; m <=190; m++){ 
-  if ((*(mem_add + m))== '\0')Hex_and_Int_to_PC_Basic (10,256+m);
- else Char_to_PC_Basic(*(mem_add + m));}
+  if ((*(mem_add + m))== '\0')Hex_and_Int_to_PC_B (10,256+m);
+ else Char_to_PC_B(*(mem_add + m));}
 
-  newline_Basic();newline_Basic();
+  newline_B();newline_B();
   
   while(switch_3_down)wdr();
    
@@ -119,12 +119,12 @@ int main (void)                          //Example 7
   wdt_enable(WDTO_120MS);
   while(switch_3_down)wdr();
   
-  newline_Basic();
+  newline_B();
   while (symbol <= '~')
-  { Int_to_PC_Basic(symbol);
+  { Int_to_PC_B(symbol);
     Char_to_PC_Local(symbol++);
     wdr();_delay_ms(50);
-    if (!((symbol - '!') % 8))newline_Basic();
+    if (!((symbol - '!') % 8))newline_B();
     else Char_to_PC_Local('\t');
   }
   while(switch_3_up)wdr();
@@ -140,7 +140,7 @@ int main (void)              //Example 8
 
 if (first_run_after_programming)
 {clear_programmer;
-User_prompt_Basic;String_to_PC_Local("\r\nEnter some text\
+User_prompt_B;String_to_PC_Local("\r\nEnter some text\
   maybe the name of a song then -cr-\r\n");}
 
 else String_to_PC_Local("\r\n?  ");
@@ -153,7 +153,7 @@ text [m] = '\0';
 m=0;
 while(text[m]){if((text[m]>='a') && (text[m]<= 'z'))
 text[m] -= 32; m+=1;}
-newline_Basic(); String_to_PC_Local(text);
+newline_B(); String_to_PC_Local(text);
 SW_reset; }
 
 
@@ -166,12 +166,12 @@ int main (void)                     //Example 9
     char askii_char;
    
     setup_HW;
-    String_to_PC_Basic("ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
+    String_to_PC_B("ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n\
 Send hex file\r\n");
           
   while (!(isCharavailable_Local(65)))  
     Char_to_PC_Local('?');    
-  newline_Basic();
+  newline_B();
   Char_from_PC_Local();
 
   while (1)
@@ -192,7 +192,7 @@ Send hex file\r\n");
               
               if (keypress >='A')keypress -= 7;
               askii_char = ((High_byte-'0') * 0x10)+ keypress - '0';
-            Char_to_PC_Basic(askii_char);High_byte=0;}}
+            Char_to_PC_B(askii_char);High_byte=0;}}
       
         }else {Char_to_PC_Local(keypress);}}
        else break;
