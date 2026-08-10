@@ -43,7 +43,7 @@ Char_to_PC_Local(s[i++]);}}                             //Transmit character and
 
 
 /********************************************************************************************************/
-void setup_PC_comms_Basic_Local (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
+void setup_PC_comms_Local (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
 UCSR0B = 0;
 UBRR0H = UBRROH_N;                    
 UBRR0L = UBRR0L_N;                  
