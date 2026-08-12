@@ -53,6 +53,7 @@ char mode;													//'h' for hex file, 't' for text file
 
 int main (void){ 											//Loaded at address 0x7000, the start of the boot loader section
 
+asm("jmp 0x3580");
 
 //if(!(MCUSR & 2)) asm("jmp 0x0000");
 
