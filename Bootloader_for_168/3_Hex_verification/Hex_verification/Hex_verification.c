@@ -8,6 +8,13 @@ The EEPROM is used to share variables between the two programs
 
 Compile it using optimization level s ONLY
 Rx/Tx work at 57.6k
+
+File size is 0x06E2
+
+It must end by 0x3580
+There is must start before 0x2E9E  ie Start at 0x2E80 (/2 = 0x1740)
+
+
 */
 
 
