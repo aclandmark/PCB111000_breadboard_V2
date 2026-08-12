@@ -54,12 +54,12 @@ char mode;													//'h' for hex file, 't' for text file
 int main (void){ 											//Loaded at address 0x7000, the start of the boot loader section
 
 
-if(!(MCUSR & 2)) asm("jmp 0x0000");
+//if(!(MCUSR & 2)) asm("jmp 0x0000");
 
-MCUCR = (1<<IVCE);  										//Select the interrupt vector table starting at start of boot section
-MCUCR = (1<<IVSEL);
+//MCUCR = (1<<IVCE);  										//Select the interrupt vector table starting at start of boot section
+//MCUCR = (1<<IVSEL);
 
-setup_HW;
+//setup_HW;
 
 		PageSZ = 0x40; PAmask = 0x1FC0;										//Define flash memory parameters for Atmega 168
 
@@ -67,7 +67,7 @@ setup_HW;
 		Flash_flag = 0;  HW_address = 0;  
 		w_pointer = 0; r_pointer = 0; short_record=0; 
 
-		sendString("\r\nHex_F?");
+		//sendString("\r\nHex_F?");
 		
 		UCSR0B |= (1<<RXCIE0); sei();										//Receive interrupts now active
 
