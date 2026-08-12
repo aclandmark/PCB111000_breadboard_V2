@@ -149,7 +149,7 @@ if(waitforkeypress() != '0')return;
 phys_address = 0;  read_ops=0; 
 line_no = 0; prog_counter_mem = prog_counter; 
 
-if(op_code == 'P')phys_address = 0x1800;
+if(op_code == 'P')phys_address = 0x1700;
 
 sendString("Integer(0-FF)?  ");										//0 prints no lines -1-, every line, -8- prints every eighth line etc... 
 skip_lines[0] = '0';												//Acquire integer between 0 and FF
