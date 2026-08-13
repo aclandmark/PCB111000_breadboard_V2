@@ -56,24 +56,24 @@ The complexity surrounding the various breaks has been maintained; it enables se
 
 
 /*********************************************************************************************************************/
-void timer_T0_sub(char Counter_speed, unsigned char Start_point){ 
+/*void timer_T0_sub(char Counter_speed, unsigned char Start_point){ 
 TCNT0 = Start_point;
 TCCR0B = Counter_speed;
 while(!(TIFR0 & (1<<TOV0)));
 TIFR0 |= (1<<TOV0); TCCR0B = 0;}
-
+*/
 
 
 /*********************************************************************************************************************/
-void Timer_T0_sub_with_interrupt(char Counter_speed, unsigned char Start_point){ 
+/*void Timer_T0_sub_with_interrupt(char Counter_speed, unsigned char Start_point){ 
 TIMSK0 |= (1 << TOIE0);
 TCNT0 = Start_point;
-TCCR0B = Counter_speed;}
+TCCR0B = Counter_speed;}*/
 
 
 
 /*********************************************************************************************************************/
-void new_record(void){int Local_r_pointer;								//Start of new record from the hex file
+/*void new_record(void){int Local_r_pointer;								//Start of new record from the hex file
 while (r_pointer == w_pointer);											//Wait for new entry in array "store"
 Local_r_pointer = r_pointer;
 record_length =  store[Local_r_pointer]; 								//Obtain the length of the new record
@@ -87,10 +87,30 @@ Local_r_pointer = r_pointer;
 Hex_address  =  (store[Local_r_pointer]); 								//Get the address of the first command in the new record
 inc_r_pointer;  														//Increment the read pointer
 Hex_address  = Hex_address/2;											//Convert address from byte to word value
-}  
+//orphan = 0;
+}  */
 
  
+void new_record(void){int Local_r_pointer;								//Start of new record from the hex file
+	while (r_pointer == w_pointer);											//Wait for new entry in array "store"
+	Local_r_pointer = r_pointer;
+	record_length =  store[Local_r_pointer]; 								//Obtain the length of the new record
+	inc_r_pointer;  														//Increment the read pointer
+	Count_down = record_length/2; 											//Initialised to record length (in commands)
+	if (record_length_old < 0x10)short_record=1;							//Check for "record length" (<8 commands)
+	record_length_old = record_length;										//Save record length
 
+	while (r_pointer == w_pointer);											//Wait for next entry in array "store"
+	Local_r_pointer = r_pointer;
+	Hex_address  =  (store[Local_r_pointer]); 								//Get the address of the first command in the new record
+	inc_r_pointer;  														//Increment the read pointer
+	Hex_address  = Hex_address/2;											//Convert address from byte to word value
+	prog_led_control++;
+
+	if (Hex_address == HW_address)orphan = 0;								//New record follows on immediately from the old
+}
+
+	
 
 /***********************************************************************************************************************/
 void start_new_code_block(void){
@@ -119,7 +139,7 @@ Flash_flag = 0;															//Buffer now contains no data to burn to flash
 write_address = 0;														//"while loop" continues if there is a line offset
 space_on_page = PageSZ;
 page_offset = line_offset;
-}}}											//One or more commands in current record will be on next page
+if (line_offset) orphan = 1;}}}											//One or more commands in current record will be on next page
 
 
 
