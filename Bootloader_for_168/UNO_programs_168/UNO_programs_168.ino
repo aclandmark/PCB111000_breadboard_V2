@@ -70,6 +70,7 @@ Read_write_mem('I', EE_size - 5, \
 (Atmel_config(signature_bit_3_h, signature_bit_3_l)));       
 
 Read_write_mem('I', 0x1FC, 0xF3);                                          //Initialise EEP locations for PRN use
+Read_write_mem('I', 0x1EF, 0xFF);
 
 sendString("Set BR to 57600 then press AK\r\n");
 USART_init(0,16);
