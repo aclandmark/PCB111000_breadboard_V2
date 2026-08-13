@@ -80,6 +80,7 @@ char Flash_flag;											//Indicates that the page buffer contains commands
 
 signed char record_length;									//Num commands on one line of hex file (i.e. on one record)
 signed char record_length_old;								//If record length changes, length of the previous one is important
+signed char orphan;
 volatile signed char line_offset;							//LSB of address of first command in record (usually zero)
 unsigned int prog_led_control;								//Used to control Leds as hex file is downloaded
 
