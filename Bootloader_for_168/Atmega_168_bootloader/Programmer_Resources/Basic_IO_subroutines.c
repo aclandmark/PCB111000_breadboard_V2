@@ -1,30 +1,30 @@
 
 
-void timer_T0_sub(char, unsigned char);
+//void timer_T0_sub(char, unsigned char);
 
 
 
 
 /*********************************************************************************************/
-void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
+/*void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
 {twenty_msec_delay;}	
 UCSR0B = 0;
 UBRR0H = UBRROH_N;  
 UBRR0L = UBRR0L_N;  
 UCSR0A = (1 << U2X0);
 UCSR0B = (1 << RXEN0) | (1<< TXEN0);
-UCSR0C =  (1 << UCSZ00)| (1 << UCSZ01);} 
+UCSR0C =  (1 << UCSZ00)| (1 << UCSZ01);}*/ 
 
 
 /*********************************************************************************************/
-void sendString(char s[]){
+/*void sendString(char s[]){
 int i = 0;
 while(1){
 if(s[i] == '\0') return;
 sendChar(s[i++]);
 } 
 }
-
+*/
 
 
 /*********************************************************************************************/
@@ -48,6 +48,6 @@ UDR0 = data;}
 
 
 /*********************************************************************************************/
-char waitforkeypress(void){
+/*char waitforkeypress(void){
 while (!(UCSR0A & (1 << RXC0)));
-return UDR0;}
+return UDR0;}*/
