@@ -53,14 +53,8 @@ char mode;													//'h' for hex file, 't' for text file
 
 int main (void){ 											//Loaded at address 0x7000, the start of the boot loader section
 
+if(eeprom_read_byte((uint8_t*)(0x1EF)))
 asm("jmp 0x3580");
-
-//if(!(MCUSR & 2)) asm("jmp 0x0000");
-
-//MCUCR = (1<<IVCE);  										//Select the interrupt vector table starting at start of boot section
-//MCUCR = (1<<IVSEL);
-
-//setup_HW;
 
 		PageSZ = 0x40; PAmask = 0x1FC0;										//Define flash memory parameters for Atmega 168
 
@@ -68,8 +62,6 @@ asm("jmp 0x3580");
 		Flash_flag = 0;  HW_address = 0;  
 		w_pointer = 0; r_pointer = 0; short_record=0; 
 
-		//sendString("\r\nHex_F?");
-		
 		UCSR0B |= (1<<RXCIE0); sei();										//Receive interrupts now active
 
 		new_record();  														//Start reading first record which is being downloaded to array "store"
@@ -80,23 +72,25 @@ asm("jmp 0x3580");
 				new_record();														//Continue reading subsequent records
 				if (record_length==0)break; 										//Escape when end of hex file is reached
 				
-				if(!(short_record)){
-					if (space_on_page == (PageSZ - line_offset))				//If starting new page
-					{page_address = (Hex_address & PAmask);}}					//get new page address
+				switch(short_record){
+					case 0: if (space_on_page == (PageSZ - line_offset))				//If starting new page
+					{page_address = (Hex_address & PAmask);}break;			//get new page address
 					
-					else	start_new_code_block();										//Short line with no break in file (indicates start of text string section).
-				short_record=0;
-				
-			Program_record();	}											//Continue filling page_buffer
+
+					case 1:	start_new_code_block();										//Short line with no break in file (often found in WinAVR hex files).
+				short_record=0;break;}
+	
+			Program_record();}											//Continue filling page_buffer
 
 		UCSR0B &= (~(1<<RXCIE0));	cli();									//download complete, disable UART Rx interrupt
 		while(1){if (isCharavailable(5)==1)receiveChar();else break;}		//Clear last few characters of hex file
 				
-		if(Flash_flag){write_page_SUB(page_address);}						//Burn final contents of page_buffer to flash
-		cli();
+		if((Flash_flag) && (!(orphan))){write_page_SUB(page_address);}	//Burn final contents of page_buffer to flash
+		if(orphan) {write_page_SUB(page_address + PageSZ);}cli();
+
 
 		clear_read_block();											//Subroutine provided in assembly file
-		asm("jmp 0x3100");}
+		asm("jmp 0x2E80");}
 
 
 
