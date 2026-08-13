@@ -93,5 +93,8 @@ int main (void){									//Loaded at address 0x7000, the start of the boot loade
 MCUCR = (1<<IVCE);  							//Select the interrupt vector table starting at start of boot section
 MCUCR = (1<<IVSEL);
 
-	asm("jmp 0x3868");}			//Try 0x3BD6
+
+eeprom_write_byte((uint8_t*)0x1EF, 0);
+
+	asm("jmp 0x3868");}
 
