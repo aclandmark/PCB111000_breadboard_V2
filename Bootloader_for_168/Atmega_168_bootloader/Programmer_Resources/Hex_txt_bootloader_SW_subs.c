@@ -105,7 +105,7 @@ void new_record(void){int Local_r_pointer;								//Start of new record from the
 	Hex_address  =  (store[Local_r_pointer]); 								//Get the address of the first command in the new record
 	inc_r_pointer;  														//Increment the read pointer
 	Hex_address  = Hex_address/2;											//Convert address from byte to word value
-	prog_led_control++;
+	//prog_led_control++;
 
 	if (Hex_address == HW_address)orphan = 0;								//New record follows on immediately from the old
 }
