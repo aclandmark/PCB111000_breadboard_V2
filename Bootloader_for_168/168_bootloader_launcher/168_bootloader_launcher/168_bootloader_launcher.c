@@ -14,6 +14,7 @@
 #include <stdio.h>
 
 char User_response;
+char watch_dog_reset;
 
 #define cal_device \
 eeprom_write_byte((uint8_t*)0x1FD, OSCCAL);\
@@ -31,15 +32,30 @@ PORTB = 0xFF;\
 PORTC = 0xFF;\
 PORTD = 0xFF;
 
+
 #define User_prompt_Basic \
 	while(1){\
-	do{sendString("p/r    ");}  while((isCharavailable (50) == 0));\
+	do{sendString("p/r    ");}  while((isCharavailable (250) == 0));\
 	User_response = receiveChar();\
 	switch(User_response){\
 		case 'p': break;\
 		case 'r': asm("jmp 0x0000");break;\
 		default: sendString("?\r\n");continue; break;}\
 		if(User_response =='p')break;}
+
+		
+#define setup_watchdog \
+if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
+wdr();\
+MCUSR &= ~(1<<WDRF);\
+WDTCSR |= (1 <<WDCE) | (1<< WDE);\
+WDTCSR = 0;
+
+#define wdr()  __asm__ __volatile__("wdr")
+
+#define SW_reset {wdt_enable(WDTO_30MS);while(1);}
+
+
 
 
 void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
@@ -79,9 +95,12 @@ void sendString(char s[]){
 int main (void){									//Loaded at address 0x7000, the start of the boot loader section
 
 
-	if(!(MCUSR & 2)) asm("jmp 0x0000");				//For POR or WDTout jump to application code. For reset only continue
+	if(!(MCUSR & 2)) 								//For POR or WDTout jump to application code. For reset only continue
+	{MCUSR = 0; asm("jmp 0x0000");}
 	
-
+	MCUSR = 0;
+	setup_watchdog;
+	ADMUX |= (1 << REFS0);
 	cal_device;
 	Initialise_I_O;
 	USART_init(0,16);
@@ -96,5 +115,5 @@ MCUCR = (1<<IVSEL);
 
 eeprom_write_byte((uint8_t*)0x1EF, 0);
 
-	asm("jmp 0x3868");}
+	asm("jmp 0x3800");}
 
