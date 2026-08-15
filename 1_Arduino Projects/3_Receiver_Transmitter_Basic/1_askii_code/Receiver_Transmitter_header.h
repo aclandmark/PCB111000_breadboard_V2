@@ -20,7 +20,6 @@ setup_PC_comms_Local(0,16);\
 Timer_T0_10mS_delay_x_m(10);
 
 
-
 /***************************************************************/
 #define setup_watchdog \
 if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
@@ -114,15 +113,16 @@ digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 /***************************************************************/
 #define set_up_switched_inputs \
 MCUCR &= (~(1 << PUD));\
-DDRC &= (~(1 << PC5));\
-PORTC |= (1 << PC5);
+DDRC &= (~((1 << PC5) | (1 << PC4)));\
+PORTC |= ((1 << PC5) | (1 << PC4));
 
 
 
 /***************************************************************/
-#define switch_3_down ((PINC & 0x20)^0x20)
-#define switch_3_up   (PINC & 0x20)
-
+#define switch_1_down ((PINC & 0x20)^0x20)
+#define switch_1_up   (PINC & 0x20)
+#define switch_2_down ((PINC & 0x10)^0x10)
+#define switch_2_up   (PINC & 0x10)
 
 
 /***************************************************************/
@@ -130,6 +130,16 @@ PORTC |= (1 << PC5);
 #define clear_programmer              eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
 
 
+
+/***********************************************************************/
+#define set_IO_WPU \
+MCUCR &= (~(1 << PUD));\
+DDRB = 0;\
+DDRC = 0;\
+DDRD = 0;\
+PORTB = 0xFF;\
+PORTC = 0xFF;\
+PORTD = 0xFF;
 
 /***************************************************************/
 #define User_prompt_B \
