@@ -3,7 +3,7 @@
 #include <avr/wdt.h>
 
 char watch_dog_reset;
-//char power_on_reset;
+char power_on_reset;
 char User_response;
 
 #define T0_delay_10ms   5,178
@@ -20,6 +20,7 @@ setup_PC_comms_Local(0,16);\
 Timer_T0_10mS_delay_x_m(10);
 
 
+
 /***************************************************************/
 #define setup_watchdog \
 if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
@@ -32,9 +33,15 @@ WDTCSR = 0;
 
 #define SW_reset {wdt_enable(WDTO_30MS);while(1);}
 
-/*#define Check_for_POR \
-if(MCUSR & (1 << PORF)){power_on_reset = 1;\
-MCUSR &= ~(1<<PORF);}*/
+
+
+/***************************************************************/
+#define Check_for_POR \
+if(MCUSR & (1 << PORF))\
+{MCUSR &= ~(1<<PORF);\
+power_on_reset = 1;}\
+if(power_on_reset)\
+{User_prompt_B;}
 
 
 
@@ -126,7 +133,7 @@ PORTC |= ((1 << PC5) | (1 << PC4));
 
 
 /***************************************************************/
-#define first_run_after_programming   !(eeprom_read_byte((uint8_t*)0x1FA))
+#define just_programmed              !(eeprom_read_byte((uint8_t*)0x1FA))
 #define clear_programmer              eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
 
 
@@ -141,6 +148,8 @@ PORTB = 0xFF;\
 PORTC = 0xFF;\
 PORTD = 0xFF;
 
+
+
 /***************************************************************/
 #define User_prompt_B \
 while(1){\
@@ -148,11 +157,14 @@ do{String_to_PC_B("R?    ");}  while((isCharavailable_B (50) == 0));\
 User_response = Char_from_PC_B();\
 if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_B("\r\n");
 
+
+
 /***********************************************************************************************/
 #define OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
 &&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
 == eeprom_read_byte((uint8_t*)0x1FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x1FE);}
+
 
 
 /*****************************************************************************/
