@@ -54,12 +54,12 @@ int main (void){
 		short_num_to_PC(Flash_readout);	sendChar('\t');
 	}}newline(); newline();
 
+
+eeprom_write_byte((uint8_t*)(0x1FA),0);					//Can be cleated by application (often speial user prompt required post programming)
+eeprom_write_byte((uint8_t*)(0x1EF),0xFF);				//At next reset jump to bootloader launcher				
 MCUSR = 0;
-eeprom_write_byte((uint8_t*)(0x1FA),0);
-eeprom_write_byte((uint8_t*)(0x1EF),0xFF);
-MCUSR &= (~(1 << PORF));
 	wdt_enable(WDTO_15MS);
-	while(1);
+	while(1);											//Set WDTout reset flag.
 return 1;}
 
 
