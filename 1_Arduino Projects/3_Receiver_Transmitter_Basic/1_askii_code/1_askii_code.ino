@@ -23,7 +23,6 @@
 
 
 
-
 /***********************************************************************************
 int main (void)               //Example 1
   { setup_HW;
@@ -80,6 +79,12 @@ int main (void)               //Example 3
 int main (void)                //Example 6
   { setup_HW;         //Exploring program memory
   char *mem_add;
+ 
+ Check_for_POR;
+ 
+if(just_programmed){clear_programmer;
+ String_to_PC_Local("Device just programed\r\n");}
+  
  wdt_enable(WDTO_120MS);
   
   String_to_PC_Local("\0Null string\r\n");
@@ -98,7 +103,7 @@ int main (void)                //Example 6
 
  String_to_PC_Local("\r\nPrint out of program memory\r\n\r\n");
 mem_add = (char*)256;
-for(int m = 0; m <=190; m++){ 
+for(int m = 0; m <=210; m++){ 
   if ((*(mem_add + m))== '\0')Hex_and_Int_to_PC_B (10,256+m);
  else Char_to_PC_B(*(mem_add + m));}
 
