@@ -3,6 +3,13 @@
 //Must stop at 0x3800
 //Therefore start at 0x3580 (/2 = 0x1AC0)
 
+/*
+Contains HW set up code and strings that are not essential to the bootloading processs
+
+All resets take program controll to 0x3800 the start of the bootloader partition
+Fom there a jump to this application is executed immediately
+*/
+
 #define F_CPU 8000000
 
 #include <util/delay.h>
@@ -92,28 +99,28 @@ void sendString(char s[]){
 
 
 
-int main (void){									//Loaded at address 0x7000, the start of the boot loader section
+int main (void){									//Loaded at address 0x3580, just ahead of the boot loader section
 
-
-	if(!(MCUSR & 2)) 								//For POR or WDTout jump to application code. For reset only continue
-	{MCUSR = 0; asm("jmp 0x0000");}
+	if(!(MCUSR & 2)) 								//For EXTRF skip the jmp 0x0000 command
+	{asm("jmp 0x0000");}							//Jump to aplication code for POR and WDTout				
 	
-	MCUSR = 0;
+	MCUSR &= (~(1 << EXTRF));						//Clear EXTRF
+	
 	setup_watchdog;
 	ADMUX |= (1 << REFS0);
 	cal_device;
 	Initialise_I_O;
 	USART_init(0,16);
 	_delay_ms(50);
-	User_prompt_Basic;
+	User_prompt_Basic;								//jump to 0x0000 if -r- is pressed or  continue if -p- is pressed
 	sendString("\r\nSend_Atmega 168 Hex file\r\n");
 
 
-MCUCR = (1<<IVCE);  							//Select the interrupt vector table starting at start of boot section
+MCUCR = (1<<IVCE);  								//Select the interrupt vector table starting at start of boot section
 MCUCR = (1<<IVSEL);
 
 
-eeprom_write_byte((uint8_t*)0x1EF, 0);
+eeprom_write_byte((uint8_t*)0x1EF, 0);				//Signals bootloader: Programming required
 
-	asm("jmp 0x3800");}
+	asm("jmp 0x3800");}								//Jump to bootloader
 
