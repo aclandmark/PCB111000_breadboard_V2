@@ -51,10 +51,10 @@ EEPROM locations
 
 char mode;													//'h' for hex file, 't' for text file
 
-int main (void){ 											//Loaded at address 0x7000, the start of the boot loader section
+int main (void){ 											//Loaded at address 0x3800, the start of the boot loader section
 
 if(eeprom_read_byte((uint8_t*)(0x1EF)))						//Set to 0xFF by verification and UNO programmer
-asm("jmp 0x3580");														//Jump to launcher
+asm("jmp 0x3580");														//Jump to launcher which can set 0x1EF to zero
 
 		PageSZ = 0x40; PAmask = 0x1FC0;										//Define flash memory parameters for Atmega 168
 
@@ -90,7 +90,7 @@ asm("jmp 0x3580");														//Jump to launcher
 
 
 		clear_read_block();											//Subroutine provided in assembly file
-		asm("jmp 0x2E80");}
+		asm("jmp 0x2E80");}											//Jump to verification routine
 
 
 
