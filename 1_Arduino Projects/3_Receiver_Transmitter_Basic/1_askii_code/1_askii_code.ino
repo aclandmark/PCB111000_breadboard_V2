@@ -16,7 +16,28 @@
 
 //Ten simple examples to experiment with.
 
+int main (void)             //Example 2
+  { setup_HW;
+  char keypress;
 
+
+if (just_programmed)
+{clear_programmer;
+watch_dog_reset = 0;
+String_to_PC_Local("\r\nWe often send\
+  detailed text the first time our program runs\r\n\
+  and a simple prompt on subsequent ocaissions\r\n\
+  Enter number -cr- when done\r\n\t");}
+
+  if(watch_dog_reset){
+  watch_dog_reset = 0;
+String_to_PC_Local("\r\nAgain\t");}
+  
+  while (1)
+  { keypress = waitforkeypress_Local();
+    if  ((keypress =='\r') ||  (keypress =='\n'))break; 
+    else Char_to_PC_Local(keypress); }
+ SW_reset; }
 
 
 
