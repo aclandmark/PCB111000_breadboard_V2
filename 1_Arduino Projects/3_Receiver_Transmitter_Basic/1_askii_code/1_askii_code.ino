@@ -42,7 +42,7 @@ int main (void)             //Example 2
   { setup_HW;
   char keypress;
 
-if (first_run_after_programming)
+if (just_programmed)
 {clear_programmer;
 String_to_PC_Local("\r\nWe often send\
   detailed text the first time our program runs\r\n\
@@ -117,7 +117,7 @@ int main (void)                          //Example 7
   { char symbol = '!';          //Print out askii table
   setup_HW;
   wdt_enable(WDTO_120MS);
-  while(switch_3_down)wdr();
+  while(switch_1_down)wdr();
   
   newline_B();
   while (symbol <= '~')
@@ -127,8 +127,8 @@ int main (void)                          //Example 7
     if (!((symbol - '!') % 8))newline_B();
     else Char_to_PC_Local('\t');
   }
-  while(switch_3_up)wdr();
-  while(switch_3_down);  }
+  while(switch_1_up)wdr();
+  while(switch_1_down);  }
 
 
 
@@ -138,7 +138,7 @@ int main (void)              //Example 8
  char text[25];
  int m=0;
 
-if (first_run_after_programming)
+if (just_programmed)
 {clear_programmer;
 User_prompt_B;String_to_PC_Local("\r\nEnter some text\
   maybe the name of a song then -cr-\r\n");}
