@@ -141,7 +141,7 @@ int main (void)              //Example 8
 if (just_programmed)
 {clear_programmer;
 User_prompt_B;String_to_PC_Local("\r\nEnter some text\
-  maybe the name of a song then -cr-\r\n");}
+  with numbers and both upper and lower case letters -cr-\r\n");}
 
 else String_to_PC_Local("\r\n?  ");
    
