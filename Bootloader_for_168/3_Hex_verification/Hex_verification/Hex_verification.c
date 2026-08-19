@@ -81,7 +81,7 @@ void Verify_Flash (void){
 	line_no = 0; prog_counter_mem = prog_counter;
 														//Start of verification routine
 
-sendString("\t0 for basic or AOK\r\n");
+sendString("\t0 or AOK\r\n");
 print_line = waitforkeypress() - '0';
 
 
