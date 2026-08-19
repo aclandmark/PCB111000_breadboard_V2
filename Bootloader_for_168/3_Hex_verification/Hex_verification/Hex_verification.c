@@ -55,8 +55,14 @@ int main (void){
 	}}newline(); newline();
 
 
-eeprom_write_byte((uint8_t*)(0x1FA),0);					//Can be cleated by application (often speial user prompt required post programming)
-eeprom_write_byte((uint8_t*)(0x1EF),0xFF);				//At next reset jump to bootloader launcher				
+//eeprom_write_byte((uint8_t*)(0x1FA),0);					//Can be cleated by application (often special user prompt required post programming)
+//eeprom_write_byte((uint8_t*)(0x1EF),0xFF);				//At next reset jump to bootloader launcher				
+
+eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) | (1)) ); //At next reset jump to bootloader launcher	
+eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~2)) );  //Can be cleated by application (often special user prompt required post programming)
+
+
+
 MCUSR = 0;
 	wdt_enable(WDTO_15MS);
 	while(1);											//Set WDTout reset flag.
