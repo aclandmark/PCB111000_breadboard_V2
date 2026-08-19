@@ -120,7 +120,9 @@ MCUCR = (1<<IVCE);  								//Select the interrupt vector table starting at star
 MCUCR = (1<<IVSEL);
 
 
-eeprom_write_byte((uint8_t*)0x1EF, 0);				//Signals bootloader: Programming required
-
+//eeprom_write_byte((uint8_t*)0x1EF, 0);				
+eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~1)) );  //Signals bootloader: Programming required
+	
+	
 	asm("jmp 0x3800");}								//Jump to bootloader
 
