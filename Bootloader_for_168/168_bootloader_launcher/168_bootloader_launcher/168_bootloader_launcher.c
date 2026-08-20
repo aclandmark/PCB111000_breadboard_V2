@@ -4,10 +4,10 @@
 //Therefore start at 0x3580 (/2 = 0x1AC0)
 
 /*
-Contains HW set up code and strings that are not essential to the bootloading processs
+Contains HW set up code and strings that are not essential to the bootloading processes
 
-All resets take program controll to 0x3800 the start of the bootloader partition
-Fom there a jump to this application is executed immediately
+All resets take program control to 0x3800 the start of the bootloader partition
+from there a jump to this application is executed immediately
 */
 
 #define F_CPU 8000000
@@ -66,7 +66,6 @@ WDTCSR = 0;
 
 
 void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
-	//_delay_ms(50);
 	UCSR0B = 0;
 	UBRR0H = UBRROH_N;
 	UBRR0L = UBRR0L_N;
@@ -102,7 +101,7 @@ void sendString(char s[]){
 int main (void){									//Loaded at address 0x3580, just ahead of the boot loader section
 
 	if(!(MCUSR & 2)) 								//For EXTRF skip the jmp 0x0000 command
-	{asm("jmp 0x0000");}							//Jump to aplication code for POR and WDTout				
+	{asm("jmp 0x0000");}							//Jump to application code for POR and WDTout				
 	
 	MCUSR &= (~(1 << EXTRF));						//Clear EXTRF
 	
@@ -118,11 +117,8 @@ int main (void){									//Loaded at address 0x3580, just ahead of the boot load
 
 MCUCR = (1<<IVCE);  								//Select the interrupt vector table starting at start of boot section
 MCUCR = (1<<IVSEL);
-
-
-//eeprom_write_byte((uint8_t*)0x1EF, 0);				
+				
 eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~1)) );  //Signals bootloader: Programming required
 	
-	
-	asm("jmp 0x3800");}								//Jump to bootloader
+asm("jmp 0x3800");}								//Jump to bootloader
 
