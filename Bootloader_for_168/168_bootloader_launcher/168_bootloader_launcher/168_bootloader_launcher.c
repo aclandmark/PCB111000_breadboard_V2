@@ -46,7 +46,8 @@ PORTD = 0xFF;
 	User_response = receiveChar();\
 	switch(User_response){\
 		case 'p': break;\
-		case 'r': asm("jmp 0x0000");break;\
+		case 'r': eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~4)) );\
+		asm("jmp 0x0000");break;\
 		default: sendString("?\r\n");continue; break;}\
 		if(User_response =='p')break;}
 
@@ -64,9 +65,8 @@ WDTCSR = 0;
 
 
 
-
 void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
-	_delay_ms(50);
+	//_delay_ms(50);
 	UCSR0B = 0;
 	UBRR0H = UBRROH_N;
 	UBRR0L = UBRR0L_N;
@@ -111,7 +111,7 @@ int main (void){									//Loaded at address 0x3580, just ahead of the boot load
 	cal_device;
 	Initialise_I_O;
 	USART_init(0,16);
-	_delay_ms(50);
+	for(char p = 0; p<= 100; p++){asm("nop");}
 	User_prompt_Basic;								//jump to 0x0000 if -r- is pressed or  continue if -p- is pressed
 	sendString("\r\nSend_Atmega 168 Hex file\r\n");
 
