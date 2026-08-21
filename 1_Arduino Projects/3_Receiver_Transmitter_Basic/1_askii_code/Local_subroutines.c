@@ -52,6 +52,14 @@ UCSR0B = (1 << RXEN0) | (1<< TXEN0);
 UCSR0C =  (1 << UCSZ00)| (1 << UCSZ01);}
 
 
+void print_char_as_binary(char x)
+{for(int m = 0; m <= 7; m++)
+if (x & (1 << m))Char_to_PC_Local('1');
+else   Char_to_PC_Local('0');
+}
+
+
+
 
 
 /*********************************************************************************************/
