@@ -38,9 +38,9 @@ EEPROM locations
 #include "Atmega_168_bootloader_header.h"
 #define Version "Hex_txt_bootloader_V1 "
 
-#define Reset_control_switch_up		(PINC & 0x20)
+//#define Reset_control_switch_up		(PINC & 0x20)
 
-#define reset_ctl_reg				0x3FC
+//#define reset_ctl_reg				0x3FC
 /*#define set_POR_bit					eeprom_write_byte((uint8_t*)reset_ctl_reg, ~1)
 #define set_WDTout_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~2))
 #define	set_Run_BL_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~4))
@@ -49,7 +49,7 @@ EEPROM locations
 #define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 4)
 */
 
-char mode;													//'h' for hex file, 't' for text file
+//char mode;													//'h' for hex file, 't' for text file
 
 int main (void){ 											//Loaded at address 0x3800, the start of the boot loader section
 
