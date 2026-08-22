@@ -54,8 +54,10 @@ int main (void){
 		short_num_to_PC(Flash_readout);	sendChar('\t');
 	}}newline(); newline();
 
-eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) | (1)) ); //At next reset jump to bootloader launcher	
-eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~2)) );  //Can be cleared by application (often special user prompt required post programming)
+//eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) | (1)) ); //At next reset jump to bootloader launcher	
+//eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~2)) );  //Can be cleared by application (often special user prompt required post programming)
+
+eeprom_write_byte((uint8_t*)0x1EF,0b11111101);
 
 MCUSR = 0;
 	wdt_enable(WDTO_15MS);
