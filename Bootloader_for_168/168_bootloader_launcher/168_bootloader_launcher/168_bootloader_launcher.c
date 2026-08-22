@@ -39,7 +39,7 @@ PORTB = 0xFF;\
 PORTC = 0xFF;\
 PORTD = 0xFF;
 
-
+/*
 #define User_prompt_Basic \
 	while(1){\
 	do{sendString("p/r    ");}  while((isCharavailable (250) == 0));\
@@ -50,7 +50,7 @@ PORTD = 0xFF;
 		asm("jmp 0x0000");break;\
 		default: sendString("?\r\n");continue; break;}\
 		if(User_response =='p')break;}
-
+*/
 		
 #define setup_watchdog \
 if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
@@ -111,14 +111,27 @@ int main (void){									//Loaded at address 0x3580, just ahead of the boot load
 	Initialise_I_O;
 	USART_init(0,16);
 	for(char p = 0; p<= 100; p++){asm("nop");}
-	User_prompt_Basic;								//jump to 0x0000 if -r- is pressed or  continue if -p- is pressed
+	
+	
+	
+	while(1){
+	do{sendString("p/r    ");}  while((isCharavailable (250) == 0));
+	User_response = receiveChar();
+	switch(User_response){
+		case 'p': break;
+		case 'r': eeprom_write_byte((uint8_t*)0x1EF,0b11111011);// ((eeprom_read_byte((uint8_t*)0x1EF)) & (~4)) );//SIMPLY WRITE ~4 to 0x1EF
+		asm("jmp 0x0000");break;
+		default: sendString("?\r\n");continue; break;}
+		if(User_response =='p')break;}
+	
+	//User_prompt_Basic;								//jump to 0x0000 if -r- is pressed or  continue if -p- is pressed
 	sendString("\r\nSend_Atmega 168 Hex file\r\n");
 
 
 MCUCR = (1<<IVCE);  								//Select the interrupt vector table starting at start of boot section
 MCUCR = (1<<IVSEL);
 				
-eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~1)) );  //Signals bootloader: Programming required
-	
+//eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~1)) );  //Signals bootloader: Programming required
+	eeprom_write_byte((uint8_t*)0x1EF,0b11111110);
 asm("jmp 0x3800");}								//Jump to bootloader
 
