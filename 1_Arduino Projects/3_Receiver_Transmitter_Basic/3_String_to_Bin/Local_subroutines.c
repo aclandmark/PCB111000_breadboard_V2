@@ -1,8 +1,8 @@
 
 
 
-void Int_to_PC_Basic (long);
-void newline_Basic(void);
+void Int_to_PC_B (long);
+void newline_B(void);
 
 
 void Re_order_array(int* num_array,int array_length){
@@ -20,7 +20,7 @@ test_num = max_num;
 for(int n = 0; n < array_length; n++)
 {if((num_array[n] <= test_num) && (num_array[n] > next_term)) 
 test_num = num_array[n];} 
-Int_to_PC_Basic(test_num);newline_Basic();
+Int_to_PC_B(test_num);newline_B();
 
 if(test_num == max_num)break;
 
