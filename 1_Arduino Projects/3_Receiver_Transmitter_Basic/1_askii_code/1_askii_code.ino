@@ -16,32 +16,7 @@
 
 //Ten simple examples to experiment with.
 
-int main (void)             //Example 2
-{char keypress;
-  setup_HW;
-  
 
-print_char_as_binary(eeprom_read_byte((uint8_t*)0x1EF));
-
-
-if ((just_programmed) || (r_prompt))
-{if(just_programmed)Char_to_PC_Local('P');
-  clear_resets;
-
-String_to_PC_Local("\r\nWe often send\
-  detailed text the first time our program runs\r\n\
-  and a simple prompt on subsequent ocaissions\r\n\
-  Enter number -cr- when done\r\n\t");}
-
-  if(watch_dog_reset){
-  watch_dog_reset = 0;
-String_to_PC_Local("\r\nAgain\t");}
-  
-  while (1)
-  { keypress = waitforkeypress_Local();
-    if  ((keypress =='\r') ||  (keypress =='\n'))break; 
-    else Char_to_PC_Local(keypress); }
- SW_reset; }
 
 
 
@@ -51,7 +26,6 @@ String_to_PC_Local("\r\nAgain\t");}
 /***********************************************************************************
 int main (void)               //Example 1
   { setup_HW;
-  User_prompt_B;
   String_to_PC_Local("\r\nExploring the operation of the USART\r\n");
   Char_to_PC_Local('?');
   newline_B();
@@ -64,13 +38,13 @@ int main (void)               //Example 1
 
 
 int main (void)             //Example 2
-  { setup_HW;
-  char keypress;
+{char keypress;
+  
+  setup_HW;
 
+if ((just_programmed) || (r_prompt))
+{clear_resets;
 
-if (just_programmed)
-{clear_programmer;
-watch_dog_reset = 0;
 String_to_PC_Local("\r\nWe often send\
   detailed text the first time our program runs\r\n\
   and a simple prompt on subsequent ocaissions\r\n\
@@ -82,8 +56,13 @@ String_to_PC_Local("\r\nAgain\t");}
   
   while (1)
   { keypress = waitforkeypress_Local();
-    if  ((keypress =='\r') ||  (keypress =='\n'))break; 
+    if  ((keypress =='\r') ||  (keypress =='\n') || (keypress == 'x'))break; 
     else Char_to_PC_Local(keypress); }
+
+if (keypress == 'x')
+{User_prompt_B;
+repeat_program;}
+    
  SW_reset; }
 
 
@@ -111,7 +90,7 @@ int main (void)                //Example 6
  
  Check_for_POR;
  
-if(just_programmed){clear_programmer;
+if(just_programmed){clear_resets;
  String_to_PC_Local("Device just programed\r\n");}
   
  wdt_enable(WDTO_120MS);
@@ -168,7 +147,7 @@ int main (void)              //Example 8
  int m=0;
 
 if (just_programmed)
-{clear_programmer;
+{clear_resets;
 User_prompt_B;String_to_PC_Local("\r\nEnter some text\
   with numbers and both upper and lower case letters -cr-\r\n");}
 
