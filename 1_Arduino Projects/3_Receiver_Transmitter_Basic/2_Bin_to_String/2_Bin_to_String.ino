@@ -20,7 +20,7 @@ int main (void)              //Example 1
   setup_HW;
   //Set up watchdog timer to generate a reset
   wdt_enable(WDTO_120MS);
- while(switch_3_down)wdr();
+ while(switch_1_down)wdr();
 
   //Convert binary number to string
   while(1) {
@@ -31,11 +31,11 @@ int main (void)              //Example 1
 
   //Print string out in reverse order
     for (int m = i; m > 0; m--)
-    Char_to_PC_Basic(s[m - 1]);
-  newline_Basic();
+    Char_to_PC_B(s[m - 1]);
+  newline_B();
  //Generate a reset
- while(switch_3_up)wdr();
-  while(switch_3_down);
+ while(switch_1_up)wdr();
+  while(switch_1_down);
   return 1;}
 
 
@@ -55,11 +55,11 @@ str_len = Bin_to_string_Local(number, num_string);
  if (!(direction))number = number *3/2;
 else number = number *2/3;
   
-  newline_Basic();
- waitforkeypress_Basic();
+  newline_B();
+ waitforkeypress_B();
 if (number >= 18000){direction ^= 1;
-number = number *2/3;newline_Basic();}}
-newline_Basic();SW_reset;
+number = number *2/3;newline_B();}}
+newline_B();SW_reset;
   return 1;}
 
 
@@ -70,39 +70,39 @@ int main (void)                 //Example 3
  
   setup_HW;
   wdt_enable(WDTO_120MS);
-  while(switch_3_down)wdr();
+  while(switch_1_down)wdr();
   
   for(int m = 2; m < 11; m++){
-  Int_to_PC_Basic(number);
- newline_Basic();
+  Int_to_PC_B(number);
+ newline_B();
 
 number = (number_old * 10) + m;  
 number_old = number;}
 
-while(switch_3_up)wdr();
-  while(switch_3_down);
+while(switch_1_up)wdr();
+  while(switch_1_down);
   return 1;}
 
 
 **********************************************************************
- int main (void)                    //Example 4
+int main (void)                    //Example 4
   { int i = 0;             //Print out a column of numbers
   long number = 123456789;
   long number_old = 123456789;
   char s[12];
   setup_HW;
    wdt_enable(WDTO_120MS);
-  while(switch_3_down)wdr();
+  while(switch_1_down)wdr();
   
   for(int m = 2; m < 11; m++){
-Int_to_PC_Basic(number);
- newline_Basic();
+Int_to_PC_B(number);
+ newline_B();
 
 number = number_old / 10;  
 number_old = number;}
 
-while(switch_3_up)wdr();
-  while(switch_3_down);
+while(switch_1_up)wdr();
+  while(switch_1_down);
   return 1;}
 
 
@@ -131,8 +131,8 @@ switch(Short_random_number%4)
 
 str_len = Bin_to_string_Local(num_array[m], num_string);
  Num_string_to_PC_Local(num_string, str_len);
-waitforkeypress_Basic(); 
-Char_to_PC_Basic(' ');
+waitforkeypress_B(); 
+Char_to_PC_B(' ');
 
 random_num = PRN_16bit_GEN (random_num, &PRN_counter);
  Short_random_number = PRN_8bit_GEN();}
