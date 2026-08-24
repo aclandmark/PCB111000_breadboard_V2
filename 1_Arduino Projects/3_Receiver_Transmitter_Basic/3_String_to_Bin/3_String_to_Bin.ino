@@ -16,16 +16,29 @@
 
 
 
-
+int main (void){               //Example 1
+  char num_string[12];
+  long num;
+setup_HW;
+if (just_programmed)
+{clear_resets;
+String_to_PC_B("Enter numbers at keyboard\r\n");}
+Num_string_from_KBD_Local(num_string);
+Char_to_PC_B('\t');
+num = Askii_to_binary_Local(num_string);
+Int_to_PC_B(num/2);
+newline_B();
+SW_reset;
+return 1;}
 
 
 
 //***********************Subroutines*********************************
 void Num_string_from_KBD_Local(char * array_ptr)
 { char keypress;
-  while ((keypress = waitforkeypress_Basic()) != '\r')
+  while ((keypress = waitforkeypress_B()) != '\r')
   { *array_ptr = keypress;
-    Char_to_PC_Basic(keypress);
+    Char_to_PC_B(keypress);
     array_ptr += 1;
   }
   *array_ptr = '\0';}
@@ -51,12 +64,12 @@ int main (void){               //Example 1
 setup_HW;
 if (first_run_after_programming)
 {clear_programmer;
-String_to_PC_Basic("Enter numbers at keyboard\r\n");}
+String_to_PC_B("Enter numbers at keyboard\r\n");}
 Num_string_from_KBD_Local(num_string);
-Char_to_PC_Basic('\t');
+Char_to_PC_B('\t');
 num = Askii_to_binary_Local(num_string);
-Int_to_PC_Basic(num/2);
-newline_Basic();
+Int_to_PC_B(num/2);
+newline_B();
 SW_reset;
 return 1;}
 
@@ -68,16 +81,16 @@ int main (void){                //Example 2
   long num = 2;
   long old_num = 2;
 setup_HW;
-String_to_PC_Basic("Multiply number by 2 and enter it\r\n");
-String_to_PC_Basic("2\r\n");
+String_to_PC_B("Multiply number by 2 and enter it\r\n");
+String_to_PC_B("2\r\n");
 while(1){
   
 Num_string_from_KBD_Local(num_string);
 num = Askii_to_binary_Local(num_string);
 
 if(num == old_num * 2)
-{newline_Basic();old_num = num;}
-else Char_to_PC_Basic('?');
+{newline_B();old_num = num;}
+else Char_to_PC_B('?');
 }
 SW_reset;
 return 1;}
@@ -91,14 +104,14 @@ int main (void){                //Example 3
       
 setup_HW;
 
-String_to_PC_Basic("Enter numbers at keyboard (zero to exit)\r\n");
+String_to_PC_B("Enter numbers at keyboard (zero to exit)\r\n");
 
 while(1){
 Num_string_from_KBD_Local(num_string);
-Char_to_PC_Basic(' ');
+Char_to_PC_B(' ');
 num_array[array_length] = Askii_to_binary_Local(num_string);
 if(!(num_array[array_length++]))break;}
-newline_Basic();
+newline_B();
 array_length -= 1;
 
 Re_order_array(num_array,array_length);
