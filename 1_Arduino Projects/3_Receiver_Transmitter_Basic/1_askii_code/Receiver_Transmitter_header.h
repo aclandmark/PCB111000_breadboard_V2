@@ -5,8 +5,13 @@
 char watch_dog_reset;
 char power_on_reset;
 char User_response;
+char r_prompt;
 
 #define T0_delay_10ms   5,178
+
+void Char_to_PC_Local(char);
+
+
 
 #define setup_HW \
 setup_watchdog;\
@@ -17,7 +22,9 @@ Clear_segments;\
 Clear_digits;\
 set_up_switched_inputs;\
 setup_PC_comms_Local(0,16);\
-Timer_T0_10mS_delay_x_m(10);
+Timer_T0_10mS_delay_x_m(10);\
+Check_for_r_prompt();\
+Check_for_POR;
 
 
 
@@ -31,7 +38,18 @@ WDTCSR = 0;
 
 #define wdr()  __asm__ __volatile__("wdr")
 
-#define SW_reset {wdt_enable(WDTO_30MS);while(1);}
+
+
+/*****************************************************************************/
+#define SW_reset   wdt_enable(WDTO_30MS);while(1); 
+
+
+
+/*****************************************************************************/
+void Check_for_r_prompt(void){
+  if (!(eeprom_read_byte((uint8_t*)0x1EF) & 0x04))
+  {r_prompt = 1;Char_to_PC_Local('R');}
+  else r_prompt = 0;}
 
 
 
@@ -39,9 +57,9 @@ WDTCSR = 0;
 #define Check_for_POR \
 if(MCUSR & (1 << PORF))\
 {MCUSR &= ~(1<<PORF);\
-power_on_reset = 1;}\
-if(power_on_reset)\
-{User_prompt_B;}
+User_prompt_B;\
+Char_to_PC_Local('X');\
+r_prompt = 1;}
 
 
 
@@ -133,10 +151,11 @@ PORTC |= ((1 << PC5) | (1 << PC4));
 
 
 /***************************************************************/
-#define just_programmed              !(eeprom_read_byte((uint8_t*)0x1FA))
-#define clear_programmer              eeprom_write_byte((uint8_t*)0x1FA, 0xFF);
+#define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
 
-
+#define clear_resets \
+eeprom_write_byte((uint8_t*)0x1EF, 0xFF);\
+watch_dog_reset = 0;
 
 /***********************************************************************/
 #define set_IO_WPU \
