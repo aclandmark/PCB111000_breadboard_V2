@@ -17,7 +17,7 @@ Clear_segments;\
 Clear_digits;\
 set_up_switched_inputs;\
 set_up_unused_IO;\
-setup_PC_comms_Basic(0,16);\
+setup_PC_comms_B(0,16);\
 Timer_T0_10mS_delay_x_m(10);
 
 
@@ -33,10 +33,6 @@ WDTCSR = 0;
 #define wdr()  __asm__ __volatile__("wdr")
 
 #define SW_reset {wdt_enable(WDTO_30MS);while(1);}
-
-/*#define Check_for_POR \
-if(MCUSR & (1 << PORF)){power_on_reset = 1;\
-MCUSR &= ~(1<<PORF);}*/
 
 
 
@@ -130,35 +126,41 @@ PORTB |= (1 << PB1);
 
 
 /***************************************************************/
-#define switch_3_down ((PINC & 0x20)^0x20)
-#define switch_3_up   (PINC & 0x20)
+#define switch_1_down ((PINC & 0x20)^0x20)
+#define switch_1_up   (PINC & 0x20)
 
 
 
 /***************************************************************/
-#define first_run_after_programming   !(eeprom_read_byte((uint8_t*)0x3FA))
-#define clear_programmer              eeprom_write_byte((uint8_t*)0x3FA, 0xFF);
+#define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
+
+#define clear_resets \
+eeprom_write_byte((uint8_t*)0x1EF, 0xFF);\
+watch_dog_reset = 0;
 
 
 
 /***************************************************************/
-#define User_prompt_Basic \
+#define User_prompt_B \
 while(1){\
-do{String_to_PC_Basic("R?    ");}  while((isCharavailable_Basic (50) == 0));\
-User_response = Char_from_PC_Basic();\
-if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_Basic("\r\n");
+do{String_to_PC_B("R?    ");}  while((isCharavailable_B (50) == 0));\
+User_response = Char_from_PC_B();\
+if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_B("\r\n");
+
+
 
 /***********************************************************************************************/
 #define OSC_CAL \
-if ((eeprom_read_byte((uint8_t*)0x3FE) > 0x0F)\
-&&  (eeprom_read_byte((uint8_t*)0x3FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FE)\
-== eeprom_read_byte((uint8_t*)0x3FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
+if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
+&&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
+== eeprom_read_byte((uint8_t*)0x1FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x1FE);}
+
 
 
 /*****************************************************************************/
-#include "328_Resources/Subroutines/HW_timers.c"
-#include "328_Resources/PC_comms/Basic_Rx_Tx_Basic.c"
-#include "328_Resources/Subroutines/Random_and_prime_nos.c"
+#include "168_Resources/Subroutines/HW_timers.c"
+#include "168_Resources/PC_comms/Basic_Rx_Tx_Basic.c"
+#include "168_Resources/Subroutines/Random_and_prime_nos.c"
 
 
 
