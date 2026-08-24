@@ -1,20 +1,14 @@
 
 /*
-This program is used to verify that a hex file has been successfully loaded into flash.
-It is loaded onto the Atmega328 at address 0x6880 and works alongside the "Hex_text_programmer".
-It is accessed by the "Hex_text_programmer" using an assembly jump command and a WDTout returns
-control the the "Hex_text_programmer"
-The EEPROM is used to share variables between the two programs
-
 Compile it using optimization level s ONLY
 Rx/Tx work at 57.6k
 
-File size is 0x06E2
+File size is 0x06D2 bytes
+It is loaded at 0x2E80 (0x1740 HW address) and ends at 0x3552
+The launcher starts at 0x3580 leaving 46 unused bytes for expansion
 
-It must end by 0x3580
-There is must start before 0x2E9E  ie Start at 0x2E80 (/2 = 0x1740)
-
-
+Space for user apps is 0x2E80 bytes		72.65%
+Space for bootloader is 0x1180 bytes	27.34%
 */
 
 
@@ -53,9 +47,6 @@ int main (void){
 		read_config_bytes();
 		short_num_to_PC(Flash_readout);	sendChar('\t');
 	}}newline(); newline();
-
-//eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) | (1)) ); //At next reset jump to bootloader launcher	
-//eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~2)) );  //Can be cleared by application (often special user prompt required post programming)
 
 eeprom_write_byte((uint8_t*)0x1EF,0b11111101);
 
