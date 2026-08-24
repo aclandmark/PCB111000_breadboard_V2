@@ -38,9 +38,6 @@ WDTCSR = 0;
 
 #define wdr()  __asm__ __volatile__("wdr")
 
-
-
-/*****************************************************************************/
 #define SW_reset   wdt_enable(WDTO_30MS);while(1); 
 
 
@@ -48,7 +45,7 @@ WDTCSR = 0;
 /*****************************************************************************/
 void Check_for_r_prompt(void){
   if (!(eeprom_read_byte((uint8_t*)0x1EF) & 0x04))
-  {r_prompt = 1;Char_to_PC_Local('R');}
+  r_prompt = 1;
   else r_prompt = 0;}
 
 
@@ -58,8 +55,20 @@ void Check_for_r_prompt(void){
 if(MCUSR & (1 << PORF))\
 {MCUSR &= ~(1<<PORF);\
 User_prompt_B;\
-Char_to_PC_Local('X');\
 r_prompt = 1;}
+
+
+
+/***************************************************************/
+#define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
+#define repeat_program      eeprom_write_byte((uint8_t*)0x1EF, ~0x02)
+
+
+
+/***************************************************************/
+#define clear_resets \
+eeprom_write_byte((uint8_t*)0x1EF, 0xFF);\
+watch_dog_reset = 0;
 
 
 
@@ -150,12 +159,6 @@ PORTC |= ((1 << PC5) | (1 << PC4));
 #define switch_2_up   (PINC & 0x10)
 
 
-/***************************************************************/
-#define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
-
-#define clear_resets \
-eeprom_write_byte((uint8_t*)0x1EF, 0xFF);\
-watch_dog_reset = 0;
 
 /***********************************************************************/
 #define set_IO_WPU \
