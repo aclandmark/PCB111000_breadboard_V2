@@ -17,7 +17,7 @@ Clear_segments;\
 Clear_digits;\
 set_up_switched_inputs;\
 set_up_unused_IO;\
-setup_PC_comms_Basic(0,16);\
+setup_PC_comms_B(0,16);\
 Timer_T0_10mS_delay_x_m(10);
 
 
@@ -34,9 +34,6 @@ WDTCSR = 0;
 
 #define SW_reset {wdt_enable(WDTO_30MS);while(1);}
 
-/*#define Check_for_POR \
-if(MCUSR & (1 << PORF)){power_on_reset = 1;\
-MCUSR &= ~(1<<PORF);}*/
 
 
 
@@ -130,8 +127,8 @@ PORTB |= (1 << PB1);
 
 
 /***************************************************************/
-#define switch_3_down ((PINC & 0x20)^0x20)
-#define switch_3_up   (PINC & 0x20)
+#define switch_1_down ((PINC & 0x20)^0x20)
+#define switch_1_up   (PINC & 0x20)
 
 
 
@@ -156,9 +153,9 @@ if ((eeprom_read_byte((uint8_t*)0x3FE) > 0x0F)\
 
 
 /*****************************************************************************/
-#include "328_Resources/Subroutines/HW_timers.c"
-#include "328_Resources/PC_comms/Basic_Rx_Tx_Basic.c"
-#include "328_Resources/Subroutines/Random_and_prime_nos.c"
+#include "168_Resources/Subroutines/HW_timers.c"
+#include "168_Resources/PC_comms/Basic_Rx_Tx_Basic.c"
+#include "168_Resources/Subroutines/Random_and_prime_nos.c"
 
 
 
