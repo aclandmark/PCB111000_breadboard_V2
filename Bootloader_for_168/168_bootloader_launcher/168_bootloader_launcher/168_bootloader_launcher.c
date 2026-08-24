@@ -1,7 +1,4 @@
 
-//Hex file size 0x023A  Requires 0x0280 bytes
-//Must stop at 0x3800
-//Therefore start at 0x3580 (/2 = 0x1AC0)
 
 /*
 Contains HW set up code and strings that are not essential to the bootloading processes
@@ -39,18 +36,6 @@ PORTB = 0xFF;\
 PORTC = 0xFF;\
 PORTD = 0xFF;
 
-/*
-#define User_prompt_Basic \
-	while(1){\
-	do{sendString("p/r    ");}  while((isCharavailable (250) == 0));\
-	User_response = receiveChar();\
-	switch(User_response){\
-		case 'p': break;\
-		case 'r': eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~4)) );\
-		asm("jmp 0x0000");break;\
-		default: sendString("?\r\n");continue; break;}\
-		if(User_response =='p')break;}
-*/
 		
 #define setup_watchdog \
 if (MCUSR & (1 << WDRF))watch_dog_reset = 1;\
@@ -73,6 +58,7 @@ void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
 	UCSR0B = (1 << RXEN0) | (1<< TXEN0);
 UCSR0C =  (1 << UCSZ00)| (1 << UCSZ01);}
 
+
 void sendChar(char data){
 	while (!(UCSR0A & (1 << UDRE0)));
 UDR0 = data;}
@@ -83,6 +69,7 @@ void sendString(char s[]){
 	while(1){
 		if(s[i] == '\0') return;
 	sendChar(s[i++]);}}
+
 
 
 	char isCharavailable (int m){int n = 0;
@@ -112,26 +99,22 @@ int main (void){									//Loaded at address 0x3580, just ahead of the boot load
 	USART_init(0,16);
 	for(char p = 0; p<= 100; p++){asm("nop");}
 	
-	
-	
 	while(1){
 	do{sendString("p/r    ");}  while((isCharavailable (250) == 0));
 	User_response = receiveChar();
 	switch(User_response){
 		case 'p': break;
-		case 'r': eeprom_write_byte((uint8_t*)0x1EF,0b11111011);// ((eeprom_read_byte((uint8_t*)0x1EF)) & (~4)) );//SIMPLY WRITE ~4 to 0x1EF
+		case 'r': eeprom_write_byte((uint8_t*)0x1EF,0b11111011);
 		asm("jmp 0x0000");break;
 		default: sendString("?\r\n");continue; break;}
 		if(User_response =='p')break;}
 	
-	//User_prompt_Basic;								//jump to 0x0000 if -r- is pressed or  continue if -p- is pressed
 	sendString("\r\nSend_Atmega 168 Hex file\r\n");
 
 
 MCUCR = (1<<IVCE);  								//Select the interrupt vector table starting at start of boot section
 MCUCR = (1<<IVSEL);
 				
-//eeprom_write_byte((uint8_t*)0x1EF, ((eeprom_read_byte((uint8_t*)0x1EF)) & (~1)) );  //Signals bootloader: Programming required
-	eeprom_write_byte((uint8_t*)0x1EF,0b11111110);
-asm("jmp 0x3800");}								//Jump to bootloader
+eeprom_write_byte((uint8_t*)0x1EF,0b11111110);		//Activates bootloading
+asm("jmp 0x3800");}									//Jump to bootloader
 
