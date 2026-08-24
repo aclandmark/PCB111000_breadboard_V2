@@ -3,7 +3,6 @@
 #include <avr/wdt.h>
 
 char watch_dog_reset;
-//char power_on_reset;
 char User_response;
 
 #define T0_delay_10ms   5,178
@@ -133,23 +132,29 @@ PORTB |= (1 << PB1);
 
 
 /***************************************************************/
-#define first_run_after_programming   !(eeprom_read_byte((uint8_t*)0x3FA))
-#define clear_programmer              eeprom_write_byte((uint8_t*)0x3FA, 0xFF);
+#define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
+
+#define clear_resets \
+eeprom_write_byte((uint8_t*)0x1EF, 0xFF);\
+watch_dog_reset = 0;
 
 
 
 /***************************************************************/
-#define User_prompt_Basic \
+#define User_prompt_B \
 while(1){\
-do{String_to_PC_Basic("R?    ");}  while((isCharavailable_Basic (50) == 0));\
-User_response = Char_from_PC_Basic();\
-if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_Basic("\r\n");
+do{String_to_PC_B("R?    ");}  while((isCharavailable_B (50) == 0));\
+User_response = Char_from_PC_B();\
+if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_B("\r\n");
+
+
 
 /***********************************************************************************************/
 #define OSC_CAL \
-if ((eeprom_read_byte((uint8_t*)0x3FE) > 0x0F)\
-&&  (eeprom_read_byte((uint8_t*)0x3FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FE)\
-== eeprom_read_byte((uint8_t*)0x3FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
+if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
+&&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
+== eeprom_read_byte((uint8_t*)0x1FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x1FE);}
+
 
 
 /*****************************************************************************/
