@@ -1,55 +1,8 @@
-/*
-Bootloader for PCB111000_CP2102.
-Uploads user apps to the Atmega328
-Uploads commentary text file to Atmega328 flash when pcb is being set up.
 
-Loaded at address 0x7000
-
-
-EEPROM locations
-0x3FF	User cal
-0x3FE	User cal
-0x3FD	Default cal
-0x3FC	Controls reset and program flow						
-	bit 0	POR_bit	
-	bit 1	WDTout_bit
-	bit 2	Run_BL_bit
-	bit 3	prtD_bit
-	Note: There is no external reset facility. User control is enabled using a switch on PINC5.
-
-0x3FB	prog_counter high byte				No longer used
-0x3FA	prog_counter low byte				No longer used
-0x3F9	cmd_counter high byte				Number of commands processed by the UART ISR
-0x3F8	cmd_counter low byte
-0x3F7	One_wire_cal
-0x3F6	One wire cal
-0x3F5	Watch dog timeout					No longer used
-0x3F4	Used to control text print out  	No longer needed
-0x3F3	Used by PRN generators
-0x3F2	Used by PRN generators
-0x3F1	Reserved or use by PRN
-0x3F0	Reserved or use by PRN
-0x3EF	Reserved or use by PRN
-0x3EE	Reserved or use by PRN
-0x3ED	PRN_offset 0, 1 or 2 
-
-*/
 
 #include "Atmega_168_bootloader_header.h"
 #define Version "Hex_txt_bootloader_V1 "
 
-//#define Reset_control_switch_up		(PINC & 0x20)
-
-//#define reset_ctl_reg				0x3FC
-/*#define set_POR_bit					eeprom_write_byte((uint8_t*)reset_ctl_reg, ~1)
-#define set_WDTout_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~2))
-#define	set_Run_BL_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~4))
-#define set_prtD_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg, ~8)
-#define prtD_bit_clear				(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 8)			
-#define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 4)
-*/
-
-//char mode;													//'h' for hex file, 't' for text file
 
 int main (void){ 											//Loaded at address 0x3800, the start of the boot loader section
 
