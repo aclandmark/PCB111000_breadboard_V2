@@ -7,6 +7,9 @@ char power_on_reset;
 char User_response;
 char r_prompt;
 
+unsigned int PRN;
+unsigned char PRN_counter;
+
 #define T0_delay_10ms   5,178
 
 void Char_to_PC_Local(char);
@@ -21,10 +24,11 @@ Set_display_drivers;\
 Clear_segments;\
 Clear_digits;\
 set_up_switched_inputs;\
-setup_PC_comms_Local(0,16);\
-Timer_T0_10mS_delay_x_m(10);\
-Check_for_r_prompt();\
-Check_for_POR;
+setup_PC_comms_B(0,16);\
+Timer_T0_10mS_delay_x_m(10);
+
+//Check_for_r_prompt();\
+//Check_for_POR;
 
 
 
