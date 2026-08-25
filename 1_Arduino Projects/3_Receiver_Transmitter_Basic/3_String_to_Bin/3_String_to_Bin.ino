@@ -16,20 +16,7 @@
 
 
 
-int main (void){               //Example 1
-  char num_string[12];
-  long num;
-setup_HW;
-if (just_programmed)
-{clear_resets;
-String_to_PC_B("Enter numbers at keyboard\r\n");}
-Num_string_from_KBD_Local(num_string);
-Char_to_PC_B('\t');
-num = Askii_to_binary_Local(num_string);
-Int_to_PC_B(num/2);
-newline_B();
-SW_reset;
-return 1;}
+
 
 
 
@@ -62,8 +49,8 @@ int main (void){               //Example 1
   char num_string[12];
   long num;
 setup_HW;
-if (first_run_after_programming)
-{clear_programmer;
+if ((just_programmed) || (r_prompt))
+{clear_resets;
 String_to_PC_B("Enter numbers at keyboard\r\n");}
 Num_string_from_KBD_Local(num_string);
 Char_to_PC_B('\t');
