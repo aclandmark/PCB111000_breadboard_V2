@@ -103,7 +103,6 @@ if (counter == 20){direction ^= 1; counter = 0;}
 ************************************************************
    int main (void)   //Example 12
   { unsigned int random_num;
-  unsigned char PRN_counter;
   long PORT_1 = 1, PORT_2 = 1;
 
   setup_HW;
@@ -148,9 +147,7 @@ int main (void)     //Example 13  Random display
  
  ************************************************************
  int main (void)               //Example 14 Random binary
-{ unsigned int PRN;
-  unsigned char PRN_counter;
-
+{ 
   setup_HW;
   wdt_enable(WDTO_30MS);
   PRN_counter = 0;
