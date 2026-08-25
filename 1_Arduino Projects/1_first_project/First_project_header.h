@@ -58,10 +58,10 @@ void Check_for_r_prompt(void){
 #define Check_for_POR \
 if(MCUSR & (1 << PORF))\
 {MCUSR &= ~(1<<PORF);\
-User_prompt_B;\
+\
 r_prompt = 1;}
 
-
+//User_prompt_B;
 
 /***************************************************************/
 #define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
