@@ -3,10 +3,15 @@
 #include <avr/wdt.h>
 
 char watch_dog_reset;
-//char power_on_reset;
+char power_on_reset;
 char User_response;
+char r_prompt;
 
 #define T0_delay_10ms   5,178
+
+void Char_to_PC_Local(char);
+
+
 
 #define setup_HW \
 setup_watchdog;\
@@ -16,9 +21,10 @@ Set_display_drivers;\
 Clear_segments;\
 Clear_digits;\
 set_up_switched_inputs;\
-set_up_unused_IO;\
-setup_PC_comms_B(0,16);\
-Timer_T0_10mS_delay_x_m(10);
+setup_PC_comms_Local(0,16);\
+Timer_T0_10mS_delay_x_m(10);\
+Check_for_r_prompt();\
+Check_for_POR;
 
 
 
@@ -32,7 +38,37 @@ WDTCSR = 0;
 
 #define wdr()  __asm__ __volatile__("wdr")
 
-#define SW_reset {wdt_enable(WDTO_30MS);while(1);}
+#define SW_reset   wdt_enable(WDTO_30MS);while(1); 
+
+
+
+/*****************************************************************************/
+void Check_for_r_prompt(void){
+  if (!(eeprom_read_byte((uint8_t*)0x1EF) & 0x04))
+  r_prompt = 1;
+  else r_prompt = 0;}
+
+
+
+/***************************************************************/
+#define Check_for_POR \
+if(MCUSR & (1 << PORF))\
+{MCUSR &= ~(1<<PORF);\
+User_prompt_B;\
+r_prompt = 1;}
+
+
+
+/***************************************************************/
+#define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
+#define repeat_program      eeprom_write_byte((uint8_t*)0x1EF, ~0x02)
+
+
+
+/***************************************************************/
+#define clear_resets \
+eeprom_write_byte((uint8_t*)0x1EF, 0xFF);\
+watch_dog_reset = 0;
 
 
 
@@ -111,32 +147,28 @@ digit_1_LH_off;digit_2_LH_off;digit_3_LH_off;digit_4_LH_off;
 /***************************************************************/
 #define set_up_switched_inputs \
 MCUCR &= (~(1 << PUD));\
-DDRC &= (~(1 << PC5));\
-PORTC |= (1 << PC5);
-
-
-
-/***************************************************************/
-#define set_up_unused_IO \
-DDRD &= (~((1 << PD3) | (1 << PD4) | (1 << PD5)));\
-PORTD |= ((1 << PD3) | (1 << PD4) | (1 << PD5));\
-DDRB &= (~(1 << PB1));\
-PORTB |= (1 << PB1);
+DDRC &= (~((1 << PC5) | (1 << PC4)));\
+PORTC |= ((1 << PC5) | (1 << PC4));
 
 
 
 /***************************************************************/
 #define switch_1_down ((PINC & 0x20)^0x20)
 #define switch_1_up   (PINC & 0x20)
+#define switch_2_down ((PINC & 0x10)^0x10)
+#define switch_2_up   (PINC & 0x10)
 
 
 
-/***************************************************************/
-#define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
-
-#define clear_resets \
-eeprom_write_byte((uint8_t*)0x1EF, 0xFF);\
-watch_dog_reset = 0;
+/***********************************************************************/
+#define set_IO_WPU \
+MCUCR &= (~(1 << PUD));\
+DDRB = 0;\
+DDRC = 0;\
+DDRD = 0;\
+PORTB = 0xFF;\
+PORTC = 0xFF;\
+PORTD = 0xFF;
 
 
 
