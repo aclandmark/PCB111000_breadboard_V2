@@ -23,21 +23,21 @@ int main (void)
  
  setup_HW;
 
-if (first_run_after_programming)
-{clear_programmer;
-String_to_PC_Basic(message_1);}
+if ((just_programmed) || (r_prompt))
+{clear_resets;
+String_to_PC_B(message_1);}
 
-else String_to_PC_Basic(message_2);
+else String_to_PC_B(message_2);
   
-num = Int_from_PC_Basic(num_string);
+num = Int_from_PC_B(num_string);
 
-newline_Basic();
-Int_to_PC_Basic(num);
-String_to_PC_Basic("\t");
+newline_B();
+Int_to_PC_B(num);
+String_to_PC_B("\t");
 
 do{
-if(!(num%m)){Int_to_PC_Basic(m);}
-m += 1; if(!(m%10000))String_to_PC_Basic(".");}while(m < num);
+if(!(num%m)){Int_to_PC_B(m);}
+m += 1; if(!(m%10000))String_to_PC_B(".");}while(m < num);
 
 SW_reset;
 return 1;  }
