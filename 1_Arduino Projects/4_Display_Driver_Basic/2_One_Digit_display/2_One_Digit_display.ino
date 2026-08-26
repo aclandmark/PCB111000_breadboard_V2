@@ -3,6 +3,11 @@
 //so that numbers can simply be entered at the keyboard
 //For use with breadboard loaded with single digit
 
+
+//Send file num_string or send string from Br@y with delay set to 1
+
+
+
 #include "One_Digit_display_header.h"
 #include "display_header.h"
 #include "Local_subroutines.c"
