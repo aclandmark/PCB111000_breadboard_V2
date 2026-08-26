@@ -20,16 +20,16 @@ char letter = 0, digit_num;
 char seg_counter = 0;
 setup_HW;
 
-if(first_run_after_programming)
-{clear_programmer;
-String_to_PC_Basic(message_1);}
-else String_to_PC_Basic(message_2);
+if((just_programmed) || (r_prompt))
+{clear_resets;
+String_to_PC_B(message_1);}
+else String_to_PC_B(message_2);
 
 digit_num=1;
 while(digit_num <= 8){
 
 do{
-letter = waitforkeypress_Basic();
+letter = waitforkeypress_B();
   
   if(!(seg_counter)){
  Clear_digits;
