@@ -19,30 +19,30 @@ int main (void)
   setup_HW;
 
   if (watch_dog_reset != 1)
-newline_Basic();
+newline_B();
 
     UCSR0B |= (1 << RXCIE0);
   sei();
-newline_Basic();
+newline_B();
   symbol = '!';
   while (symbol <= '~')
-  { Char_to_PC_Basic(symbol);
+  { Char_to_PC_B(symbol);
     _delay_ms(75);
     symbol++;
     sym_counter++;
     wdr();
   }
-  cli();waitforkeypress_Basic();
+  cli();waitforkeypress_B();
   
-newline_Basic();
+newline_B();
 SW_reset;}
 
 
 
 ISR(USART_RX_vect){
-Char_from_PC_Basic();
-newline_Basic();
-for (int m = 0; m <= sym_counter; m++)String_to_PC_Basic(" ");}
+Char_from_PC_B();
+newline_B();
+for (int m = 0; m <= sym_counter; m++)String_to_PC_B(" ");}
 
 
 
