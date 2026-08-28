@@ -14,12 +14,12 @@ volatile int seg_num = 0;
   {
   setup_HW;
  
-set_up_PCI_on_sw2_and_sw3                                             //Eamples 2 and 3 only
-enable_pci_on_sw3;                                              //Eamples 2 and 3 only
+set_up_PCI_on_sw1_and_sw2                                             //Eamples 2 and 3 only
+enable_pci_on_sw1;                                              //Eamples 2 and 3 only
     Clear_digits;
     Clear_segments;
 digit_1_LH_on;
-   String_to_PC_Basic("\r\nMomentarily switch pin 28 to gnd to increase flash rate");
+   String_to_PC_B("\r\nMomentarily switch pin 28 to gnd to increase flash rate");
     
     sei();
    T1_clock_tick(clock_rate);
@@ -39,11 +39,11 @@ OCR1A = T1_period_in_ms * 125;                                //Set register OCR
 
 //*****************************************************************************************************
 ISR(PCINT1_vect) {  
-  dissable_pci_on_sw3;
-  if (switch_3_up)return;
-  Char_to_PC_Basic('.');
+  dissable_pci_on_sw1;
+  if (switch_1_up)return;
+  Char_to_PC_B('.');
  
-   if (switch_3_down)clock_rate = clock_rate *3/4;
+   if (switch_1_down)clock_rate = clock_rate *3/4;
   if(clock_rate <= 25)clock_rate = 500;
 if (seg_num == 16) seg_num = 0;
   Clear_digits;
@@ -63,7 +63,7 @@ case 7:  digit_1_LH_on; break;}
   dig_num = dig_num%8;
   sei();
   Timer_T0_10mS_delay_x_m(20);
-  enable_pci_on_sw3;}
+  enable_pci_on_sw1;}
 
 
 
