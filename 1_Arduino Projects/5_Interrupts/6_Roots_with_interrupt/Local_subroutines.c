@@ -1,13 +1,13 @@
 
 
-void Int_to_PC_Basic(long);
-char waitforkeypress_Basic(void);
+void Int_to_PC_B(long);
+char waitforkeypress_B(void);
 extern volatile char num_present;
 
 
 
 /*******************************************************************************************************/
-char Int_to_String_Basic (long number, char * s)
+char Int_to_String_B (long number, char * s)
 { int i = 11;                                               //Save characters starting from the end of the array rather than the begining
 for(int m = 0; m <= 11; m++)s[m] = 0;
    do
@@ -24,7 +24,7 @@ for(int m = 1; m <=(11-i); m++)*(s + m-1) = *(s + m+i);
 /*******************************************************************************************************/
 void Num_string_from_KBD_Local(char * array_ptr)
 { char keypress;
-  while ((keypress = waitforkeypress_Basic()) != '\r')
+  while ((keypress = waitforkeypress_B()) != '\r')
   { *array_ptr = keypress;
     array_ptr += 1;}
   *array_ptr = '\0'; num_present = 1;}
@@ -47,7 +47,7 @@ if (product <= Num){result = start_value;}
 else break;
 start_value += 1;
 product = 1.0;}}
-str_ptr = Int_to_String_Basic(result, result_as_string); //Char_to_PC_Basic('.');
+str_ptr = Int_to_String_B(result, result_as_string); //Char_to_PC_B('.');
 
 /*****Improve iteration starting with one decimal place then 2, 3......up to 6 in all****/
 for(int p = 1; p <= 6; p++)
