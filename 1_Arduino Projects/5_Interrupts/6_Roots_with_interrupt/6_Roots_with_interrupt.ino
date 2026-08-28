@@ -42,33 +42,32 @@ const char* string_ptr = 0;
 
 int main (void)
 {  setup_HW;
-//_delay_ms(1);
 
-set_up_PCI_on_sw2_and_sw3    
+
+set_up_PCI_on_sw1_and_sw2    
 enable_pci_on_sw2; 
-enable_pci_on_sw3; 
+enable_pci_on_sw1; 
 
+if ((just_programmed) || (r_prompt))
+{clear_resets;
+String_to_PC_B(message_1);}
 
-if(MCUSR & (1 << PORF)){User_prompt_Basic;eeprom_write_byte((uint8_t*)0x1FA, 0);MCUSR = 0;}
-if(!(eeprom_read_byte((uint8_t*)0x1FA)))
-{String_to_PC_Basic(message_1);
-eeprom_write_byte((uint8_t*)0x1FA, 0xFF);}   
 
   digit_num = 0;
   sei();
  T1_clock_tick(clock_rate); 
  while (1) {
     Num_string_from_KBD_Local(Num_string);
-    Num_string_to_PC_Basic(Num_string);
-    Char_to_PC_Basic('\t');
+    Num_string_to_PC_B(Num_string);
+    Char_to_PC_B('\t');
    while(!(ready_to_compute));                    //Wait here for best time to start computation
   ready_to_compute = 0;
   num_present = 0; 
    Num = Askii_to_binary_Local(Num_string);       //Convert number entered at the KBD to binary
-    root_computation(Num, Num_string);            //Calculate the root, and save in "Num_string" (see Int_to_String_Basic() in Localsubroutines)
-    Num_string_to_PC_Basic(Num_string);           //Send result to the PC
-    newline_Basic();
-    Char_to_PC_Basic('?'); }}
+    root_computation(Num, Num_string);            //Calculate the root, and save in "Num_string" (see Int_to_String_B() in Localsubroutines)
+    Num_string_to_PC_B(Num_string);           //Send result to the PC
+    newline_B();
+    Char_to_PC_B('?'); }}
 
 
 
@@ -156,9 +155,9 @@ long Askii_to_binary_Local(char * array_ptr) {
 
 
 /***********************************************************************************************/
-ISR(PCINT1_vect) {  if ((switch_2_up)&& (switch_3_up))return;                                                    //Use with examples 2 & 3 only
+ISR(PCINT1_vect) {  if ((switch_2_up)&& (switch_1_up))return;                                                    //Use with examples 2 & 3 only
   
-  if (switch_3_down){clock_rate = clock_rate/2;
+  if (switch_1_down){clock_rate = clock_rate/2;
  TCNT1 = 0;
   OCR1A = clock_rate * 125;
   
