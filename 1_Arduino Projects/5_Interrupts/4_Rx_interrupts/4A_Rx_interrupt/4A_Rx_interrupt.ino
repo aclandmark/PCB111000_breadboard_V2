@@ -24,11 +24,10 @@ int main (void)
   for(int m = 0; m <50; m++)repeats[m] = 0;
  
 
-if(first_run_after_programming)
-{clear_programmer;
-String_to_PC_Basic("\r\nMultiple key presses?\r\n");}
+if ((just_programmed) || (r_prompt))
+{clear_resets;
+String_to_PC_B("\r\nMultiple key presses?\r\n");}
 
-else ;
 
     UCSR0B |= (1 << RXCIE0);
 sei();
@@ -39,19 +38,19 @@ while(!(keypress_counter));
 
   do{
 symbol = repeats[next_keypress - 1];symbol -= '!';
-for(int q = 0; q <='~' - '!'; q++)Char_to_PC_Basic((symbol+q)%94 + '!');
-newline_Basic(); if(next_keypress < keypress_counter)next_keypress += 1;
+for(int q = 0; q <='~' - '!'; q++)Char_to_PC_B((symbol+q)%94 + '!');
+newline_B(); if(next_keypress < keypress_counter)next_keypress += 1;
 else break;} 
 while(next_keypress < 50);
  
  
-newline_Basic();
+newline_B();
 SW_reset;}
 
 
 ISR(USART_RX_vect)
 { keypress_counter += 1;
-  repeats[p++] = Char_from_PC_Basic();}
+  repeats[p++] = Char_from_PC_B();}
 
 
 
