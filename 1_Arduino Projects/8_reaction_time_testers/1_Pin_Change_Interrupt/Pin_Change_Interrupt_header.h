@@ -58,9 +58,11 @@ void Check_for_r_prompt(void){
 #define Check_for_POR \
 if(MCUSR & (1 << PORF))\
 {MCUSR &= ~(1<<PORF);\
-User_prompt_B;\
+\
 r_prompt = 1;}
 
+
+//User_prompt_B;
 
 
 /***************************************************************/
