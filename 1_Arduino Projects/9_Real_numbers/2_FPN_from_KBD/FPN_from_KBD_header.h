@@ -4,28 +4,33 @@
 
 #include <avr/wdt.h>
 
-char User_response;
 char watch_dog_reset;
 char power_on_reset;
-unsigned int PRN;
-unsigned char PRN_counter;
+char User_response;
+char r_prompt;
 
 #define T0_delay_10ms   5,178
+
 
 
 /***************************************************************************/
 #define setup_HW \
 setup_watchdog;\
-Check_for_POR;\
 ADMUX |= (1 << REFS0);\
 OSC_CAL;\
 Set_display_drivers;\
 set_up_switched_inputs;\
 Serial.begin(115200);\
 while (!Serial);\
-Timer_T0_10mS_delay_x_m(5);
+Timer_T0_10mS_delay_x_m(10);\
+Check_for_r_prompt();\
+Check_for_POR;
 
-
+/*
+ * Clear_segments;\
+Clear_digits;\
+set_up_switched_inputs;\
+ */
 
 /***************************************************************************/
 #define setup_watchdog \
@@ -37,12 +42,38 @@ WDTCSR = 0;
 
 #define wdr()  __asm__ __volatile__("wdr")
 
-#define SW_reset {wdt_enable(WDTO_30MS);while(1);}
+#define SW_reset   wdt_enable(WDTO_30MS);while(1); 
 
 
+
+/*****************************************************************************/
+void Check_for_r_prompt(void){
+  if (!(eeprom_read_byte((uint8_t*)0x1EF) & 0x04))
+  r_prompt = 1;
+  else r_prompt = 0;}
+
+
+
+/***************************************************************/
 #define Check_for_POR \
-if(MCUSR & (1 << PORF)){power_on_reset = 1;\
-MCUSR &= ~(1<<PORF);}
+if(MCUSR & (1 << PORF))\
+{MCUSR &= ~(1<<PORF);\
+User_prompt_A;\
+r_prompt = 1;}
+
+
+
+/***************************************************************/
+#define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
+#define repeat_program      eeprom_write_byte((uint8_t*)0x1EF, ~0x02)
+
+
+
+/***************************************************************/
+#define clear_resets \
+eeprom_write_byte((uint8_t*)0x1EF, 0xFF);\
+watch_dog_reset = 0;
+
 
 
 /*********************************************************************************/
@@ -61,11 +92,12 @@ PORTC |= ((1 << PC5) | (1 << PC4));
 
 
 
-/**********************************************************************************************/
-#define switch_3_down ((PINC & 0x20)^0x20)
-#define switch_3_up   (PINC & 0x20)
+/***************************************************************/
+#define switch_1_down ((PINC & 0x20)^0x20)
+#define switch_1_up   (PINC & 0x20)
 #define switch_2_down ((PINC & 0x10)^0x10)
 #define switch_2_up   (PINC & 0x10)
+
 
 
 
@@ -80,25 +112,16 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 
 /***********************************************************************************************/
 #define OSC_CAL \
-if ((eeprom_read_byte((uint8_t*)0x3FE) > 0x0F)\
-&&  (eeprom_read_byte((uint8_t*)0x3FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FE)\
-== eeprom_read_byte((uint8_t*)0x3FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
+if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
+&&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
+== eeprom_read_byte((uint8_t*)0x1FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x1FE);}
 
-
-
-/********************************************************/
-#define first_run                    !(eeprom_read_byte((uint8_t*)0x3FA))
-#define clear_first_run              eeprom_write_byte((uint8_t*)0x3FA, 0xFF);
-#define record_POR                    eeprom_write_byte((uint8_t*)0x3FA, 0);
-#define clear_POR                     eeprom_write_byte((uint8_t*)0x3FA, 0xFF);
 
 
 /*****************************************************************************/
-#include "328_Resources/Subroutines/HW_timers.c"
-#include "328_Resources/PC_comms/Arduino.c"
-//#include "328_Resources/PC_comms/Arduino_Rx_Tx_Extra.c"
-//#include "328_Resources/Subroutines/Random_and_prime_nos.c"
-//#include "328_Resources/PC_comms/Real_num_resources.c"
+#include "168_Resources/Subroutines/HW_timers.c"
+#include "168_Resources/PC_comms/Basic_Rx_Tx_Arduino.c"
+
 
 
 
