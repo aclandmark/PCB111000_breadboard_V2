@@ -1,12 +1,13 @@
 
-
 //#define F_CPU 8000000
 
 #include <avr/wdt.h>
 
-char User_response;
 char watch_dog_reset;
 char power_on_reset;
+char User_response;
+char r_prompt;
+
 unsigned int PRN;
 unsigned char PRN_counter;
 
@@ -17,15 +18,16 @@ unsigned char PRN_counter;
 /***************************************************************************/
 #define setup_HW \
 setup_watchdog;\
-Check_for_POR;\
 ADMUX |= (1 << REFS0);\
 OSC_CAL;\
 Set_display_drivers;\
 Clear_segments;\
 Clear_digits;\
 set_up_switched_inputs;\
-setup_PC_comms_Basic(0,16);\
-Timer_T0_10mS_delay_x_m(5);
+setup_PC_comms_B(0,16);\
+Timer_T0_10mS_delay_x_m(10);\
+Check_for_r_prompt();\
+Check_for_POR;
 
 
 
@@ -39,12 +41,38 @@ WDTCSR = 0;
 
 #define wdr()  __asm__ __volatile__("wdr")
 
-#define SW_reset {wdt_enable(WDTO_30MS);while(1);}
+#define SW_reset   wdt_enable(WDTO_30MS);while(1); 
 
 
+
+/*****************************************************************************/
+void Check_for_r_prompt(void){
+  if (!(eeprom_read_byte((uint8_t*)0x1EF) & 0x04))
+  r_prompt = 1;
+  else r_prompt = 0;}
+
+
+
+/***************************************************************/
 #define Check_for_POR \
-if(MCUSR & (1 << PORF)){power_on_reset = 1;\
-MCUSR &= ~(1<<PORF);}
+if(MCUSR & (1 << PORF))\
+{MCUSR &= ~(1<<PORF);\
+User_prompt_B;\
+r_prompt = 1;}
+
+
+
+/***************************************************************/
+#define just_programmed     !(eeprom_read_byte((uint8_t*)0x1EF) & 0x02)
+#define repeat_program      eeprom_write_byte((uint8_t*)0x1EF, ~0x02)
+
+
+
+/***************************************************************/
+#define clear_resets \
+eeprom_write_byte((uint8_t*)0x1EF, 0xFF);\
+watch_dog_reset = 0;
+
 
 
 /*********************************************************************************/
@@ -61,42 +89,33 @@ MCUCR &= (~(1 << PUD));\
 DDRC &= (~((1 << PC5) | (1 << PC4)));\
 PORTC |= ((1 << PC5) | (1 << PC4));
 
-
-
-/**********************************************************************************************/
-#define switch_3_down ((PINC & 0x20)^0x20)
-#define switch_3_up   (PINC & 0x20)
+#define switch_1_down ((PINC & 0x20)^0x20)
+#define switch_1_up   (PINC & 0x20)
 #define switch_2_down ((PINC & 0x10)^0x10)
 #define switch_2_up   (PINC & 0x10)
 
-
-#define set_up_PCI_on_sw2_and_sw3        PCICR |= (1 << PCIE1);
-#define enable_pci_on_sw3                PCMSK1 |= (1 << PCINT13);
+#define set_up_PCI_on_sw1_and_sw2        PCICR |= (1 << PCIE1);
+#define enable_pci_on_sw1                PCMSK1 |= (1 << PCINT13);
 #define enable_pci_on_sw2                PCMSK1 |= (1 << PCINT12);
-#define dissable_pci_on_sw3              PCMSK1 &= (~(1 << PCINT13));
+#define dissable_pci_on_sw1              PCMSK1 &= (~(1 << PCINT13));
+
+
 
 /***********************************************************************************************/
-#define User_prompt_Basic \
+#define User_prompt_B \
 while(1){\
-do{String_to_PC_Basic("R?    ");}  while((isCharavailable_Basic (50) == 0));\
-User_response = Char_from_PC_Basic();\
-if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_Basic("\r\n");
+do{String_to_PC_B("R?    ");}  while((isCharavailable_B (50) == 0));\
+User_response = Char_from_PC_B();\
+if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_B("\r\n");
 
 
 
 /***********************************************************************************************/
 #define OSC_CAL \
-if ((eeprom_read_byte((uint8_t*)0x3FE) > 0x0F)\
-&&  (eeprom_read_byte((uint8_t*)0x3FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FE)\
-== eeprom_read_byte((uint8_t*)0x3FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
+if ((eeprom_read_byte((uint8_t*)0x1FE) > 0x0F)\
+&&  (eeprom_read_byte((uint8_t*)0x1FE) < 0xF0) && (eeprom_read_byte((uint8_t*)0x1FE)\
+== eeprom_read_byte((uint8_t*)0x1FF))) {OSCCAL = eeprom_read_byte((uint8_t*)0x1FE);}
 
-
-
-/********************************************************/
-#define first_run                    !(eeprom_read_byte((uint8_t*)0x3FA))
-#define clear_programmer              eeprom_write_byte((uint8_t*)0x3FA, 0xFF);
-#define record_POR                    eeprom_write_byte((uint8_t*)0x3FA, 0);
-#define clear_POR                     eeprom_write_byte((uint8_t*)0x3FA, 0xFF);
 
 
 /************************************************************************************************************************************/
@@ -109,11 +128,13 @@ PORT_1 = 1;\
 else PORT_1 = PORT_1 << 1;}
 
 
+
 /************************************************************************************************************************************/
 #define shift_PORT_2 \
 if (PORT_2 == 0x8000)\
 PORT_2 = 1;\
 else PORT_2 = PORT_2 << 1;
+
 
 
 /************************************************************************************************************************************/
@@ -124,10 +145,12 @@ display_binary(0, PORT_2, 10);\
 Timer_T0_10mS_delay_x_m(16);
 
 
+
 /*****************************************************************************/
-#include "328_Resources/Subroutines/HW_timers.c"
-#include "328_Resources/PC_comms/Basic_Rx_Tx_Basic.c"
-#include "328_Resources/Subroutines/Random_and_prime_nos.c"
+#include "168_Resources/Subroutines/HW_timers.c"
+#include "168_Resources/PC_comms/Basic_Rx_Tx_Basic.c"
+#include "168_Resources/Subroutines/Random_and_prime_nos.c"
+
 
 
 
