@@ -11,6 +11,8 @@
 #include "Local_subroutines.c"
 #include "display_header.h"
 
+#define  Disp_L   8
+
 
 
 
@@ -22,7 +24,7 @@ setup_HW;
 
   Port_1 = 1;
   Port_2 = 1;
-for(int m = 0; m <= 15; m++){
+for(int m = 0; m < Disp_L*2; m++){
 display_binary (Port_1, Port_2, 5);
 Port_1 = Port_1 << 1;
 Port_2 = Port_2 << 1; 
@@ -35,7 +37,7 @@ int main (void)   //Example 3
   setup_HW;
   wdt_enable(WDTO_30MS);
   Port_1 = 1;
-  for (int m = 0; m <= 15; m++)
+  for(int m = 0; m < Disp_L*2; m++)
   {  display_binary (Port_1 << m, Port_1 << m, 5);}
 for (int m = 14; m; m--)
 {  display_binary
@@ -50,7 +52,7 @@ int main (void)    //Example 5
   while (1)
   { PORT_1 = 0b0000000000000001; 
     PORT_2 = 0b1000000000000000;  
-    for (int m = 0; m <= 15; m++)
+    for(int m = 0; m < Disp_L*2; m++)
     { display_binary(PORT_1, PORT_2,2);
       PORT_1 = PORT_1 << 1;
       PORT_2 = PORT_2 >> 1;
@@ -64,7 +66,7 @@ int main (void)    //Example 5
   while (1)
   { PORT_1 = 1;
     PORT_2 = 0x80000000;
-    for (int m = 0; m <= 31; m++)
+    for(int m = 0; m < Disp_L*4; m++)
     {  display_binary(PORT_1, PORT_2, 4);
       PORT_1 = PORT_1 << 1;
       PORT_2 = PORT_2 >> 1;
@@ -81,7 +83,7 @@ int main (void)             //Example 8
     char segments[8];
     
     setup_HW;
-  for(int m = 0; m <=7; m++)segments[m] = 0;
+  for(int m = 0; m < Disp_L; m++)segments[m] = 0;
   while(1){
 if (counter < 8)letter = 'a';
 if (counter == 8) letter = 'f';
@@ -132,7 +134,7 @@ int main (void)     //Example 13  Random display
   char segments[8];
   
   setup_HW;
-  for(int m = 0; m <= 7; m++)segments[m] = 0;
+  for(int m = 0; m < Disp_L; m++)segments[m] = 0;
     
   PRN_counter = 0;
   PRN = PRN_16bit_GEN (0, &PRN_counter);
