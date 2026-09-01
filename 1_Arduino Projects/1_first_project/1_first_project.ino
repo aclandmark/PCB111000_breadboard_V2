@@ -11,9 +11,13 @@
 #include "Local_subroutines.c"
 #include "display_header.h"
 
-#define  Disp_L   8
+#define  Disp_L   8         //Also must be defined in Local_subroutines.c
 
-
+/*
+ Disp_L is the number of digits in the display
+ This is 8 where two display modules are mounted and
+ 4 where a single display module is used
+ */
 
 
 /*********************************************************  
