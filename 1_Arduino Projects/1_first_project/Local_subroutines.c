@@ -27,7 +27,7 @@ void Timer_T0_10mS_delay_x_m(int m);
 /**************************************************************************************************/
 void display_binary (unsigned long Port_1, unsigned long Port_2, int duration)
 {for (int q = 0; q <= duration; q++){wdr();
-for(int m = 0; m < Disp_L; m++)
+for(int m = 0; m < Disp_L*2; m++)
 {switch(m){
 case 0: if(Port_1 & (1 << m)){digit_4_RH_on; b_on;}
         if(Port_2 & (1 << m)){digit_4_RH_on; c_on;}break;
@@ -78,7 +78,7 @@ Clear_digits;}}}
 void display_pattern(char * seg_store, int duration){     
 
 for (int q = 0; q <= duration; q++){
-for(int m = 0; m < Disp_L; m++){
+for(int p = 0; p < Disp_L; p++){
 
 Clear_segments;
 Clear_digits;
