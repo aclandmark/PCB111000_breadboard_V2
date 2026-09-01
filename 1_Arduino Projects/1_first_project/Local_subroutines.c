@@ -3,6 +3,8 @@
 #include <avr/wdt.h>
 #include <util/delay.h>
 
+#define  Disp_L   8
+
 #include "display_header.h"
 
 void display_pattern(char *, int);
@@ -25,7 +27,7 @@ void Timer_T0_10mS_delay_x_m(int m);
 /**************************************************************************************************/
 void display_binary (unsigned long Port_1, unsigned long Port_2, int duration)
 {for (int q = 0; q <= duration; q++){wdr();
-for(int m = 0; m <= 15; m++)
+for(int m = 0; m < Disp_L; m++)
 {switch(m){
 case 0: if(Port_1 & (1 << m)){digit_4_RH_on; b_on;}
         if(Port_2 & (1 << m)){digit_4_RH_on; c_on;}break;
@@ -76,7 +78,7 @@ Clear_digits;}}}
 void display_pattern(char * seg_store, int duration){     
 
 for (int q = 0; q <= duration; q++){
-for(int p = 0; p <= 7; p++){
+for(int m = 0; m < Disp_L; m++){
 
 Clear_segments;
 Clear_digits;
