@@ -3,7 +3,7 @@
 #include <avr/wdt.h>
 #include <util/delay.h>
 
-#define  Disp_L   4
+#define  Disp_L   8
 
 #include "display_header.h"
 
