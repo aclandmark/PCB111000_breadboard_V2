@@ -1,15 +1,8 @@
 
 
-//14 more projects very like those saved under            
-//“0_project_zero” this time generating simple patterns on the display 
+//A few simple projects generating patterns on the display 
 //some of them regular and repeating and some of them random.
-//Why not copy the C code for one or two examples to be found in folder "C_file_images\1_first_project"
 
-
-
-#include "First_project_header.h"
-#include "Local_subroutines.c"
-#include "display_header.h"
 
 #define  Disp_L   8         //Also must be defined in Local_subroutines.c
 
@@ -20,8 +13,19 @@
  */
 
 
+#include "First_project_header.h"
+#include "Local_subroutines.c"
+#include "display_header.h"
+
+
+
+
+ 
+
+
+
 /*********************************************************  
-int main (void)               //Example_1
+int main (void)                             //Example_1   Long or short display
 {unsigned int Port_1, Port_2;
 
 setup_HW;
@@ -29,13 +33,15 @@ setup_HW;
   Port_1 = 1;
   Port_2 = 1;
 for(int m = 0; m < Disp_L*2; m++){
-display_binary (Port_1, Port_2, 5);
+display_binary (Port_1, Port_2, 5);         //Increase the '5' to slow the display down 
 Port_1 = Port_1 << 1;
 Port_2 = Port_2 << 1; 
   }SW_reset;}
 
+
+
 ************************************************************
-int main (void)   //Example 3
+int main (void)                           //Example 3   Long or short display
   { unsigned int Port_1;
 
   setup_HW;
@@ -43,14 +49,15 @@ int main (void)   //Example 3
   Port_1 = 1;
   for(int m = 0; m < Disp_L*2; m++)
   {  display_binary (Port_1 << m, Port_1 << m, 5);}
-for (int m = 14; m; m--)
+for (int m = 2*(Disp_L-1); m; m--)
 {  display_binary
 (Port_1 << m, Port_1 << m, 5);}
   while(1); }
 
 
+
 ************************************************************
-int main (void)    //Example 5
+int main (void)                             //Example 5 Long display
   { unsigned int PORT_1, PORT_2;
   setup_HW;
   while (1)
@@ -63,8 +70,9 @@ int main (void)    //Example 5
     }}return 1;  }
 
 
+
 ************************************************************
- int main (void)       //Example 6
+ int main (void)                            //Example 6 Long display
   { unsigned long PORT_1, PORT_2;
   setup_HW;
   while (1)
@@ -79,7 +87,7 @@ int main (void)    //Example 5
 
 
 ************************************************************
-int main (void)             //Example 8
+int main (void)                             //Example 8 Long display
   { char digit[] =  "01234567777654321000";
         char letter;
     char counter=0;
@@ -107,7 +115,7 @@ if (counter == 20){direction ^= 1; counter = 0;}
 
 
 ************************************************************
-   int main (void)   //Example 12
+   int main (void)                          //Example 12 Long Display
   { unsigned int random_num;
   long PORT_1 = 1, PORT_2 = 1;
 
@@ -126,11 +134,10 @@ if (counter == 20){direction ^= 1; counter = 0;}
        random_num = PRN_16bit_GEN 
   (random_num, &PRN_counter);}} 
 
-
   
  
 ************************************************************
-int main (void)     //Example 13  Random display
+int main (void)                           //Example 13  Random display Long display
   {int T1_period = 15;
   char direction;
   char duration = 50;
@@ -152,7 +159,7 @@ int main (void)     //Example 13  Random display
    
  
  ************************************************************
- int main (void)               //Example 14 Random binary
+ int main (void)                          //Example 14 Random binary Long Display
 { 
   setup_HW;
   wdt_enable(WDTO_30MS);
@@ -165,7 +172,7 @@ int main (void)     //Example 13  Random display
 
   
  ************************************************************
-int main (void){                //Example 15  numerical sequences
+int main (void){                        //Example 15  numerical sequences Long display
 unsigned int Port_1, Port_2;
   char digits[12];
    char Inc = 0; 
