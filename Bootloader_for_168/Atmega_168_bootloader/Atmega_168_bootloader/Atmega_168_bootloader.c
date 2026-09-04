@@ -40,12 +40,12 @@ asm("jmp 0x3580");														//Jump to launcher which can set 0x1EF to zero
 	
 			Program_record();}											//Continue filling page_buffer
 
-		UCSR0B &= (~(1<<RXCIE0));	cli();									//download complete, disable UART Rx interrupt
+		UCSR0B &= (~(1<<RXCIE0));	cli();							//download complete, disable UART Rx interrupt
 		
 		UCSR0B &= (~(1 << RXEN0));									//disable Rx module
 		DDRD &= (~(1 << DDD0)); PORTD |= (1 << DDD0);				//Set Rx pins to week pull up
-		Timer_T0_sub(T0_delay_5ms);									//Complete download
-		//while(1){if (isCharavailable(5)==1)receiveChar();else break;}		//Clear last few characters of hex file
+		Timer_T0_sub(T0_delay_5ms);									//Time to download spurious characters (i.e. 0000000FF)
+		
 				
 		if((Flash_flag) && (!(orphan))){write_page_SUB(page_address);}	//Burn final contents of page_buffer to flash
 		if(orphan) {write_page_SUB(page_address + PageSZ);}cli();
@@ -53,7 +53,7 @@ asm("jmp 0x3580");														//Jump to launcher which can set 0x1EF to zero
 
 		clear_read_block();											//Subroutine provided in assembly file
 		
-		asm("jmp 0x2E80");}											//Jump to verification routine
+		asm("jmp 0x3000");}											//Jump to verification routine
 
 
 
