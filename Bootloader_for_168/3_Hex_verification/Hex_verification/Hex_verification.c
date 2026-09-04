@@ -19,6 +19,9 @@ int main (void){
 	char digits[8];	
 
 	sendString("\t0 to verify or AOK\r\n");								//Press '0' to read out hex file from flash
+	
+	UCSR0B |= (1 << RXEN0);
+	
 	if (!(waitforkeypress() - '0'))
 	{		
 		sendString("cmd_counter? zero for full\t");
