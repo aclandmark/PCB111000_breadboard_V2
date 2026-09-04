@@ -3,6 +3,11 @@
 #include "Atmega_168_bootloader_header.h"
 #define Version "Hex_txt_bootloader_V1 "
 
+#define T0_delay_5ms  5,217
+  
+void Timer_T0_sub(char, unsigned char);
+
+
 
 int main (void){ 											//Loaded at address 0x3800, the start of the boot loader section
 
@@ -36,13 +41,18 @@ asm("jmp 0x3580");														//Jump to launcher which can set 0x1EF to zero
 			Program_record();}											//Continue filling page_buffer
 
 		UCSR0B &= (~(1<<RXCIE0));	cli();									//download complete, disable UART Rx interrupt
-		while(1){if (isCharavailable(5)==1)receiveChar();else break;}		//Clear last few characters of hex file
+		
+		UCSR0B &= (~(1 << RXEN0));									//disable Rx module
+		DDRD &= (~(1 << DDD0)); PORTD |= (1 << DDD0);				//Set Rx pins to week pull up
+		Timer_T0_sub(T0_delay_5ms);									//Complete download
+		//while(1){if (isCharavailable(5)==1)receiveChar();else break;}		//Clear last few characters of hex file
 				
 		if((Flash_flag) && (!(orphan))){write_page_SUB(page_address);}	//Burn final contents of page_buffer to flash
 		if(orphan) {write_page_SUB(page_address + PageSZ);}cli();
 
 
 		clear_read_block();											//Subroutine provided in assembly file
+		
 		asm("jmp 0x2E80");}											//Jump to verification routine
 
 
@@ -95,3 +105,10 @@ asm("jmp 0x3580");														//Jump to launcher which can set 0x1EF to zero
 
 
 
+
+/*********************************************************************/
+void Timer_T0_sub(char Counter_speed, unsigned char Start_point){
+	TCNT0 = Start_point;
+	TCCR0B = Counter_speed;
+	while(!(TIFR0 & (1<<TOV0)));
+TIFR0 |= (1<<TOV0); TCCR0B = 0;}
