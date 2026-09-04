@@ -12,9 +12,7 @@ Space for bootloader is 0x1180 bytes	27.34%
 */
 
 
-#define T0_delay_10ms 	5,178
-
-void Timer_T0_10mS_delay_x_m(int);
+#define T1_delay_200ms 	3, 0x9E62
 
 #include "Hex_verification.h"
 
@@ -24,15 +22,13 @@ int main (void){
 
 	sendString("\t0 to verify or AOK\r\n");								//Press '0' to read out hex file from flash
 	
-	//Timer_T0_sub(T0_delay_5ms);	
-	Timer_T0_10mS_delay_x_m(20);
-	
+	Timer_T1_sub(T1_delay_200ms);
 	
 	UCSR0B |= (1 << RXEN0);
 	
 	if (!(waitforkeypress() - '0'))
 	{		
-		sendString("cmd_counter? zero for full\t");
+		sendString("cmd_ctr? zero for full\t");
 		cmd_counter = (Int_from_PC(digits))/2;						///0x40;
 		if (!(cmd_counter))cmd_counter = FlashSZ;
 		Hex_to_PC (cmd_counter);
@@ -115,5 +111,3 @@ print_line = waitforkeypress() - '0';
 newline(); }
 
 
-void Timer_T0_10mS_delay_x_m(int m)
-{for (int n = 0; n < m; n++){Timer_T0_sub(T0_delay_10ms);}}
