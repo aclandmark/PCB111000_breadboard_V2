@@ -6,6 +6,8 @@
 
 #define min_intensity 1
 
+#define Disp_L 4
+
 
 #ifdef min_intensity 
 int led_off_time = 900;
@@ -33,7 +35,7 @@ Start_timer_T1_sub(T1_delay_200ms);
 
 while(1){
 Display_Int(num_string);
-for(int m = 0; m <= 7; m++)num_string[m] = (num_string[m]-'0' +1)%10 + '0';}
+for(int m = 0; m < Disp_L; m++)num_string[m] = (num_string[m]-'0' +1)%10 + '0';}
 
 SW_reset;}
 
@@ -46,7 +48,7 @@ const char* string_ptr = 0;
   
 while(1){
 
-for (digit_num = 1; digit_num <= 8; digit_num++){
+for (digit_num = 1; digit_num <= Disp_L; digit_num++){
   Clear_digits;
   Clear_segments;
 digit = num_string[digit_num-1];
