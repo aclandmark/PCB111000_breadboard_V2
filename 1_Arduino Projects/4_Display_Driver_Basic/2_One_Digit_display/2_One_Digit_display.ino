@@ -27,6 +27,8 @@
 const char *message_1 = "String memory dump\t";
   const char *message_2 = "\r\nDigit\tAddress    String\r\n";
 
+#define Disp_L 8
+
 
 int main (void){
 
@@ -56,14 +58,14 @@ Clear_segments;
 
 
 switch (dig_counter){
-  case 0: digit_1_LH_on; break;
-  case 1: digit_2_LH_on; break;
-  case 2: digit_3_LH_on; break;
-  case 3: digit_4_LH_on; break;
-  case 4: digit_1_RH_on; break;
-  case 5: digit_2_RH_on; break;
-  case 6: digit_3_RH_on; break;
-  case 7: digit_4_RH_on; break;}
+  case 7: digit_1_LH_on; break;
+  case 6: digit_2_LH_on; break;
+  case 5: digit_3_LH_on; break;
+  case 4: digit_4_LH_on; break;
+  case 3: digit_1_RH_on; break;
+  case 2: digit_2_RH_on; break;
+  case 1: digit_3_RH_on; break;
+  case 0: digit_4_RH_on; break;}
 
 
 switch(digit){                                  //The appropriate address is loaded into location 
@@ -87,7 +89,7 @@ default: continue; break;}                        //Illegal key press: Go immedi
 display_single_digit_B(string_ptr);
 
 dig_counter += 1;
-dig_counter %= 8;
+dig_counter %= Disp_L;
 
 } while (1);}
 
