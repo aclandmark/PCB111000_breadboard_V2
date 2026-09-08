@@ -5,7 +5,7 @@
 
 
 //#define min_intensity 1
-
+#define Disp_L 4
 
 #ifdef min_intensity 
 int led_off_time = 900;
@@ -22,12 +22,12 @@ int main (void){
 int string_counter=0;
 int letter_counter=0;
 long num;
-char num_string[11];
+char num_string[9];
 
 
 setup_HW;               
 
-for(int n = 0; n<11; n++)num_string[n] = 0;
+for(int n = 0; n <= Disp_L; n++)num_string[n] = 0;
 
 if ((just_programmed) || (r_prompt))
 {clear_resets;
@@ -86,9 +86,9 @@ _delay_us(led_off_time);
 display_single_digit(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(led_on_time);
-}  while (digit_num < 8); 
+}  while (digit_num < Disp_L); 
 
-for (int m = digit_num; m < 8; m++)_delay_us(1200);
+for (int m = digit_num; m < Disp_L; m++)_delay_us(1200);
 
 if (UCSR0A & (1 << RXC0))break;}}
 
@@ -129,10 +129,15 @@ digits[0] = keypress;
 Display_Int(digits);
 while(1){
 if ((keypress = wait_for_return_key_B())  =='\r')break;
+
+if (digits[Disp_L-1]) break;
+
 if (decimal_digit_B (keypress))                                           //012345678or9  :Builds up the number one keypress at a time
-{for(int n = 7; n>=1; n--)
+{for(int n = Disp_L-1; n>=1; n--)
 digits[n] = digits[n-1];                                                //Shifts display left for each keypress
-digits[0] = keypress;}Display_Int(digits);}
+digits[0] = keypress;}Display_Int(digits);
+
+}
 invert_num_string(digits);           
 return atol(digits);}
 
