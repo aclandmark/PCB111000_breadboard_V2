@@ -50,9 +50,7 @@ int main (void){
 	
 	newline(); newline();											//Jump to here if verification not required
 
-eeprom_write_byte((uint8_t*)0x1EF,0b11111101);
-
-MCUSR = 0;
+//MCUSR = 0;
 	wdt_enable(WDTO_15MS);
 	while(1);														
 return 1;}
