@@ -15,13 +15,12 @@ int led_off_time = 50;
 int led_on_time = 1150;
 #endif
 
-
+#define Disp_L  8
 
 int main (void){
 
 char real_num_string[15];
 long num;
-char exit_Key_press;
 char digits[15];
 char digits_pre_dp;
 
@@ -38,7 +37,7 @@ String_to_PC_B("\r\nAgain\t");
 
 Real_num_from_PC_B(real_num_string);
 display_real_num(real_num_string);    //needs AK to exit
-exit_Key_press = Char_from_PC_B();
+Char_from_PC_B();
 
 
 invert_num_string(real_num_string);
@@ -49,19 +48,19 @@ Num_string_to_PC_B(digits);
  
 String_to_PC_B("\r\n"); 
 String_to_PC_B(digits);
-for(int m = 0; m <=14; m++)
+for(int m = 0; m <=(Disp_L -1)*2; m++)            
 {if (digits[m] == '.'){digits_pre_dp = m-1; break;}}
 digits[digits_pre_dp] |= 0x80;
 
 
-for(int m = digits_pre_dp + 1; m < 14; m++)digits[m] = digits[m+1];
+for(int m = digits_pre_dp + 1; m < (Disp_L -1)*2; m++)digits[m] = digits[m+1];    
 
 String_to_PC_B ("\r\n\r\nAK to repeat");
-digits[8] = 0;
+digits[Disp_L] = 0;     
 invert_num_string(digits);
 display_real_num(digits);
 
-exit_Key_press = Char_from_PC_B();
+Char_from_PC_B();
 
 SW_reset;}
 
@@ -114,9 +113,9 @@ if(!(digit))break;
 display_single_digit(string_ptr, dp);
 digit_num++;
 _delay_us(led_on_time);
-}  while (digit_num < 8); 
+}  while (digit_num < Disp_L);    
 
-for (int m = digit_num; m < 8; m++)_delay_us(1200);
+for (int m = digit_num; m < Disp_L; m++)_delay_us(1200);   
 
 if (UCSR0A & (1 << RXC0))return;}}
 
