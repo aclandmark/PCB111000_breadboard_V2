@@ -16,6 +16,8 @@ int led_off_time = 50;
 int led_on_time = 1150;
 #endif
 
+#define Disp_L 4
+
 
 
 int main (void){
@@ -32,7 +34,7 @@ setup_HW;
 
 if ((just_programmed) || (r_prompt))
 {clear_resets;
-String_to_PC_B("\r\nEnter integer?");
+String_to_PC_B("\r\nEnter real number?");
 String_to_PC_B ("\r\nAK to display root\r\n");}
 
 else 
@@ -69,7 +71,7 @@ real_num_less_than_1;}
 
 Char_to_PC_B ('\t');
 Real_num_string_to_PC_B(digits);
-digits[8] = 0;
+digits[Disp_L] = 0;             
 invert_num_string(digits);
 display_real_num(digits);
 
@@ -81,7 +83,7 @@ SW_reset;}
 
 /***************************************************************************************/
 void Real_num_string_to_PC_B(char * digits){
- for (int m = 0; m <= 8; m++){if(!(digits[m]))return;  if(!(digits[m] & 0x80))
+ for (int m = 0; m <= Disp_L; m++){if(!(digits[m]))return;  if(!(digits[m] & 0x80))  
  Char_to_PC_B(digits[m]);
  else {Char_to_PC_B(digits[m] & ~0x80);Char_to_PC_B('.');}}}
 
@@ -134,9 +136,9 @@ if(!(digit))break;
 display_single_digit(string_ptr, digit_num, dp);
 digit_num++;
 _delay_us(led_on_time);
-}  while (digit_num < 8); 
+}  while (digit_num < Disp_L);   
 
-for (int m = digit_num; m < 8; m++)_delay_us(1200);
+for (int m = digit_num; m < Disp_L; m++)_delay_us(1200);
 
 
 if (UCSR0A & (1 << RXC0))return;}}
