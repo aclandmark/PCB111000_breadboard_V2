@@ -14,6 +14,10 @@ int main (void){ 											//Loaded at address 0x3800, the start of the boot lo
 if((eeprom_read_byte((uint8_t*)(0x1EF))) & 1)					//Test bit zero (set by verification and UNO programmer)
 asm("jmp 0x3580");														//Jump to launcher which can set 0x1EF to zero
 
+eeprom_write_byte((uint8_t*)0x1EF,0b11111101);
+MCUSR = 0;
+
+
 		PageSZ = 0x40; PAmask = 0x1FC0;										//Define flash memory parameters for Atmega 168
 
 		record_length_old=0;				
