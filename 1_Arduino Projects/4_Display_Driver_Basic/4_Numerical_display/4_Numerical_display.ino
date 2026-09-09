@@ -5,7 +5,7 @@
 
 
 //#define min_intensity 1
-#define Disp_L 4
+#define Disp_L 8
 
 #ifdef min_intensity 
 int led_off_time = 900;
