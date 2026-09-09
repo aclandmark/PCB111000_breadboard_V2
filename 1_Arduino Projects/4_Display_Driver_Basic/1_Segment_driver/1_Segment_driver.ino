@@ -13,7 +13,7 @@
 Press 'z' to clear the display.\r\n"
 #define message_2 "Again ?\r\n"
 
-#define Disp_L 4
+#define Disp_L 8
 
 
 int main (void){
