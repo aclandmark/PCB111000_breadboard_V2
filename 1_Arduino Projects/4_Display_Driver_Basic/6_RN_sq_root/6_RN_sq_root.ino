@@ -16,7 +16,7 @@ int led_off_time = 50;
 int led_on_time = 1150;
 #endif
 
-#define Disp_L 4
+#define Disp_L 8
 
 
 
