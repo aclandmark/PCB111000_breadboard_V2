@@ -27,7 +27,7 @@
 const char *message_1 = "String memory dump\t";
   const char *message_2 = "\r\nDigit\tAddress    String\r\n";
 
-#define Disp_L 8
+#define Disp_L 4
 
 
 int main (void){
