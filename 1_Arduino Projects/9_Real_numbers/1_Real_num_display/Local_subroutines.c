@@ -16,7 +16,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-
+#define Disp_L 8
 
 /*****************************************************************************/
 void Char_to_PC_B(char);
@@ -51,12 +51,12 @@ real_num_string[dp_locator - 1] = '.';}
 void askii_to_display_string(char * num_string){
   int m;
   char dp = 0;
-  for(m = 0; m < 9; m++) {
+  for(m = 0; m <= Disp_L; m++) {
   if(!(num_string[m]))break;
   if (dp) dp += 1;
   if (num_string[m] == '.'){num_string[m-1] |= 0x80; dp = 1;}
   if(dp > 1){num_string[m-1] = num_string[m];}}
-  num_string[8] = 0;
+  num_string[Disp_L] = 0;
   invert_num_string(num_string);
   display_real_num(num_string);}
 
