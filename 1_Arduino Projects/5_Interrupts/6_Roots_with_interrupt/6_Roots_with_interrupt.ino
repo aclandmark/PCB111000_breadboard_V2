@@ -15,6 +15,8 @@ void Num_string_from_KBD_Local(char *);
 Enter integer number\r\n?"
 
 
+#define Disp_L 8
+
 #define zero "abcdef"                   //chars a,b,c,d,e and f are stored in an array named "zero"
 #define one "bc"                        //chars b and c are stored in an array named "one"
 #define two "abdeg"                     //Note: the compiler terminates each string in zero
@@ -117,7 +119,7 @@ if (num_present) {ready_to_compute = 1;}
 dig = (dig+1)%10;
 
   digit_num += 1;
-digit_num = digit_num%8;
+digit_num = digit_num%Disp_L;
 if(!(digit_num))dig = dig_start;}
 
 
