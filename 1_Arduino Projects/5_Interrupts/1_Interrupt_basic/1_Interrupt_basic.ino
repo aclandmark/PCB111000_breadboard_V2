@@ -9,6 +9,10 @@ volatile char dig_num = 0;
 volatile int seg_num = 0;
 
 
+#define Disp_L 8
+
+#define initialise_display  digit_1_LH_on;
+//#define initialise_display  digit_1_RH_on;
 
  int main (void)   
   {
@@ -18,7 +22,7 @@ set_up_PCI_on_sw1_and_sw2                                             //Eamples 
 enable_pci_on_sw1;                                              //Eamples 2 and 3 only
     Clear_digits;
     Clear_segments;
-digit_1_LH_on;
+initialise_display;
    String_to_PC_B("\r\nMomentarily switch pin 28 to gnd to increase flash rate");
     
     sei();
@@ -45,7 +49,7 @@ ISR(PCINT1_vect) {
  
    if (switch_1_down)clock_rate = clock_rate *3/4;
   if(clock_rate <= 25)clock_rate = 500;
-if (seg_num == 16) seg_num = 0;
+if (seg_num == (2*Disp_L)) seg_num = 0;
   Clear_digits;
   
   switch (dig_num){
@@ -59,10 +63,11 @@ case 6:  digit_2_LH_on; break;
 case 7:  digit_1_LH_on; break;}
 
   seg_num += 1;
-  if ( !(seg_num%2))dig_num += 1;   //(seg_num) &&
-  dig_num = dig_num%8;
+  if ( !(seg_num%2))dig_num += 1;   
+  dig_num = dig_num%(Disp_L);
   sei();
   Timer_T0_10mS_delay_x_m(20);
+  while(switch_1_down);
   enable_pci_on_sw1;}
 
 
