@@ -11,7 +11,7 @@
 
 
 //#define min_intensity 1
-
+#define Disp_L 8
 
 #ifdef min_intensity 
 int led_off_time = 900;
@@ -114,9 +114,9 @@ display_single_digit(string_ptr, digit_num, dp);
 digit_num++;
 //_delay_us(1200);
 _delay_us(led_on_time);
-}  while (digit_num < 8); 
+}  while (digit_num < Disp_L); 
 
-for (int m = digit_num; m < 8; m++)_delay_us(1200);
+for (int m = digit_num; m < Disp_L; m++)_delay_us(1200);
 
 if (UCSR0A & (1 << RXC0))return;}}
 
