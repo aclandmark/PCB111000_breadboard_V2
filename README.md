@@ -19,14 +19,3 @@ The bootloader is slightly different from the one provided by Arduino.  It does 
 but runs off its internal RC clock. This clock is calibrated when the bootloader is uploaded using a UNO pcb loaded with
 preograming code.
 
-
-
-
-
-
-
-Test text
-Test text
-Test text
-Test text
-
