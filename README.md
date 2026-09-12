@@ -3,6 +3,7 @@ PCB111000\_breadboard
 Atmega168 with bootloader
 
 
+
 PCB111000\_UNO\_V2 has a bootloader that runs on the Atmega 328 (UNO) device.
 It is used to upload user programs.
 All non essential features such as the text programmer have been removed and
@@ -17,4 +18,12 @@ The development environment is provided by Arduino used together with the Br@y++
 The bootloader is slightly different from the one provided by Arduino.  It does not require and external resonator
 but runs off its internal RC clock. This clock is calibrated when the bootloader is uploaded using a UNO pcb loaded with
 preograming code.
+
+
+
+
+
+
+
+Test text
 
