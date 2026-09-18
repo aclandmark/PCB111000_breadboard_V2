@@ -11,11 +11,11 @@ An edited version of this bootloader is used with PCB111000_breadboard_V2 and ru
 All non essential features such as the text programmer have been removed.
 The resulting code is divided between the following 3 projects.
 
-Hex verification:  This sits near the bottom of the application partition
-
 Bootloader launcher: This sets the hardware and sits at the bottom of the application partition
 
-The bootloader:    This sits in the bootloader partition
+Hex verification:  This sits just above the launcher
+
+The bootloader:    This sits in the bootloader partition (just below the launcher)
 
 User programs can occupy the space between 0x000 and 0x3000 i.e. 75% of the 16kB memory
 
