@@ -20,7 +20,7 @@ The bootloader:    This sits in the bootloader partition
 User programs can occupy the space between 0x000 and 0x3000 i.e. 75% of the 16kB memory
 
 This Atmega 168 can now be plugged into breadboard along with a USB bridge (CP2102 module)
-and one or two 4 four digit 7 segment dispays. This hardware is basic and cheep enough 
+and one or two four digit 7 segment dispays. This hardware is basic and cheep enough 
 to be assembled by students at home and a number of sample projects are presented for this 
 component set up. A display can easily be removed and other components such as leds, piezzo sounder, 
 analogue voltage source etc can be added enabling more varied projects to be developed.
