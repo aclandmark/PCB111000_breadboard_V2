@@ -2,6 +2,9 @@
 
 
 PCB111000_UNO_V2 has a bespoke bootloader that runs on the Atmega 328 (UNO) device.
+
+An edited version of this bootloader is used with PCB111000_breadboard_V2.
+
 All non essential features such as the text programmer have been removed.
 The resulting code is divided between 3 projects.
 
