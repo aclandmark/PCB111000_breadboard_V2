@@ -6,11 +6,11 @@ PCB111000_UNO_V2 has a bespoke bootloader that runs on the Atmega 328 (UNO) devi
 An edited version of this bootloader is used with PCB111000_breadboard_V2.
 
 All non essential features such as the text programmer have been removed.
-The resulting code is divided between 3 projects.
+The resulting code is divided between the following 3 projects.
 
 Hex verification:  This sits near the bottom of the application partition
 
-Bootloader launcher: This setss the hardware and sits at the bottom of the application partition
+Bootloader launcher: This sets the hardware and sits at the bottom of the application partition
 
 The bootloader:    This sits in the bootloader partition
 
