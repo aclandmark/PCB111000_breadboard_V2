@@ -11,8 +11,8 @@ volatile int seg_num = 0;
 
 #define Disp_L 8
 
-#define initialise_display  digit_1_LH_on;
-//#define initialise_display  digit_1_RH_on;
+//#define initialise_display  digit_1_LH_on;
+#define initialise_display  digit_1_RH_on;
 
  int main (void)   
   {
